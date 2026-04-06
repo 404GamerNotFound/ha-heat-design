@@ -2,5 +2,5 @@
   "name": "Home Assistant Heating Control Card",
   "content_in_root": true,
   "render_readme": true,
-  "filename": "heating-control-card.js"
+  "filename": "ha-heat-design.js"
 }
