@@ -70,6 +70,8 @@ class HeatingControlCard extends HTMLElement {
     const currentTemp = climateState.attributes.current_temperature;
     const targetTemp = climateState.attributes.temperature;
     const humidity = humidityState?.state;
+    this._recordMetricValue(this._tempHistory, currentTemp);
+    this._recordMetricValue(this._humidityHistory, humidity);
 
     this._currentTemperatureEl.textContent = this._formatTemperature(currentTemp);
     this._targetTemperatureEl.textContent = this._formatTemperature(targetTemp);
@@ -80,6 +82,10 @@ class HeatingControlCard extends HTMLElement {
     if (!this._isSliding) {
       this._slider.value = targetTemp ?? this._config.min_temp;
       this._updateSliderFill();
+    }
+
+    if (this._chartDrawerEl?.classList.contains("visible")) {
+      this._drawActiveChart();
     }
   }
 
@@ -92,11 +98,11 @@ class HeatingControlCard extends HTMLElement {
       <ha-card>
         <div class="wrapper">
           <div class="top-row">
-            <div>
+            <div id="current-temp-trigger" class="metric-trigger" role="button" tabindex="0" aria-label="Show temperature chart">
               <div class="label">CURRENT</div>
               <div id="current-temperature" class="small-value">--</div>
             </div>
-            <div class="right-block">
+            <div id="humidity-trigger" class="right-block metric-trigger" role="button" tabindex="0" aria-label="Show humidity chart">
               <div class="label">HUMIDITY</div>
               <div id="humidity" class="small-value">--</div>
             </div>
@@ -118,6 +124,17 @@ class HeatingControlCard extends HTMLElement {
             <div class="name">${this._config.name || "Heater"}</div>
           </div>
         </div>
+        <div id="chart-drawer-overlay" class="chart-drawer-overlay hidden"></div>
+        <aside id="chart-drawer" class="chart-drawer hidden" aria-hidden="true">
+          <div class="chart-drawer-header">
+            <div>
+              <div id="chart-title" class="chart-title">Temperature</div>
+              <div id="chart-subtitle" class="chart-subtitle">Last values from this session</div>
+            </div>
+            <button id="chart-close" class="chart-close" type="button" aria-label="Close chart">✕</button>
+          </div>
+          <canvas id="chart-canvas" class="chart-canvas" width="420" height="220"></canvas>
+        </aside>
       </ha-card>
     `;
 
@@ -125,6 +142,7 @@ class HeatingControlCard extends HTMLElement {
     style.textContent = `
       ha-card {
         --ha-card-background: var(--card-bg-start, #ffa20f);
+        position: relative;
         border-radius: 30px;
         overflow: hidden;
         background: var(--card-bg-start, #ffa20f);
@@ -163,6 +181,21 @@ class HeatingControlCard extends HTMLElement {
         margin-top: 4px;
         font-size: 18px;
         font-weight: 500;
+      }
+
+      .metric-trigger {
+        cursor: pointer;
+        border-radius: 12px;
+        padding: 2px 8px 4px;
+        margin: -2px -8px -4px;
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+
+      .metric-trigger:hover,
+      .metric-trigger:focus-visible {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-1px);
+        outline: none;
       }
 
       .main-temperature {
@@ -356,6 +389,84 @@ class HeatingControlCard extends HTMLElement {
         opacity: 0.95;
         margin-left: auto;
       }
+
+      .chart-drawer-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(5, 9, 16, 0.42);
+        backdrop-filter: blur(2px);
+        transition: opacity 0.25s ease;
+      }
+
+      .chart-drawer {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: min(86%, 360px);
+        height: 100%;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.93), rgba(245, 248, 255, 0.96));
+        color: #17212f;
+        border-top-left-radius: 28px;
+        border-bottom-left-radius: 28px;
+        box-shadow: -14px 0 38px rgba(0, 0, 0, 0.3);
+        transform: translateX(100%);
+        transition: transform 0.28s ease;
+        z-index: 5;
+        padding: 18px 14px 12px;
+        box-sizing: border-box;
+      }
+
+      .chart-drawer-overlay.hidden,
+      .chart-drawer.hidden {
+        pointer-events: none;
+        opacity: 0;
+      }
+
+      .chart-drawer.visible {
+        transform: translateX(0);
+      }
+
+      .chart-drawer-overlay.visible {
+        opacity: 1;
+        z-index: 4;
+      }
+
+      .chart-drawer-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .chart-title {
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .chart-subtitle {
+        margin-top: 4px;
+        font-size: 12px;
+        color: rgba(23, 33, 47, 0.72);
+      }
+
+      .chart-close {
+        border: none;
+        background: rgba(23, 33, 47, 0.08);
+        color: #17212f;
+        border-radius: 999px;
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .chart-canvas {
+        width: 100%;
+        height: 220px;
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(238, 243, 251, 0.95));
+      }
     `;
 
     this.appendChild(style);
@@ -368,6 +479,17 @@ class HeatingControlCard extends HTMLElement {
     this._statusEl = this.querySelector("#status");
     this._sliderWrapEl = this.querySelector(".hud-slider-wrap");
     this._heatingToggleEl = this.querySelector("#heating-toggle");
+    this._tempTriggerEl = this.querySelector("#current-temp-trigger");
+    this._humidityTriggerEl = this.querySelector("#humidity-trigger");
+    this._chartDrawerEl = this.querySelector("#chart-drawer");
+    this._chartDrawerOverlayEl = this.querySelector("#chart-drawer-overlay");
+    this._chartTitleEl = this.querySelector("#chart-title");
+    this._chartSubtitleEl = this.querySelector("#chart-subtitle");
+    this._chartCanvasEl = this.querySelector("#chart-canvas");
+    this._chartCloseEl = this.querySelector("#chart-close");
+    this._tempHistory = [];
+    this._humidityHistory = [];
+    this._activeChart = "temperature";
 
     this._setupViewportListener();
     this._applyAppearance();
@@ -399,6 +521,13 @@ class HeatingControlCard extends HTMLElement {
     this._heatingToggleEl.addEventListener("click", async () => {
       await this._toggleHeating();
     });
+
+    this._tempTriggerEl.addEventListener("click", () => this._openChartDrawer("temperature"));
+    this._humidityTriggerEl.addEventListener("click", () => this._openChartDrawer("humidity"));
+    this._tempTriggerEl.addEventListener("keydown", (event) => this._onMetricTriggerKeydown(event, "temperature"));
+    this._humidityTriggerEl.addEventListener("keydown", (event) => this._onMetricTriggerKeydown(event, "humidity"));
+    this._chartCloseEl.addEventListener("click", () => this._closeChartDrawer());
+    this._chartDrawerOverlayEl.addEventListener("click", () => this._closeChartDrawer());
   }
 
   _formatTemperature(value) {
@@ -536,6 +665,114 @@ class HeatingControlCard extends HTMLElement {
     this._heatingToggleEl.textContent = "HEATING ON";
     this._heatingToggleEl.disabled = true;
     this._heatingToggleEl.classList.remove("off");
+    this._recordMetricValue(this._tempHistory, previewCurrent);
+    this._recordMetricValue(this._humidityHistory, previewHumidity);
+  }
+
+  _onMetricTriggerKeydown(event, chartType) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      this._openChartDrawer(chartType);
+    }
+  }
+
+  _openChartDrawer(chartType) {
+    this._activeChart = chartType;
+    this._chartDrawerEl.classList.remove("hidden");
+    this._chartDrawerOverlayEl.classList.remove("hidden");
+    this._chartDrawerEl.classList.add("visible");
+    this._chartDrawerOverlayEl.classList.add("visible");
+    this._chartDrawerEl.setAttribute("aria-hidden", "false");
+    this._drawActiveChart();
+  }
+
+  _closeChartDrawer() {
+    this._chartDrawerEl.classList.remove("visible");
+    this._chartDrawerOverlayEl.classList.remove("visible");
+    this._chartDrawerEl.classList.add("hidden");
+    this._chartDrawerOverlayEl.classList.add("hidden");
+    this._chartDrawerEl.setAttribute("aria-hidden", "true");
+  }
+
+  _recordMetricValue(history, value) {
+    if (value === undefined || value === null || Number.isNaN(Number(value))) {
+      return;
+    }
+
+    history.push(Number(value));
+    if (history.length > 30) {
+      history.shift();
+    }
+  }
+
+  _drawActiveChart() {
+    const showTemperature = this._activeChart === "temperature";
+    const history = showTemperature ? this._tempHistory : this._humidityHistory;
+    const chartColor = showTemperature ? "#f97921" : "#2f8df5";
+    const unit = showTemperature ? "°C" : "%";
+
+    this._chartTitleEl.textContent = showTemperature ? "Temperature trend" : "Humidity trend";
+    this._chartSubtitleEl.textContent = `Last ${Math.max(history.length, 1)} values from this session`;
+
+    const canvas = this._chartCanvasEl;
+    const ctx = canvas?.getContext("2d");
+    if (!ctx || !canvas) {
+      return;
+    }
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const padding = { top: 24, right: 16, bottom: 32, left: 28 };
+    const plotWidth = width - padding.left - padding.right;
+    const plotHeight = height - padding.top - padding.bottom;
+    const values = history.length ? history : [0];
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+    const range = Math.max(maxValue - minValue, 1);
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.strokeStyle = "rgba(23, 33, 47, 0.12)";
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 4; i += 1) {
+      const y = padding.top + (plotHeight * i) / 3;
+      ctx.beginPath();
+      ctx.moveTo(padding.left, y);
+      ctx.lineTo(width - padding.right, y);
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle = chartColor;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    values.forEach((value, index) => {
+      const x =
+        values.length === 1
+          ? padding.left + plotWidth / 2
+          : padding.left + (plotWidth * index) / (values.length - 1);
+      const y = padding.top + ((maxValue - value) * plotHeight) / range;
+
+      if (index === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.stroke();
+
+    const lastValue = values[values.length - 1];
+    const lastX = values.length === 1 ? padding.left + plotWidth / 2 : width - padding.right;
+    const lastY = padding.top + ((maxValue - lastValue) * plotHeight) / range;
+    ctx.fillStyle = chartColor;
+    ctx.beginPath();
+    ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "rgba(23, 33, 47, 0.8)";
+    ctx.font = "600 13px sans-serif";
+    ctx.fillText(`Now: ${Number(lastValue).toFixed(1)}${unit}`, padding.left, height - 10);
   }
 
   _isInPreviewMode() {
