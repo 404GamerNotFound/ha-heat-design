@@ -4,7 +4,18 @@ class HeatingControlCard extends HTMLElement {
       type: "custom:heating-control-card",
       entity: "climate.living_room",
       humidity_entity: "sensor.living_room_humidity",
-      name: "Heating"
+      name: "Heating",
+      min_temp: 16,
+      max_temp: 28,
+      step: 0.5,
+      background_start: "#ffa20f",
+      background_end: "#ff9800",
+      slider_orientation: "vertical",
+      slider_orientation_mobile: "vertical",
+      slider_orientation_desktop: "vertical",
+      desktop_layout: "standard",
+      heating_on_mode: "heat",
+      preview: false
     };
   }
 
