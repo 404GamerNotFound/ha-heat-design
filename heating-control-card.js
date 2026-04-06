@@ -77,13 +77,12 @@ class HeatingControlCard extends HTMLElement {
             </div>
           </div>
 
-          <div class="main-temperature">
-            <span id="target-temperature">--</span>
-            <span class="unit">°C</span>
-          </div>
-
-          <div class="middle-slider-wrap">
-            <input id="temp-slider" class="temp-slider-vertical" type="range" />
+          <div class="hud-slider-wrap">
+            <input id="temp-slider" class="temp-slider-hud" type="range" />
+            <div class="main-temperature">
+              <span id="target-temperature">--</span>
+              <span class="unit">°C</span>
+            </div>
           </div>
 
           <div class="bottom-row">
@@ -133,58 +132,62 @@ class HeatingControlCard extends HTMLElement {
         font-weight: 500;
       }
 
-      .main-temperature {
-        text-align: center;
-        font-size: 56px;
-        font-weight: 500;
-        line-height: 1;
-        margin-bottom: 14px;
-      }
-
-      .main-temperature .unit {
-        font-size: 24px;
-        margin-left: 4px;
-      }
-
-      .middle-slider-wrap {
-        width: 150px;
+      .hud-slider-wrap {
+        width: 180px;
         height: 300px;
-        margin: 12px auto 16px;
+        margin: 14px auto 20px;
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 36px;
-        background: rgba(255, 255, 255, 0.18);
+        border-radius: 48px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0.16) 100%);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
       }
 
-      #temp-slider.temp-slider-vertical {
+      .main-temperature {
+        position: absolute;
+        text-align: center;
+        font-size: 52px;
+        font-weight: 500;
+        line-height: 1;
+        pointer-events: none;
+      }
+
+      .main-temperature .unit {
+        font-size: 23px;
+        margin-left: 4px;
+      }
+
+      #temp-slider.temp-slider-hud {
         appearance: none;
-        -webkit-appearance: slider-vertical;
-        width: 120px;
-        height: 18px;
+        width: 230px;
+        height: 22px;
         transform: rotate(-90deg);
         border-radius: 999px;
-        background: linear-gradient(90deg, #f4f4f4 var(--fill, 50%), rgba(255, 255, 255, 0.45) var(--fill, 50%));
+        background: linear-gradient(90deg, #f4f4f4 var(--fill, 50%), rgba(255, 255, 255, 0.38) var(--fill, 50%));
         outline: none;
       }
 
-      #temp-slider.temp-slider-vertical::-webkit-slider-thumb {
+      #temp-slider.temp-slider-hud::-webkit-slider-thumb {
         -webkit-appearance: none;
-        width: 30px;
-        height: 30px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         border: 2px solid #ffa20f;
         background: #fff;
         cursor: pointer;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
       }
 
-      #temp-slider.temp-slider-vertical::-moz-range-thumb {
-        width: 30px;
-        height: 30px;
+      #temp-slider.temp-slider-hud::-moz-range-thumb {
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         border: 2px solid #ffa20f;
         background: #fff;
         cursor: pointer;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
       }
 
       .bottom-row {
