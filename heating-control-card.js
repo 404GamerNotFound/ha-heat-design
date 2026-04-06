@@ -17,6 +17,10 @@ class HeatingControlCard extends HTMLElement {
       min_temp: 16,
       max_temp: 28,
       step: 0.5,
+      background_start: "#ffa20f",
+      background_end: "#ff9800",
+      slider_orientation: "vertical",
+      heating_on_mode: "heat",
       ...config
     };
 
@@ -40,6 +44,7 @@ class HeatingControlCard extends HTMLElement {
       this._humidityEl.textContent = "--";
       this._targetTemperatureEl.textContent = "--";
       this._statusEl.textContent = "Entity not found";
+      this._updateHeatingToggle(null);
       return;
     }
 
@@ -51,6 +56,7 @@ class HeatingControlCard extends HTMLElement {
     this._targetTemperatureEl.textContent = this._formatTemperature(targetTemp);
     this._humidityEl.textContent = humidity ? `${humidity}%` : "--";
     this._statusEl.textContent = climateState.state.toUpperCase();
+    this._updateHeatingToggle(climateState);
 
     if (!this._isSliding) {
       this._slider.value = targetTemp ?? this._config.min_temp;
@@ -89,6 +95,7 @@ class HeatingControlCard extends HTMLElement {
 
           <div class="bottom-row">
             <div id="status" class="status">--</div>
+            <button id="heating-toggle" class="heating-toggle" type="button">--</button>
             <div class="name">${this._config.name || "Heater"}</div>
           </div>
         </div>
@@ -98,10 +105,10 @@ class HeatingControlCard extends HTMLElement {
     const style = document.createElement("style");
     style.textContent = `
       ha-card {
-        --ha-card-background: #ffa20f;
+        --ha-card-background: var(--card-bg-start, #ffa20f);
         border-radius: 30px;
         overflow: hidden;
-        background: #ffa20f;
+        background: var(--card-bg-start, #ffa20f);
         color: #fff;
         font-family: var(--primary-font-family, "Roboto", sans-serif);
       }
@@ -111,7 +118,7 @@ class HeatingControlCard extends HTMLElement {
         padding: 20px;
         min-height: 420px;
         box-sizing: border-box;
-        background: linear-gradient(180deg, #ffa20f 0%, #ff9800 100%);
+        background: linear-gradient(180deg, var(--card-bg-start, #ffa20f) 0%, var(--card-bg-end, #ff9800) 100%);
       }
 
       .top-row {
@@ -178,6 +185,21 @@ class HeatingControlCard extends HTMLElement {
         outline: none;
       }
 
+      .hud-slider-wrap.horizontal {
+        width: 320px;
+        height: 150px;
+      }
+
+      .hud-slider-wrap.horizontal .slider-shell {
+        width: 290px;
+        height: 90px;
+      }
+
+      .hud-slider-wrap.horizontal #temp-slider.temp-slider-hud {
+        width: 270px;
+        transform: none;
+      }
+
       #temp-slider.temp-slider-hud::-webkit-slider-runnable-track {
         height: 16px;
         border-radius: 999px;
@@ -217,6 +239,7 @@ class HeatingControlCard extends HTMLElement {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 10px;
       }
 
       .status {
@@ -227,10 +250,32 @@ class HeatingControlCard extends HTMLElement {
         background: rgba(0, 0, 0, 0.12);
       }
 
+      .heating-toggle {
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+
+      .heating-toggle.off {
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .heating-toggle:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
       .name {
         font-size: 14px;
         font-weight: 500;
         opacity: 0.95;
+        margin-left: auto;
       }
     `;
 
@@ -242,6 +287,10 @@ class HeatingControlCard extends HTMLElement {
     this._currentTemperatureEl = this.querySelector("#current-temperature");
     this._humidityEl = this.querySelector("#humidity");
     this._statusEl = this.querySelector("#status");
+    this._sliderWrapEl = this.querySelector(".hud-slider-wrap");
+    this._heatingToggleEl = this.querySelector("#heating-toggle");
+
+    this._applyAppearance();
 
     this._slider.min = this._config.min_temp;
     this._slider.max = this._config.max_temp;
@@ -266,6 +315,10 @@ class HeatingControlCard extends HTMLElement {
       });
       this._isSliding = false;
     });
+
+    this._heatingToggleEl.addEventListener("click", async () => {
+      await this._toggleHeating();
+    });
   }
 
   _formatTemperature(value) {
@@ -282,6 +335,79 @@ class HeatingControlCard extends HTMLElement {
     const current = Number(this._slider.value);
     const percentage = ((current - min) * 100) / (max - min);
     this._slider.style.setProperty("--fill", `${percentage}%`);
+  }
+
+  _updateHeatingToggle(climateState) {
+    if (!this._heatingToggleEl) {
+      return;
+    }
+
+    if (!climateState) {
+      this._heatingToggleEl.textContent = "--";
+      this._heatingToggleEl.disabled = true;
+      this._heatingToggleEl.classList.remove("off");
+      return;
+    }
+
+    const isHeatingEnabled = climateState.state !== "off";
+    this._heatingToggleEl.textContent = isHeatingEnabled ? "HEATING ON" : "HEATING OFF";
+    this._heatingToggleEl.disabled = false;
+    this._heatingToggleEl.classList.toggle("off", !isHeatingEnabled);
+  }
+
+  async _toggleHeating() {
+    const climateState = this._hass?.states?.[this._config.entity];
+
+    if (!this._hass || !climateState) {
+      return;
+    }
+
+    const isHeatingEnabled = climateState.state !== "off";
+
+    if (isHeatingEnabled) {
+      await this._hass.callService("climate", "set_hvac_mode", {
+        entity_id: this._config.entity,
+        hvac_mode: "off"
+      });
+      return;
+    }
+
+    const onMode = this._resolveHeatingOnMode(climateState);
+    await this._hass.callService("climate", "set_hvac_mode", {
+      entity_id: this._config.entity,
+      hvac_mode: onMode
+    });
+  }
+
+  _resolveHeatingOnMode(climateState) {
+    const configuredMode = String(this._config.heating_on_mode || "heat").toLowerCase();
+    const hvacModes = climateState.attributes?.hvac_modes || [];
+
+    if (hvacModes.includes(configuredMode)) {
+      return configuredMode;
+    }
+
+    if (hvacModes.includes("heat")) {
+      return "heat";
+    }
+
+    return hvacModes.find((mode) => mode !== "off") || "heat";
+  }
+
+  _applyAppearance() {
+    const orientation = this._resolveSliderOrientation(this._config.slider_orientation);
+    this._sliderWrapEl.classList.toggle("horizontal", orientation === "horizontal");
+    this._sliderWrapEl.classList.toggle("vertical", orientation === "vertical");
+
+    const backgroundStart = this._config.background_start || this._config.background_color || "#ffa20f";
+    const backgroundEnd = this._config.background_end || backgroundStart;
+
+    this.style.setProperty("--card-bg-start", backgroundStart);
+    this.style.setProperty("--card-bg-end", backgroundEnd);
+  }
+
+  _resolveSliderOrientation(value) {
+    return String(value).toLowerCase() === "horizontal" ? "horizontal" : "vertical";
   }
 }
 
