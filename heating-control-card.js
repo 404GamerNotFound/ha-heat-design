@@ -77,12 +77,14 @@ class HeatingControlCard extends HTMLElement {
             </div>
           </div>
 
+          <div class="main-temperature">
+            <span id="target-temperature">--</span>
+            <span class="unit">°C</span>
+          </div>
+
           <div class="hud-slider-wrap">
+            <div class="slider-shell"></div>
             <input id="temp-slider" class="temp-slider-hud" type="range" />
-            <div class="main-temperature">
-              <span id="target-temperature">--</span>
-              <span class="unit">°C</span>
-            </div>
           </div>
 
           <div class="bottom-row">
@@ -132,26 +134,12 @@ class HeatingControlCard extends HTMLElement {
         font-weight: 500;
       }
 
-      .hud-slider-wrap {
-        width: 180px;
-        height: 300px;
-        margin: 14px auto 20px;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 48px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0.16) 100%);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
-      }
-
       .main-temperature {
-        position: absolute;
         text-align: center;
         font-size: 52px;
         font-weight: 500;
         line-height: 1;
-        pointer-events: none;
+        margin: 8px 0 12px;
       }
 
       .main-temperature .unit {
@@ -159,35 +147,69 @@ class HeatingControlCard extends HTMLElement {
         margin-left: 4px;
       }
 
+      .hud-slider-wrap {
+        width: 220px;
+        height: 310px;
+        margin: 0 auto 20px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .slider-shell {
+        position: absolute;
+        width: 140px;
+        height: 280px;
+        border-radius: 42px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.18) 100%);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+      }
+
       #temp-slider.temp-slider-hud {
+        position: relative;
         appearance: none;
-        width: 230px;
-        height: 22px;
+        -webkit-appearance: none;
+        width: 260px;
+        height: 26px;
         transform: rotate(-90deg);
         border-radius: 999px;
-        background: linear-gradient(90deg, #f4f4f4 var(--fill, 50%), rgba(255, 255, 255, 0.38) var(--fill, 50%));
+        background: transparent;
         outline: none;
+      }
+
+      #temp-slider.temp-slider-hud::-webkit-slider-runnable-track {
+        height: 16px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #f4f4f4 var(--fill, 50%), rgba(255, 255, 255, 0.4) var(--fill, 50%));
+      }
+
+      #temp-slider.temp-slider-hud::-moz-range-track {
+        height: 16px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #f4f4f4 var(--fill, 50%), rgba(255, 255, 255, 0.4) var(--fill, 50%));
       }
 
       #temp-slider.temp-slider-hud::-webkit-slider-thumb {
         -webkit-appearance: none;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        border: 2px solid #ffa20f;
-        background: #fff;
+        width: 112px;
+        height: 108px;
+        margin-top: -46px;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        background: #f2f2f2;
         cursor: pointer;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
       }
 
       #temp-slider.temp-slider-hud::-moz-range-thumb {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        border: 2px solid #ffa20f;
-        background: #fff;
+        width: 112px;
+        height: 108px;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        background: #f2f2f2;
         cursor: pointer;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
       }
 
       .bottom-row {
