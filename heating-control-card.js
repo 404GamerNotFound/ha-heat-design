@@ -20,6 +20,9 @@ class HeatingControlCard extends HTMLElement {
       background_start: "#ffa20f",
       background_end: "#ff9800",
       slider_orientation: "vertical",
+      slider_orientation_mobile: null,
+      slider_orientation_desktop: null,
+      desktop_layout: "standard",
       heating_on_mode: "heat",
       ...config
     };
@@ -40,6 +43,11 @@ class HeatingControlCard extends HTMLElement {
     const humidityState = this._config.humidity_entity ? hass.states[this._config.humidity_entity] : null;
 
     if (!climateState) {
+      if (this._isInPreviewMode()) {
+        this._setPreviewState();
+        return;
+      }
+
       this._currentTemperatureEl.textContent = "--";
       this._humidityEl.textContent = "--";
       this._targetTemperatureEl.textContent = "--";
@@ -121,6 +129,11 @@ class HeatingControlCard extends HTMLElement {
         background: linear-gradient(180deg, var(--card-bg-start, #ffa20f) 0%, var(--card-bg-end, #ff9800) 100%);
       }
 
+      .wrapper.desktop-compact {
+        padding: 14px;
+        min-height: 320px;
+      }
+
       .top-row {
         display: flex;
         justify-content: space-between;
@@ -149,9 +162,18 @@ class HeatingControlCard extends HTMLElement {
         margin: 8px 0 12px;
       }
 
+      .wrapper.desktop-compact .main-temperature {
+        font-size: 42px;
+        margin: 4px 0 8px;
+      }
+
       .main-temperature .unit {
         font-size: 23px;
         margin-left: 4px;
+      }
+
+      .wrapper.desktop-compact .main-temperature .unit {
+        font-size: 20px;
       }
 
       .hud-slider-wrap {
@@ -164,6 +186,12 @@ class HeatingControlCard extends HTMLElement {
         align-items: center;
       }
 
+      .wrapper.desktop-compact .hud-slider-wrap {
+        width: 180px;
+        height: 230px;
+        margin: 0 auto 12px;
+      }
+
       .slider-shell {
         position: absolute;
         width: 140px;
@@ -171,6 +199,11 @@ class HeatingControlCard extends HTMLElement {
         border-radius: 42px;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.18) 100%);
         box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+      }
+
+      .wrapper.desktop-compact .slider-shell {
+        width: 106px;
+        height: 210px;
       }
 
       #temp-slider.temp-slider-hud {
@@ -185,9 +218,18 @@ class HeatingControlCard extends HTMLElement {
         outline: none;
       }
 
+      .wrapper.desktop-compact #temp-slider.temp-slider-hud {
+        width: 200px;
+      }
+
       .hud-slider-wrap.horizontal {
         width: 320px;
         height: 150px;
+      }
+
+      .wrapper.desktop-compact .hud-slider-wrap.horizontal {
+        width: 250px;
+        height: 120px;
       }
 
       .hud-slider-wrap.horizontal .slider-shell {
@@ -195,9 +237,18 @@ class HeatingControlCard extends HTMLElement {
         height: 90px;
       }
 
+      .wrapper.desktop-compact .hud-slider-wrap.horizontal .slider-shell {
+        width: 220px;
+        height: 70px;
+      }
+
       .hud-slider-wrap.horizontal #temp-slider.temp-slider-hud {
         width: 270px;
         transform: none;
+      }
+
+      .wrapper.desktop-compact .hud-slider-wrap.horizontal #temp-slider.temp-slider-hud {
+        width: 210px;
       }
 
       #temp-slider.temp-slider-hud::-webkit-slider-runnable-track {
@@ -224,6 +275,13 @@ class HeatingControlCard extends HTMLElement {
         box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
       }
 
+      .wrapper.desktop-compact #temp-slider.temp-slider-hud::-webkit-slider-thumb {
+        width: 80px;
+        height: 78px;
+        margin-top: -30px;
+        border-radius: 20px;
+      }
+
       #temp-slider.temp-slider-hud::-moz-range-thumb {
         width: 112px;
         height: 108px;
@@ -234,12 +292,22 @@ class HeatingControlCard extends HTMLElement {
         box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
       }
 
+      .wrapper.desktop-compact #temp-slider.temp-slider-hud::-moz-range-thumb {
+        width: 80px;
+        height: 78px;
+        border-radius: 20px;
+      }
+
       .bottom-row {
         margin-top: 14px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 10px;
+      }
+
+      .wrapper.desktop-compact .bottom-row {
+        margin-top: 8px;
       }
 
       .status {
@@ -290,6 +358,7 @@ class HeatingControlCard extends HTMLElement {
     this._sliderWrapEl = this.querySelector(".hud-slider-wrap");
     this._heatingToggleEl = this.querySelector("#heating-toggle");
 
+    this._setupViewportListener();
     this._applyAppearance();
 
     this._slider.min = this._config.min_temp;
@@ -358,7 +427,7 @@ class HeatingControlCard extends HTMLElement {
   async _toggleHeating() {
     const climateState = this._hass?.states?.[this._config.entity];
 
-    if (!this._hass || !climateState) {
+    if (!this._hass || !climateState || this._isInPreviewMode()) {
       return;
     }
 
@@ -395,9 +464,11 @@ class HeatingControlCard extends HTMLElement {
   }
 
   _applyAppearance() {
-    const orientation = this._resolveSliderOrientation(this._config.slider_orientation);
+    const orientation = this._resolveSliderOrientation();
+    const isDesktopCompact = this._isDesktopLayoutCompact();
     this._sliderWrapEl.classList.toggle("horizontal", orientation === "horizontal");
     this._sliderWrapEl.classList.toggle("vertical", orientation === "vertical");
+    this.content.classList.toggle("desktop-compact", isDesktopCompact);
 
     const backgroundStart = this._config.background_start || this._config.background_color || "#ffa20f";
     const backgroundEnd = this._config.background_end || backgroundStart;
@@ -406,8 +477,77 @@ class HeatingControlCard extends HTMLElement {
     this.style.setProperty("--card-bg-end", backgroundEnd);
   }
 
-  _resolveSliderOrientation(value) {
-    return String(value).toLowerCase() === "horizontal" ? "horizontal" : "vertical";
+  _resolveSliderOrientation() {
+    const isMobile = this._isMobileViewport();
+    const orientation = isMobile ? this._config.slider_orientation_mobile : this._config.slider_orientation_desktop;
+    const fallbackOrientation = this._config.slider_orientation;
+    const effectiveOrientation = orientation ?? fallbackOrientation;
+    return String(effectiveOrientation).toLowerCase() === "horizontal" ? "horizontal" : "vertical";
+  }
+
+  _isDesktopLayoutCompact() {
+    if (this._isMobileViewport()) {
+      return false;
+    }
+
+    return String(this._config.desktop_layout || "standard").toLowerCase() === "compact";
+  }
+
+  _isMobileViewport() {
+    return window.matchMedia("(max-width: 767px)").matches;
+  }
+
+  _setupViewportListener() {
+    if (this._mediaQuery) {
+      return;
+    }
+
+    this._mediaQuery = window.matchMedia("(max-width: 767px)");
+    this._onViewportChange = () => {
+      if (this._sliderWrapEl && this.content) {
+        this._applyAppearance();
+      }
+    };
+    this._mediaQuery.addEventListener("change", this._onViewportChange);
+  }
+
+  _setPreviewState() {
+    const previewCurrent = 21.3;
+    const previewTarget = 22.0;
+    const previewHumidity = 46;
+
+    this._currentTemperatureEl.textContent = this._formatTemperature(previewCurrent);
+    this._targetTemperatureEl.textContent = this._formatTemperature(previewTarget);
+    this._humidityEl.textContent = `${previewHumidity}%`;
+    this._statusEl.textContent = "PREVIEW";
+    this._slider.value = previewTarget;
+    this._updateSliderFill();
+    this._heatingToggleEl.textContent = "HEATING ON";
+    this._heatingToggleEl.disabled = true;
+    this._heatingToggleEl.classList.remove("off");
+  }
+
+  _isInPreviewMode() {
+    if (this._config?.preview === true) {
+      return true;
+    }
+
+    let node = this;
+    while (node) {
+      if (node.localName === "hui-card-preview") {
+        return true;
+      }
+
+      node = node.parentNode || node.host;
+    }
+
+    return false;
+  }
+
+  disconnectedCallback() {
+    if (this._mediaQuery && this._onViewportChange) {
+      this._mediaQuery.removeEventListener("change", this._onViewportChange);
+    }
   }
 }
 
@@ -417,5 +557,6 @@ window.customCards = window.customCards || [];
 window.customCards.push({
   type: "heating-control-card",
   name: "Heating Control Card",
-  description: "A custom orange heating dashboard card with a thermostat slider."
+  description: "A custom orange heating dashboard card with a thermostat slider.",
+  preview: true
 });
