@@ -11,6 +11,7 @@ A custom **Lovelace dashboard card** for Home Assistant inspired by the orange t
 - Lets you toggle heating **on/off** directly from the card.
 - Shows optional **humidity** from a separate sensor.
 - Shows current HVAC state (`heat`, `idle`, etc.).
+- Shows a preview state in the dashboard card picker.
 - Calls Home Assistant service `climate.set_temperature`.
 - Calls Home Assistant service `climate.set_hvac_mode` when heating is toggled.
 

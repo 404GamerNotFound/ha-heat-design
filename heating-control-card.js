@@ -43,6 +43,11 @@ class HeatingControlCard extends HTMLElement {
     const humidityState = this._config.humidity_entity ? hass.states[this._config.humidity_entity] : null;
 
     if (!climateState) {
+      if (this._isInPreviewMode()) {
+        this._setPreviewState();
+        return;
+      }
+
       this._currentTemperatureEl.textContent = "--";
       this._humidityEl.textContent = "--";
       this._targetTemperatureEl.textContent = "--";
@@ -422,7 +427,7 @@ class HeatingControlCard extends HTMLElement {
   async _toggleHeating() {
     const climateState = this._hass?.states?.[this._config.entity];
 
-    if (!this._hass || !climateState) {
+    if (!this._hass || !climateState || this._isInPreviewMode()) {
       return;
     }
 
@@ -506,6 +511,39 @@ class HeatingControlCard extends HTMLElement {
     this._mediaQuery.addEventListener("change", this._onViewportChange);
   }
 
+  _setPreviewState() {
+    const previewCurrent = 21.3;
+    const previewTarget = 22.0;
+    const previewHumidity = 46;
+
+    this._currentTemperatureEl.textContent = this._formatTemperature(previewCurrent);
+    this._targetTemperatureEl.textContent = this._formatTemperature(previewTarget);
+    this._humidityEl.textContent = `${previewHumidity}%`;
+    this._statusEl.textContent = "PREVIEW";
+    this._slider.value = previewTarget;
+    this._updateSliderFill();
+    this._heatingToggleEl.textContent = "HEATING ON";
+    this._heatingToggleEl.disabled = true;
+    this._heatingToggleEl.classList.remove("off");
+  }
+
+  _isInPreviewMode() {
+    if (this._config?.preview === true) {
+      return true;
+    }
+
+    let node = this;
+    while (node) {
+      if (node.localName === "hui-card-preview") {
+        return true;
+      }
+
+      node = node.parentNode || node.host;
+    }
+
+    return false;
+  }
+
   disconnectedCallback() {
     if (this._mediaQuery && this._onViewportChange) {
       this._mediaQuery.removeEventListener("change", this._onViewportChange);
@@ -519,5 +557,6 @@ window.customCards = window.customCards || [];
 window.customCards.push({
   type: "heating-control-card",
   name: "Heating Control Card",
-  description: "A custom orange heating dashboard card with a thermostat slider."
+  description: "A custom orange heating dashboard card with a thermostat slider.",
+  preview: true
 });
