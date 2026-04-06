@@ -39,12 +39,10 @@ A custom **Lovelace dashboard card** for Home Assistant inspired by the orange t
 
 Go to **Settings → Dashboards → Resources** and add:
 
-- **URL**: `/hacsfiles/ha-heat-design/heating-control-card.js`
+- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
 - **Type**: `JavaScript Module`
 
 > If your repository slug differs, adjust the path accordingly.
-
----
 
 ## Manual installation (alternative)
 
