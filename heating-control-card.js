@@ -82,13 +82,9 @@ class HeatingControlCard extends HTMLElement {
             <span class="unit">°C</span>
           </div>
 
-          <div class="pill-track" id="pill-track">
-            <div class="pill-cap"></div>
-            <div class="pill-body"></div>
-            <div class="indicator"></div>
+          <div class="middle-slider-wrap">
+            <input id="temp-slider" class="temp-slider-vertical" type="range" />
           </div>
-
-          <input id="temp-slider" type="range" />
 
           <div class="bottom-row">
             <div id="status" class="status">--</div>
@@ -150,69 +146,41 @@ class HeatingControlCard extends HTMLElement {
         margin-left: 4px;
       }
 
-      .pill-track {
-        position: relative;
+      .middle-slider-wrap {
         width: 150px;
-        height: 270px;
-        margin: 8px auto 16px;
+        height: 300px;
+        margin: 12px auto 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 36px;
+        background: rgba(255, 255, 255, 0.18);
       }
 
-      .pill-cap,
-      .pill-body {
-        position: absolute;
-        left: 0;
-        width: 100%;
-        border-radius: 28px;
-      }
-
-      .pill-cap {
-        height: 48%;
-        top: 0;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(2px);
-      }
-
-      .pill-body {
-        height: 58%;
-        bottom: 0;
-        background: #f4f4f4;
-      }
-
-      .indicator {
-        position: absolute;
-        left: 50%;
-        top: 46%;
-        transform: translate(-50%, -50%);
-        width: 30px;
-        height: 5px;
-        border-radius: 8px;
-        background: #ffb13b;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-      }
-
-      #temp-slider {
-        width: 100%;
-        margin-top: 4px;
+      #temp-slider.temp-slider-vertical {
         appearance: none;
-        height: 6px;
-        border-radius: 6px;
-        background: linear-gradient(90deg, #f4f4f4 var(--fill, 50%), rgba(255,255,255,0.4) var(--fill, 50%));
+        -webkit-appearance: slider-vertical;
+        width: 120px;
+        height: 18px;
+        transform: rotate(-90deg);
+        border-radius: 999px;
+        background: linear-gradient(90deg, #f4f4f4 var(--fill, 50%), rgba(255, 255, 255, 0.45) var(--fill, 50%));
         outline: none;
       }
 
-      #temp-slider::-webkit-slider-thumb {
+      #temp-slider.temp-slider-vertical::-webkit-slider-thumb {
         -webkit-appearance: none;
-        width: 20px;
-        height: 20px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
         border: 2px solid #ffa20f;
         background: #fff;
         cursor: pointer;
       }
 
-      #temp-slider::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
+      #temp-slider.temp-slider-vertical::-moz-range-thumb {
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
         border: 2px solid #ffa20f;
         background: #fff;
@@ -249,7 +217,6 @@ class HeatingControlCard extends HTMLElement {
     this._currentTemperatureEl = this.querySelector("#current-temperature");
     this._humidityEl = this.querySelector("#humidity");
     this._statusEl = this.querySelector("#status");
-    this._indicator = this.querySelector(".indicator");
 
     this._slider.min = this._config.min_temp;
     this._slider.max = this._config.max_temp;
@@ -260,7 +227,6 @@ class HeatingControlCard extends HTMLElement {
       const value = Number(this._slider.value);
       this._targetTemperatureEl.textContent = this._formatTemperature(value);
       this._updateSliderFill();
-      this._moveIndicator(value);
     });
 
     this._slider.addEventListener("change", async () => {
@@ -291,15 +257,6 @@ class HeatingControlCard extends HTMLElement {
     const current = Number(this._slider.value);
     const percentage = ((current - min) * 100) / (max - min);
     this._slider.style.setProperty("--fill", `${percentage}%`);
-    this._moveIndicator(current);
-  }
-
-  _moveIndicator(value) {
-    const min = Number(this._slider.min);
-    const max = Number(this._slider.max);
-    const percentage = ((value - min) * 100) / (max - min);
-    const top = 55 - percentage * 0.2;
-    this._indicator.style.top = `${top}%`;
   }
 }
 
