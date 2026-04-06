@@ -6,9 +6,11 @@ A custom **Lovelace dashboard card** for Home Assistant inspired by the orange t
 
 - Shows **current temperature** from your `climate` entity.
 - Shows **target temperature** and lets you change it using a slider.
+- Lets you toggle heating **on/off** directly from the card.
 - Shows optional **humidity** from a separate sensor.
 - Shows current HVAC state (`heat`, `idle`, etc.).
 - Calls Home Assistant service `climate.set_temperature`.
+- Calls Home Assistant service `climate.set_hvac_mode` when heating is toggled.
 
 ---
 
@@ -60,6 +62,10 @@ humidity_entity: sensor.living_room_humidity
 min_temp: 16
 max_temp: 28
 step: 0.5
+background_start: "#ffa20f"
+background_end: "#ff9800"
+slider_orientation: vertical
+heating_on_mode: heat
 ```
 
 ### Card options
@@ -73,6 +79,10 @@ step: 0.5
 | `min_temp` | no | `16` | Minimum slider value |
 | `max_temp` | no | `28` | Maximum slider value |
 | `step` | no | `0.5` | Slider increment |
+| `background_start` | no | `#ffa20f` | Top gradient color (also used as solid background color fallback) |
+| `background_end` | no | `#ff9800` | Bottom gradient color |
+| `slider_orientation` | no | `vertical` | Slider direction: `vertical` or `horizontal` |
+| `heating_on_mode` | no | `heat` | HVAC mode used when toggling from OFF to ON (must be supported by your climate entity) |
 
 ---
 
