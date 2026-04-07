@@ -1,19 +1,53 @@
 (() => {
-  // Load the card definition in a way that works for both module and non-module resource setups.
   if (customElements.get("heating-control-card")) {
     return;
   }
 
-  const currentScript = document.currentScript;
-  const matchingScript = Array.from(document.querySelectorAll("script[src]"))
-    .reverse()
-    .find((script) => script.src.includes("ha-heat-design.js"));
-  const scriptUrl = currentScript?.src || matchingScript?.src || window.location.href;
-  const cardModuleUrl = new URL("./heating-control-card.js", scriptUrl).toString();
+  const findScriptSource = () => {
+    const currentScriptSource = document.currentScript?.src;
+    if (currentScriptSource) {
+      return currentScriptSource;
+    }
 
-  import(cardModuleUrl).catch((error) => {
+    const matchingScript = Array.from(document.querySelectorAll("script[src]"))
+      .reverse()
+      .find((script) => script.src.includes("ha-heat-design.js") || script.src.includes("heating-control-card.js"));
+
+    return matchingScript?.src || null;
+  };
+
+  const scriptSource = findScriptSource();
+  const candidateUrls = [];
+
+  if (scriptSource) {
+    candidateUrls.push(new URL("./heating-control-card.js", scriptSource).toString());
+  }
+
+  // Backward-compatible fallbacks for common Home Assistant resource paths.
+  candidateUrls.push("/hacsfiles/ha-heat-design/heating-control-card.js");
+  candidateUrls.push("/local/community/ha-heat-design/heating-control-card.js");
+  candidateUrls.push("/local/heating-control-card.js");
+
+  const uniqueUrls = [...new Set(candidateUrls)];
+
+  const loadCardModule = async () => {
+    for (const moduleUrl of uniqueUrls) {
+      try {
+        await import(moduleUrl);
+        if (customElements.get("heating-control-card")) {
+          return;
+        }
+      } catch (error) {
+        // Keep trying fallbacks before reporting a final error.
+      }
+    }
+
     // Keep a clear error in the browser console when the card file cannot be loaded.
     // eslint-disable-next-line no-console
-    console.error("[ha-heat-design] Failed to load heating-control-card.js", error);
-  });
+    console.error("[ha-heat-design] Failed to load heating-control-card.js from known paths", {
+      attemptedUrls: uniqueUrls
+    });
+  };
+
+  loadCardModule();
 })();
