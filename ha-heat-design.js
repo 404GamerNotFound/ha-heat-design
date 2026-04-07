@@ -5,8 +5,11 @@
   }
 
   const currentScript = document.currentScript;
-  const baseUrl = currentScript?.src ? new URL(".", currentScript.src).href : window.location.href;
-  const cardModuleUrl = new URL("heating-control-card.js", baseUrl).toString();
+  const matchingScript = Array.from(document.querySelectorAll("script[src]"))
+    .reverse()
+    .find((script) => script.src.includes("ha-heat-design.js"));
+  const scriptUrl = currentScript?.src || matchingScript?.src || window.location.href;
+  const cardModuleUrl = new URL("./heating-control-card.js", scriptUrl).toString();
 
   import(cardModuleUrl).catch((error) => {
     // Keep a clear error in the browser console when the card file cannot be loaded.
