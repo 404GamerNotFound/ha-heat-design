@@ -1,3 +1,5 @@
+import "./heating-control-card.js";
+
 (() => {
   if (customElements.get("heating-control-card")) {
     return;
@@ -23,7 +25,7 @@
     candidateUrls.push(new URL("./heating-control-card.js", scriptSource).toString());
   }
 
-  // Backward-compatible fallbacks for common Home Assistant resource paths.
+  // Backward-compatible fallbacks for uncommon Home Assistant resource setups.
   candidateUrls.push("/hacsfiles/ha-heat-design/heating-control-card.js");
   candidateUrls.push("/local/community/ha-heat-design/heating-control-card.js");
   candidateUrls.push("/local/heating-control-card.js");
@@ -38,7 +40,7 @@
           return;
         }
       } catch (error) {
-        // Keep trying fallbacks before reporting a final error.
+        // Keep trying fallback paths before reporting a final error.
       }
     }
 
