@@ -102,3 +102,15 @@ heating_on_mode: heat
 - If `humidity_entity` is missing or unavailable, humidity is shown as `--`.
 - `slider_orientation_mobile` and `slider_orientation_desktop` override `slider_orientation` depending on the current viewport width.
 - `desktop_layout: compact` only affects desktop view and keeps the mobile layout unchanged.
+
+---
+
+## More projects
+
+- Looking for the matching dashboard design for climate/heating controls? Check out my other project:  
+  **ha-button-design** → https://github.com/404GamerNotFound/ha-button-design
+
+## Support me
+
+- If you like this project and want to support my work, you can donate here:  
+  **PayPal** → https://www.paypal.com/paypalme/TonyBrueser
