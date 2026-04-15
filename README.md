@@ -4,6 +4,19 @@ A custom **Lovelace dashboard card** for Home Assistant inspired by the orange t
 
 ![Heating control card design](images/design.png)
 
+## Languages / Sprachen
+
+This README now includes quick instructions in:
+
+- English
+- Deutsch
+- Français
+- Español
+- Italiano
+- Polski
+- Nederlands
+- Čeština
+
 ## What this card does
 
 - Shows **current temperature** from your `climate` entity.
@@ -120,3 +133,171 @@ You can now configure the card directly in the Home Assistant **UI editor** (no 
 
 - If you like this project and want to support my work, you can donate here:  
   **PayPal** → https://www.paypal.com/paypalme/TonyBrueser
+
+---
+
+## English
+
+### Quick start
+
+1. Install with HACS (Dashboard category).
+2. Add resource (if needed): `/hacsfiles/ha-heat-design/heating-control-card.js`
+3. Add card:
+
+```yaml
+type: custom:heating-control-card
+entity: climate.living_room
+name: Living Room
+```
+
+### Localization
+
+The card UI and the visual editor now automatically support:
+English, German, French, Spanish, Italian, Polish, Dutch, and Czech.
+
+---
+
+## Deutsch
+
+### Schnellstart
+
+1. Über HACS installieren (Kategorie Dashboard).
+2. Resource hinzufügen (falls nötig): `/hacsfiles/ha-heat-design/heating-control-card.js`
+3. Karte hinzufügen:
+
+```yaml
+type: custom:heating-control-card
+entity: climate.living_room
+name: Wohnzimmer
+```
+
+### Lokalisierung
+
+Die Kartenoberfläche und der visuelle Editor unterstützen jetzt automatisch:
+Englisch, Deutsch, Französisch, Spanisch, Italienisch, Polnisch, Niederländisch und Tschechisch.
+
+---
+
+## Français
+
+### Démarrage rapide
+
+1. Installer via HACS (catégorie Dashboard).
+2. Ajouter la ressource (si nécessaire) : `/hacsfiles/ha-heat-design/heating-control-card.js`
+3. Ajouter la carte :
+
+```yaml
+type: custom:heating-control-card
+entity: climate.living_room
+name: Salon
+```
+
+### Localisation
+
+L'interface de la carte et l'éditeur visuel prennent désormais en charge automatiquement :
+anglais, allemand, français, espagnol, italien, polonais, néerlandais et tchèque.
+
+---
+
+## Español
+
+### Inicio rápido
+
+1. Instala con HACS (categoría Dashboard).
+2. Añade el recurso (si hace falta): `/hacsfiles/ha-heat-design/heating-control-card.js`
+3. Añade la tarjeta:
+
+```yaml
+type: custom:heating-control-card
+entity: climate.living_room
+name: Sala
+```
+
+### Localización
+
+La interfaz de la tarjeta y el editor visual ahora admiten automáticamente:
+inglés, alemán, francés, español, italiano, polaco, neerlandés y checo.
+
+---
+
+## Italiano
+
+### Avvio rapido
+
+1. Installa con HACS (categoria Dashboard).
+2. Aggiungi la risorsa (se necessario): `/hacsfiles/ha-heat-design/heating-control-card.js`
+3. Aggiungi la card:
+
+```yaml
+type: custom:heating-control-card
+entity: climate.living_room
+name: Soggiorno
+```
+
+### Localizzazione
+
+L'interfaccia della card e l'editor visuale ora supportano automaticamente:
+inglese, tedesco, francese, spagnolo, italiano, polacco, olandese e ceco.
+
+---
+
+## Polski
+
+### Szybki start
+
+1. Zainstaluj przez HACS (kategoria Dashboard).
+2. Dodaj zasób (jeśli potrzeba): `/hacsfiles/ha-heat-design/heating-control-card.js`
+3. Dodaj kartę:
+
+```yaml
+type: custom:heating-control-card
+entity: climate.living_room
+name: Salon
+```
+
+### Lokalizacja
+
+Interfejs karty i edytor wizualny automatycznie obsługują teraz:
+angielski, niemiecki, francuski, hiszpański, włoski, polski, niderlandzki i czeski.
+
+---
+
+## Nederlands
+
+### Snelstart
+
+1. Installeer via HACS (Dashboard-categorie).
+2. Voeg de resource toe (indien nodig): `/hacsfiles/ha-heat-design/heating-control-card.js`
+3. Voeg de kaart toe:
+
+```yaml
+type: custom:heating-control-card
+entity: climate.living_room
+name: Woonkamer
+```
+
+### Lokalisatie
+
+De kaartinterface en de visuele editor ondersteunen nu automatisch:
+Engels, Duits, Frans, Spaans, Italiaans, Pools, Nederlands en Tsjechisch.
+
+---
+
+## Čeština
+
+### Rychlý start
+
+1. Nainstalujte přes HACS (kategorie Dashboard).
+2. Přidejte resource (pokud je potřeba): `/hacsfiles/ha-heat-design/heating-control-card.js`
+3. Přidejte kartu:
+
+```yaml
+type: custom:heating-control-card
+entity: climate.living_room
+name: Obývací pokoj
+```
+
+### Lokalizace
+
+Rozhraní karty a vizuální editor nyní automaticky podporují:
+angličtinu, němčinu, francouzštinu, španělštinu, italštinu, polštinu, nizozemštinu a češtinu.

@@ -1,4 +1,145 @@
 class HeatingControlCard extends HTMLElement {
+  static get TRANSLATIONS() {
+    return {
+      en: {
+        current: "CURRENT",
+        humidity: "HUMIDITY",
+        showTemperatureChart: "Show temperature chart",
+        showHumidityChart: "Show humidity chart",
+        temperature: "Temperature",
+        chartSessionSubtitle: "Last values from this session",
+        closeChart: "Close chart",
+        entityNotFound: "Entity not found",
+        heatingOn: "HEATING ON",
+        heatingOff: "HEATING OFF",
+        preview: "PREVIEW",
+        temperatureTrend: "Temperature trend",
+        humidityTrend: "Humidity trend",
+        chartSubtitleWithCount: (count) => `Last ${count} values from this session`,
+        nowValue: (value, unit) => `Now: ${value}${unit}`
+      },
+      de: {
+        current: "AKTUELL",
+        humidity: "LUFTFEUCHTIGKEIT",
+        showTemperatureChart: "Temperaturverlauf anzeigen",
+        showHumidityChart: "Luftfeuchtigkeitsverlauf anzeigen",
+        temperature: "Temperatur",
+        chartSessionSubtitle: "Letzte Werte aus dieser Sitzung",
+        closeChart: "Diagramm schließen",
+        entityNotFound: "Entität nicht gefunden",
+        heatingOn: "HEIZUNG AN",
+        heatingOff: "HEIZUNG AUS",
+        preview: "VORSCHAU",
+        temperatureTrend: "Temperaturverlauf",
+        humidityTrend: "Luftfeuchtigkeitsverlauf",
+        chartSubtitleWithCount: (count) => `Letzte ${count} Werte aus dieser Sitzung`,
+        nowValue: (value, unit) => `Jetzt: ${value}${unit}`
+      },
+      fr: {
+        current: "ACTUELLE",
+        humidity: "HUMIDITÉ",
+        showTemperatureChart: "Afficher le graphique de température",
+        showHumidityChart: "Afficher le graphique d'humidité",
+        temperature: "Température",
+        chartSessionSubtitle: "Dernières valeurs de cette session",
+        closeChart: "Fermer le graphique",
+        entityNotFound: "Entité introuvable",
+        heatingOn: "CHAUFFAGE ACTIVÉ",
+        heatingOff: "CHAUFFAGE DÉSACTIVÉ",
+        preview: "APERÇU",
+        temperatureTrend: "Tendance de température",
+        humidityTrend: "Tendance d'humidité",
+        chartSubtitleWithCount: (count) => `${count} dernières valeurs de cette session`,
+        nowValue: (value, unit) => `Maintenant : ${value}${unit}`
+      },
+      es: {
+        current: "ACTUAL",
+        humidity: "HUMEDAD",
+        showTemperatureChart: "Mostrar gráfico de temperatura",
+        showHumidityChart: "Mostrar gráfico de humedad",
+        temperature: "Temperatura",
+        chartSessionSubtitle: "Últimos valores de esta sesión",
+        closeChart: "Cerrar gráfico",
+        entityNotFound: "Entidad no encontrada",
+        heatingOn: "CALEFACCIÓN ENCENDIDA",
+        heatingOff: "CALEFACCIÓN APAGADA",
+        preview: "VISTA PREVIA",
+        temperatureTrend: "Tendencia de temperatura",
+        humidityTrend: "Tendencia de humedad",
+        chartSubtitleWithCount: (count) => `Últimos ${count} valores de esta sesión`,
+        nowValue: (value, unit) => `Ahora: ${value}${unit}`
+      },
+      it: {
+        current: "ATTUALE",
+        humidity: "UMIDITÀ",
+        showTemperatureChart: "Mostra grafico temperatura",
+        showHumidityChart: "Mostra grafico umidità",
+        temperature: "Temperatura",
+        chartSessionSubtitle: "Ultimi valori di questa sessione",
+        closeChart: "Chiudi grafico",
+        entityNotFound: "Entità non trovata",
+        heatingOn: "RISCALDAMENTO ATTIVO",
+        heatingOff: "RISCALDAMENTO DISATTIVO",
+        preview: "ANTEPRIMA",
+        temperatureTrend: "Andamento temperatura",
+        humidityTrend: "Andamento umidità",
+        chartSubtitleWithCount: (count) => `Ultimi ${count} valori di questa sessione`,
+        nowValue: (value, unit) => `Ora: ${value}${unit}`
+      },
+      pl: {
+        current: "AKTUALNA",
+        humidity: "WILGOTNOŚĆ",
+        showTemperatureChart: "Pokaż wykres temperatury",
+        showHumidityChart: "Pokaż wykres wilgotności",
+        temperature: "Temperatura",
+        chartSessionSubtitle: "Ostatnie wartości z tej sesji",
+        closeChart: "Zamknij wykres",
+        entityNotFound: "Nie znaleziono encji",
+        heatingOn: "OGRZEWANIE WŁĄCZONE",
+        heatingOff: "OGRZEWANIE WYŁĄCZONE",
+        preview: "PODGLĄD",
+        temperatureTrend: "Trend temperatury",
+        humidityTrend: "Trend wilgotności",
+        chartSubtitleWithCount: (count) => `Ostatnie ${count} wartości z tej sesji`,
+        nowValue: (value, unit) => `Teraz: ${value}${unit}`
+      },
+      nl: {
+        current: "HUIDIG",
+        humidity: "VOCHTIGHEID",
+        showTemperatureChart: "Temperatuurgrafiek tonen",
+        showHumidityChart: "Vochtigheidsgrafiek tonen",
+        temperature: "Temperatuur",
+        chartSessionSubtitle: "Laatste waarden uit deze sessie",
+        closeChart: "Grafiek sluiten",
+        entityNotFound: "Entiteit niet gevonden",
+        heatingOn: "VERWARMING AAN",
+        heatingOff: "VERWARMING UIT",
+        preview: "VOORBEELD",
+        temperatureTrend: "Temperatuurtrend",
+        humidityTrend: "Vochtigheidstrend",
+        chartSubtitleWithCount: (count) => `Laatste ${count} waarden uit deze sessie`,
+        nowValue: (value, unit) => `Nu: ${value}${unit}`
+      },
+      cs: {
+        current: "AKTUÁLNÍ",
+        humidity: "VLHKOST",
+        showTemperatureChart: "Zobrazit graf teploty",
+        showHumidityChart: "Zobrazit graf vlhkosti",
+        temperature: "Teplota",
+        chartSessionSubtitle: "Poslední hodnoty z této relace",
+        closeChart: "Zavřít graf",
+        entityNotFound: "Entita nebyla nalezena",
+        heatingOn: "TOPENÍ ZAPNUTO",
+        heatingOff: "TOPENÍ VYPNUTO",
+        preview: "NÁHLED",
+        temperatureTrend: "Trend teploty",
+        humidityTrend: "Trend vlhkosti",
+        chartSubtitleWithCount: (count) => `Posledních ${count} hodnot z této relace`,
+        nowValue: (value, unit) => `Nyní: ${value}${unit}`
+      }
+    };
+  }
+
   static async getConfigElement() {
     return document.createElement("heating-control-card-editor");
   }
@@ -49,10 +190,13 @@ class HeatingControlCard extends HTMLElement {
 
   set hass(hass) {
     this._hass = hass;
+    this._language = this._resolveLanguageCode(hass);
 
     if (!this.content || !this._config) {
       return;
     }
+
+    this._updateStaticTexts();
 
     const climateState = hass.states[this._config.entity];
     const humidityState = this._config.humidity_entity ? hass.states[this._config.humidity_entity] : null;
@@ -66,7 +210,7 @@ class HeatingControlCard extends HTMLElement {
       this._currentTemperatureEl.textContent = "--";
       this._humidityEl.textContent = "--";
       this._targetTemperatureEl.textContent = "--";
-      this._statusEl.textContent = "Entity not found";
+      this._statusEl.textContent = this._t("entityNotFound");
       this._updateHeatingToggle(null);
       return;
     }
@@ -102,12 +246,12 @@ class HeatingControlCard extends HTMLElement {
       <ha-card>
         <div class="wrapper">
           <div class="top-row">
-            <div id="current-temp-trigger" class="metric-trigger" role="button" tabindex="0" aria-label="Show temperature chart">
-              <div class="label">CURRENT</div>
+            <div id="current-temp-trigger" class="metric-trigger" role="button" tabindex="0">
+              <div id="current-label" class="label">CURRENT</div>
               <div id="current-temperature" class="small-value">--</div>
             </div>
-            <div id="humidity-trigger" class="right-block metric-trigger" role="button" tabindex="0" aria-label="Show humidity chart">
-              <div class="label">HUMIDITY</div>
+            <div id="humidity-trigger" class="right-block metric-trigger" role="button" tabindex="0">
+              <div id="humidity-label" class="label">HUMIDITY</div>
               <div id="humidity" class="small-value">--</div>
             </div>
           </div>
@@ -135,7 +279,7 @@ class HeatingControlCard extends HTMLElement {
               <div id="chart-title" class="chart-title">Temperature</div>
               <div id="chart-subtitle" class="chart-subtitle">Last values from this session</div>
             </div>
-            <button id="chart-close" class="chart-close" type="button" aria-label="Close chart">✕</button>
+            <button id="chart-close" class="chart-close" type="button">✕</button>
           </div>
           <canvas id="chart-canvas" class="chart-canvas" width="420" height="220"></canvas>
         </aside>
@@ -479,6 +623,8 @@ class HeatingControlCard extends HTMLElement {
     this._slider = this.querySelector("#temp-slider");
     this._targetTemperatureEl = this.querySelector("#target-temperature");
     this._currentTemperatureEl = this.querySelector("#current-temperature");
+    this._currentLabelEl = this.querySelector("#current-label");
+    this._humidityLabelEl = this.querySelector("#humidity-label");
     this._humidityEl = this.querySelector("#humidity");
     this._statusEl = this.querySelector("#status");
     this._sliderWrapEl = this.querySelector(".hud-slider-wrap");
@@ -494,6 +640,7 @@ class HeatingControlCard extends HTMLElement {
     this._tempHistory = [];
     this._humidityHistory = [];
     this._activeChart = "temperature";
+    this._language = this._resolveLanguageCode(this._hass);
 
     this._setupViewportListener();
     this._applyAppearance();
@@ -532,6 +679,37 @@ class HeatingControlCard extends HTMLElement {
     this._humidityTriggerEl.addEventListener("keydown", (event) => this._onMetricTriggerKeydown(event, "humidity"));
     this._chartCloseEl.addEventListener("click", () => this._closeChartDrawer());
     this._chartDrawerOverlayEl.addEventListener("click", () => this._closeChartDrawer());
+    this._updateStaticTexts();
+  }
+
+  _resolveLanguageCode(hass) {
+    const language =
+      hass?.language ||
+      hass?.locale?.language ||
+      hass?.selectedLanguage ||
+      (typeof navigator !== "undefined" ? navigator.language : "en");
+    const shortCode = String(language || "en").toLowerCase().split("-")[0];
+    return HeatingControlCard.TRANSLATIONS[shortCode] ? shortCode : "en";
+  }
+
+  _t(key) {
+    return HeatingControlCard.TRANSLATIONS[this._language]?.[key] ?? HeatingControlCard.TRANSLATIONS.en[key] ?? key;
+  }
+
+  _updateStaticTexts() {
+    if (!this._currentLabelEl || !this._humidityLabelEl) {
+      return;
+    }
+
+    this._currentLabelEl.textContent = this._t("current");
+    this._humidityLabelEl.textContent = this._t("humidity");
+    this._tempTriggerEl?.setAttribute("aria-label", this._t("showTemperatureChart"));
+    this._humidityTriggerEl?.setAttribute("aria-label", this._t("showHumidityChart"));
+    this._chartCloseEl?.setAttribute("aria-label", this._t("closeChart"));
+    if (!this._chartDrawerEl?.classList.contains("visible")) {
+      this._chartTitleEl.textContent = this._t("temperature");
+      this._chartSubtitleEl.textContent = this._t("chartSessionSubtitle");
+    }
   }
 
   _formatTemperature(value) {
@@ -563,7 +741,7 @@ class HeatingControlCard extends HTMLElement {
     }
 
     const isHeatingEnabled = climateState.state !== "off";
-    this._heatingToggleEl.textContent = isHeatingEnabled ? "HEATING ON" : "HEATING OFF";
+    this._heatingToggleEl.textContent = isHeatingEnabled ? this._t("heatingOn") : this._t("heatingOff");
     this._heatingToggleEl.disabled = false;
     this._heatingToggleEl.classList.toggle("off", !isHeatingEnabled);
   }
@@ -663,10 +841,10 @@ class HeatingControlCard extends HTMLElement {
     this._currentTemperatureEl.textContent = this._formatTemperature(previewCurrent);
     this._targetTemperatureEl.textContent = this._formatTemperature(previewTarget);
     this._humidityEl.textContent = `${previewHumidity}%`;
-    this._statusEl.textContent = "PREVIEW";
+    this._statusEl.textContent = this._t("preview");
     this._slider.value = previewTarget;
     this._updateSliderFill();
-    this._heatingToggleEl.textContent = "HEATING ON";
+    this._heatingToggleEl.textContent = this._t("heatingOn");
     this._heatingToggleEl.disabled = true;
     this._heatingToggleEl.classList.remove("off");
     this._recordMetricValue(this._tempHistory, previewCurrent);
@@ -715,8 +893,8 @@ class HeatingControlCard extends HTMLElement {
     const chartColor = showTemperature ? "#f97921" : "#2f8df5";
     const unit = showTemperature ? "°C" : "%";
 
-    this._chartTitleEl.textContent = showTemperature ? "Temperature trend" : "Humidity trend";
-    this._chartSubtitleEl.textContent = `Last ${Math.max(history.length, 1)} values from this session`;
+    this._chartTitleEl.textContent = showTemperature ? this._t("temperatureTrend") : this._t("humidityTrend");
+    this._chartSubtitleEl.textContent = this._t("chartSubtitleWithCount")(Math.max(history.length, 1));
 
     const canvas = this._chartCanvasEl;
     const ctx = canvas?.getContext("2d");
@@ -779,7 +957,7 @@ class HeatingControlCard extends HTMLElement {
 
     ctx.fillStyle = "rgba(23, 33, 47, 0.8)";
     ctx.font = "600 13px sans-serif";
-    ctx.fillText(`Now: ${Number(lastValue).toFixed(1)}${unit}`, padding.left, height - 10);
+    ctx.fillText(this._t("nowValue")(Number(lastValue).toFixed(1), unit), padding.left, height - 10);
   }
 
   _isInPreviewMode() {
@@ -809,11 +987,159 @@ class HeatingControlCard extends HTMLElement {
 customElements.define("heating-control-card", HeatingControlCard);
 
 class HeatingControlCardEditor extends HTMLElement {
+  static get EDITOR_TRANSLATIONS() {
+    return {
+      en: {
+        climateEntity: "Climate entity",
+        humidityEntity: "Humidity entity",
+        cardName: "Card name",
+        minimumTemperature: "Minimum temperature",
+        maximumTemperature: "Maximum temperature",
+        temperatureStep: "Temperature step",
+        backgroundStart: "Background start",
+        backgroundEnd: "Background end",
+        sliderOrientation: "Slider orientation",
+        mobileOrientation: "Mobile orientation",
+        desktopOrientation: "Desktop orientation",
+        desktopLayout: "Desktop layout",
+        heatingOnMode: "Heating on mode",
+        previewMode: "Preview mode",
+        useDefault: "Use default"
+      },
+      de: {
+        climateEntity: "Klima-Entität",
+        humidityEntity: "Luftfeuchtigkeits-Entität",
+        cardName: "Kartenname",
+        minimumTemperature: "Mindesttemperatur",
+        maximumTemperature: "Maximaltemperatur",
+        temperatureStep: "Temperaturschritt",
+        backgroundStart: "Hintergrund Start",
+        backgroundEnd: "Hintergrund Ende",
+        sliderOrientation: "Ausrichtung des Reglers",
+        mobileOrientation: "Mobile Ausrichtung",
+        desktopOrientation: "Desktop-Ausrichtung",
+        desktopLayout: "Desktop-Layout",
+        heatingOnMode: "Heizmodus beim Einschalten",
+        previewMode: "Vorschaumodus",
+        useDefault: "Standard verwenden"
+      },
+      fr: {
+        climateEntity: "Entité climate",
+        humidityEntity: "Entité d'humidité",
+        cardName: "Nom de la carte",
+        minimumTemperature: "Température minimale",
+        maximumTemperature: "Température maximale",
+        temperatureStep: "Pas de température",
+        backgroundStart: "Début de fond",
+        backgroundEnd: "Fin de fond",
+        sliderOrientation: "Orientation du curseur",
+        mobileOrientation: "Orientation mobile",
+        desktopOrientation: "Orientation bureau",
+        desktopLayout: "Disposition bureau",
+        heatingOnMode: "Mode chauffage activé",
+        previewMode: "Mode aperçu",
+        useDefault: "Utiliser la valeur par défaut"
+      },
+      es: {
+        climateEntity: "Entidad climate",
+        humidityEntity: "Entidad de humedad",
+        cardName: "Nombre de la tarjeta",
+        minimumTemperature: "Temperatura mínima",
+        maximumTemperature: "Temperatura máxima",
+        temperatureStep: "Paso de temperatura",
+        backgroundStart: "Inicio del fondo",
+        backgroundEnd: "Fin del fondo",
+        sliderOrientation: "Orientación del deslizador",
+        mobileOrientation: "Orientación móvil",
+        desktopOrientation: "Orientación de escritorio",
+        desktopLayout: "Diseño de escritorio",
+        heatingOnMode: "Modo al encender calefacción",
+        previewMode: "Modo vista previa",
+        useDefault: "Usar valor predeterminado"
+      },
+      it: {
+        climateEntity: "Entità climate",
+        humidityEntity: "Entità umidità",
+        cardName: "Nome scheda",
+        minimumTemperature: "Temperatura minima",
+        maximumTemperature: "Temperatura massima",
+        temperatureStep: "Passo temperatura",
+        backgroundStart: "Inizio sfondo",
+        backgroundEnd: "Fine sfondo",
+        sliderOrientation: "Orientamento cursore",
+        mobileOrientation: "Orientamento mobile",
+        desktopOrientation: "Orientamento desktop",
+        desktopLayout: "Layout desktop",
+        heatingOnMode: "Modalità accensione riscaldamento",
+        previewMode: "Modalità anteprima",
+        useDefault: "Usa predefinito"
+      },
+      pl: {
+        climateEntity: "Encja climate",
+        humidityEntity: "Encja wilgotności",
+        cardName: "Nazwa karty",
+        minimumTemperature: "Temperatura minimalna",
+        maximumTemperature: "Temperatura maksymalna",
+        temperatureStep: "Krok temperatury",
+        backgroundStart: "Początek tła",
+        backgroundEnd: "Koniec tła",
+        sliderOrientation: "Orientacja suwaka",
+        mobileOrientation: "Orientacja mobilna",
+        desktopOrientation: "Orientacja desktopowa",
+        desktopLayout: "Układ desktopowy",
+        heatingOnMode: "Tryb przy włączaniu ogrzewania",
+        previewMode: "Tryb podglądu",
+        useDefault: "Użyj domyślnej"
+      },
+      nl: {
+        climateEntity: "Climate-entiteit",
+        humidityEntity: "Vochtigheidsentiteit",
+        cardName: "Kaartnaam",
+        minimumTemperature: "Minimumtemperatuur",
+        maximumTemperature: "Maximumtemperatuur",
+        temperatureStep: "Temperatuurstap",
+        backgroundStart: "Achtergrond begin",
+        backgroundEnd: "Achtergrond einde",
+        sliderOrientation: "Schuifrichting",
+        mobileOrientation: "Mobiele oriëntatie",
+        desktopOrientation: "Desktoporiëntatie",
+        desktopLayout: "Desktopindeling",
+        heatingOnMode: "Verwarmingsmodus bij inschakelen",
+        previewMode: "Voorbeeldmodus",
+        useDefault: "Standaard gebruiken"
+      },
+      cs: {
+        climateEntity: "Entita climate",
+        humidityEntity: "Entita vlhkosti",
+        cardName: "Název karty",
+        minimumTemperature: "Minimální teplota",
+        maximumTemperature: "Maximální teplota",
+        temperatureStep: "Krok teploty",
+        backgroundStart: "Začátek pozadí",
+        backgroundEnd: "Konec pozadí",
+        sliderOrientation: "Orientace posuvníku",
+        mobileOrientation: "Mobilní orientace",
+        desktopOrientation: "Desktopová orientace",
+        desktopLayout: "Rozložení desktopu",
+        heatingOnMode: "Režim při zapnutí topení",
+        previewMode: "Režim náhledu",
+        useDefault: "Použít výchozí"
+      }
+    };
+  }
+
+  set hass(hass) {
+    this._hass = hass;
+    this._language = this._resolveLanguageCode(hass);
+    this._render();
+  }
+
   setConfig(config) {
     this._config = {
       ...HeatingControlCard.getStubConfig(),
       ...config
     };
+    this._language = this._resolveLanguageCode(this._hass);
     this._render();
   }
 
@@ -859,22 +1185,22 @@ class HeatingControlCardEditor extends HTMLElement {
         }
       </style>
       <div class="editor">
-        ${this._textField("entity", "Climate entity", true)}
-        ${this._textField("humidity_entity", "Humidity entity")}
-        ${this._textField("name", "Card name")}
-        ${this._numberField("min_temp", "Minimum temperature")}
-        ${this._numberField("max_temp", "Maximum temperature")}
-        ${this._numberField("step", "Temperature step", "0.1")}
-        ${this._colorField("background_start", "Background start")}
-        ${this._colorField("background_end", "Background end")}
-        ${this._selectField("slider_orientation", "Slider orientation", ["vertical", "horizontal"])}
-        ${this._selectField("slider_orientation_mobile", "Mobile orientation", ["", "vertical", "horizontal"])}
-        ${this._selectField("slider_orientation_desktop", "Desktop orientation", ["", "vertical", "horizontal"])}
-        ${this._selectField("desktop_layout", "Desktop layout", ["standard", "compact"])}
-        ${this._textField("heating_on_mode", "Heating on mode")}
+        ${this._textField("entity", this._te("climateEntity"), true)}
+        ${this._textField("humidity_entity", this._te("humidityEntity"))}
+        ${this._textField("name", this._te("cardName"))}
+        ${this._numberField("min_temp", this._te("minimumTemperature"))}
+        ${this._numberField("max_temp", this._te("maximumTemperature"))}
+        ${this._numberField("step", this._te("temperatureStep"), "0.1")}
+        ${this._colorField("background_start", this._te("backgroundStart"))}
+        ${this._colorField("background_end", this._te("backgroundEnd"))}
+        ${this._selectField("slider_orientation", this._te("sliderOrientation"), ["vertical", "horizontal"])}
+        ${this._selectField("slider_orientation_mobile", this._te("mobileOrientation"), ["", "vertical", "horizontal"])}
+        ${this._selectField("slider_orientation_desktop", this._te("desktopOrientation"), ["", "vertical", "horizontal"])}
+        ${this._selectField("desktop_layout", this._te("desktopLayout"), ["standard", "compact"])}
+        ${this._textField("heating_on_mode", this._te("heatingOnMode"))}
         <label class="full checkbox-row">
           <input type="checkbox" data-key="preview" ${this._config.preview ? "checked" : ""} />
-          <span>Preview mode</span>
+          <span>${this._te("previewMode")}</span>
         </label>
       </div>
     `;
@@ -919,7 +1245,7 @@ class HeatingControlCardEditor extends HTMLElement {
     const value = this._config[key] ?? "";
     const optionsMarkup = options
       .map((option) => {
-        const optionLabel = option === "" ? "Use default" : option;
+        const optionLabel = option === "" ? this._te("useDefault") : option;
         return `<option value="${option}" ${value === option ? "selected" : ""}>${optionLabel}</option>`;
       })
       .join("");
@@ -964,6 +1290,24 @@ class HeatingControlCardEditor extends HTMLElement {
         bubbles: true,
         composed: true
       })
+    );
+  }
+
+  _resolveLanguageCode(hass) {
+    const language =
+      hass?.language ||
+      hass?.locale?.language ||
+      hass?.selectedLanguage ||
+      (typeof navigator !== "undefined" ? navigator.language : "en");
+    const shortCode = String(language || "en").toLowerCase().split("-")[0];
+    return HeatingControlCardEditor.EDITOR_TRANSLATIONS[shortCode] ? shortCode : "en";
+  }
+
+  _te(key) {
+    return (
+      HeatingControlCardEditor.EDITOR_TRANSLATIONS[this._language]?.[key] ??
+      HeatingControlCardEditor.EDITOR_TRANSLATIONS.en[key] ??
+      key
     );
   }
 }
