@@ -1,4 +1,8 @@
 class HeatingControlCard extends HTMLElement {
+  static async getConfigElement() {
+    return document.createElement("heating-control-card-editor");
+  }
+
   static getStubConfig() {
     return {
       type: "custom:heating-control-card",
@@ -726,9 +730,12 @@ class HeatingControlCard extends HTMLElement {
     const plotWidth = width - padding.left - padding.right;
     const plotHeight = height - padding.top - padding.bottom;
     const values = history.length ? history : [0];
-    const minValue = Math.min(...values);
-    const maxValue = Math.max(...values);
-    const range = Math.max(maxValue - minValue, 1);
+    const rawMinValue = Math.min(...values);
+    const rawMaxValue = Math.max(...values);
+    const paddingForFlatLine = rawMaxValue === rawMinValue ? Math.max(Math.abs(rawMaxValue) * 0.08, 1) : 0;
+    const minValue = rawMinValue - paddingForFlatLine;
+    const maxValue = rawMaxValue + paddingForFlatLine;
+    const range = Math.max(maxValue - minValue, 0.01);
 
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = "#ffffff";
@@ -800,6 +807,168 @@ class HeatingControlCard extends HTMLElement {
 }
 
 customElements.define("heating-control-card", HeatingControlCard);
+
+class HeatingControlCardEditor extends HTMLElement {
+  setConfig(config) {
+    this._config = {
+      ...HeatingControlCard.getStubConfig(),
+      ...config
+    };
+    this._render();
+  }
+
+  _render() {
+    if (!this._config) {
+      return;
+    }
+
+    this.innerHTML = `
+      <style>
+        .editor {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 12px;
+        }
+
+        label {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          font-size: 13px;
+        }
+
+        input,
+        select {
+          border: 1px solid var(--divider-color, #ccc);
+          border-radius: 8px;
+          padding: 8px;
+          font-size: 14px;
+          background: var(--card-background-color, #fff);
+          color: var(--primary-text-color, #111);
+        }
+
+        .full {
+          grid-column: 1 / -1;
+        }
+
+        .checkbox-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 14px;
+        }
+      </style>
+      <div class="editor">
+        ${this._textField("entity", "Climate entity", true)}
+        ${this._textField("humidity_entity", "Humidity entity")}
+        ${this._textField("name", "Card name")}
+        ${this._numberField("min_temp", "Minimum temperature")}
+        ${this._numberField("max_temp", "Maximum temperature")}
+        ${this._numberField("step", "Temperature step", "0.1")}
+        ${this._colorField("background_start", "Background start")}
+        ${this._colorField("background_end", "Background end")}
+        ${this._selectField("slider_orientation", "Slider orientation", ["vertical", "horizontal"])}
+        ${this._selectField("slider_orientation_mobile", "Mobile orientation", ["", "vertical", "horizontal"])}
+        ${this._selectField("slider_orientation_desktop", "Desktop orientation", ["", "vertical", "horizontal"])}
+        ${this._selectField("desktop_layout", "Desktop layout", ["standard", "compact"])}
+        ${this._textField("heating_on_mode", "Heating on mode")}
+        <label class="full checkbox-row">
+          <input type="checkbox" data-key="preview" ${this._config.preview ? "checked" : ""} />
+          <span>Preview mode</span>
+        </label>
+      </div>
+    `;
+
+    this.querySelectorAll("[data-key]").forEach((input) => {
+      input.addEventListener("change", (event) => this._handleValueChange(event));
+      input.addEventListener("input", (event) => this._handleValueChange(event));
+    });
+  }
+
+  _textField(key, label, required = false) {
+    const value = this._config[key] ?? "";
+    return `
+      <label>
+        <span>${label}</span>
+        <input type="text" data-key="${key}" value="${value}" ${required ? "required" : ""} />
+      </label>
+    `;
+  }
+
+  _numberField(key, label, step = "0.5") {
+    const value = this._config[key] ?? "";
+    return `
+      <label>
+        <span>${label}</span>
+        <input type="number" data-key="${key}" value="${value}" step="${step}" />
+      </label>
+    `;
+  }
+
+  _colorField(key, label) {
+    const value = this._config[key] ?? "";
+    return `
+      <label>
+        <span>${label}</span>
+        <input type="text" data-key="${key}" value="${value}" placeholder="#ffa20f" />
+      </label>
+    `;
+  }
+
+  _selectField(key, label, options) {
+    const value = this._config[key] ?? "";
+    const optionsMarkup = options
+      .map((option) => {
+        const optionLabel = option === "" ? "Use default" : option;
+        return `<option value="${option}" ${value === option ? "selected" : ""}>${optionLabel}</option>`;
+      })
+      .join("");
+
+    return `
+      <label>
+        <span>${label}</span>
+        <select data-key="${key}">
+          ${optionsMarkup}
+        </select>
+      </label>
+    `;
+  }
+
+  _handleValueChange(event) {
+    const target = event.target;
+    const key = target.dataset.key;
+    if (!key) {
+      return;
+    }
+
+    let value;
+    if (target.type === "checkbox") {
+      value = target.checked;
+    } else if (target.type === "number") {
+      value = target.value === "" ? undefined : Number(target.value);
+    } else {
+      value = target.value;
+    }
+
+    const updatedConfig = { ...this._config };
+    if (value === "" || value === undefined) {
+      delete updatedConfig[key];
+    } else {
+      updatedConfig[key] = value;
+    }
+    this._config = updatedConfig;
+
+    this.dispatchEvent(
+      new CustomEvent("config-changed", {
+        detail: { config: updatedConfig },
+        bubbles: true,
+        composed: true
+      })
+    );
+  }
+}
+
+customElements.define("heating-control-card-editor", HeatingControlCardEditor);
 
 window.customCards = window.customCards || [];
 window.customCards.push({
