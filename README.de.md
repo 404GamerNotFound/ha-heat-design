@@ -119,6 +119,10 @@ Du kannst die Karte direkt im Home-Assistant-**UI-Editor** konfigurieren (für d
 - Wenn `humidity_entity` fehlt oder nicht verfügbar ist, wird Luftfeuchtigkeit als `--` angezeigt.
 - `slider_orientation_mobile` und `slider_orientation_desktop` überschreiben `slider_orientation` abhängig von der Viewport-Breite.
 - `desktop_layout: compact` wirkt sich nur auf die Desktop-Ansicht aus und lässt die mobile Ansicht unverändert.
+- Für horizontale Slider kannst du die Dicke per CSS-Variablen reduzieren:
+  - `--heating-horizontal-slider-track-height` (Standard: `12px`)
+  - `--heating-horizontal-slider-thumb-size` (Standard: `26px`)
+  - `--heating-horizontal-slider-shell-height` (Standard: `90px`)
 
 ---
 
@@ -145,6 +149,8 @@ Englisch, Deutsch, Französisch, Spanisch, Italienisch, Polnisch, Niederländisc
 
 - Du suchst das passende Dashboard-Design für Klima-/Heizungssteuerung? Schau dir mein weiteres Projekt an:  
   **ha-button-design** → https://github.com/404GamerNotFound/ha-button-design
+- Du suchst weitere Ideen und Vorlagen rund um Slider? Sieh dir alle Repositories an:  
+  **404GamerNotFound Repositories** → https://github.com/404GamerNotFound?tab=repositories
 
 ## Support
 
