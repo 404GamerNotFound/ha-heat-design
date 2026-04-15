@@ -415,23 +415,24 @@ class HeatingControlCard extends HTMLElement {
       }
 
       .hud-slider-wrap.horizontal {
+        --horizontal-slider-shell-height: var(--heating-horizontal-slider-shell-height, 90px);
         width: 320px;
-        height: 150px;
+        height: calc(var(--horizontal-slider-shell-height) + 60px);
       }
 
       .wrapper.desktop-compact .hud-slider-wrap.horizontal {
         width: 250px;
-        height: 120px;
+        height: calc(var(--horizontal-slider-shell-height) + 50px);
       }
 
       .hud-slider-wrap.horizontal .slider-shell {
         width: 290px;
-        height: 90px;
+        height: var(--horizontal-slider-shell-height);
       }
 
       .wrapper.desktop-compact .hud-slider-wrap.horizontal .slider-shell {
         width: 220px;
-        height: 70px;
+        height: var(--horizontal-slider-shell-height);
       }
 
       .hud-slider-wrap.horizontal #temp-slider.temp-slider-hud {
@@ -488,6 +489,32 @@ class HeatingControlCard extends HTMLElement {
         width: 80px;
         height: 78px;
         border-radius: 20px;
+      }
+
+      .hud-slider-wrap.horizontal #temp-slider.temp-slider-hud {
+        --horizontal-slider-track-height: var(--heating-horizontal-slider-track-height, 12px);
+        --horizontal-slider-thumb-size: var(--heating-horizontal-slider-thumb-size, 26px);
+      }
+
+      .hud-slider-wrap.horizontal #temp-slider.temp-slider-hud::-webkit-slider-runnable-track {
+        height: var(--horizontal-slider-track-height);
+      }
+
+      .hud-slider-wrap.horizontal #temp-slider.temp-slider-hud::-moz-range-track {
+        height: var(--horizontal-slider-track-height);
+      }
+
+      .hud-slider-wrap.horizontal #temp-slider.temp-slider-hud::-webkit-slider-thumb {
+        width: var(--horizontal-slider-thumb-size);
+        height: var(--horizontal-slider-thumb-size);
+        margin-top: calc((var(--horizontal-slider-track-height) - var(--horizontal-slider-thumb-size)) / 2);
+        border-radius: 50%;
+      }
+
+      .hud-slider-wrap.horizontal #temp-slider.temp-slider-hud::-moz-range-thumb {
+        width: var(--horizontal-slider-thumb-size);
+        height: var(--horizontal-slider-thumb-size);
+        border-radius: 50%;
       }
 
       .bottom-row {

@@ -119,6 +119,10 @@ You can now configure the card directly in the Home Assistant **UI editor** (no 
 - If `humidity_entity` is missing or unavailable, humidity is shown as `--`.
 - `slider_orientation_mobile` and `slider_orientation_desktop` override `slider_orientation` depending on the current viewport width.
 - `desktop_layout: compact` only affects desktop view and keeps the mobile layout unchanged.
+- For horizontal sliders, you can slim the control via CSS variables:
+  - `--heating-horizontal-slider-track-height` (default `12px`)
+  - `--heating-horizontal-slider-thumb-size` (default `26px`)
+  - `--heating-horizontal-slider-shell-height` (default `90px`)
 
 ---
 
@@ -145,6 +149,8 @@ English, German, French, Spanish, Italian, Polish, Dutch, and Czech.
 
 - Looking for the matching dashboard design for climate/heating controls? Check out my other project:  
   **ha-button-design** → https://github.com/404GamerNotFound/ha-button-design
+- Looking for more slider-related ideas and templates? Browse all repositories:  
+  **404GamerNotFound repositories** → https://github.com/404GamerNotFound?tab=repositories
 
 ## Support me
 
