@@ -74,6 +74,12 @@ desktop_layout: compact
 heating_on_mode: heat
 ```
 
+## Configure with the UI editor
+
+You can now configure the card directly in the Home Assistant **UI editor** (no manual YAML required for most options).
+
+![Configuration via Home Assistant UI editor](images/configurations.png)
+
 ### Card options
 
 | Option | Required | Default | Description |
