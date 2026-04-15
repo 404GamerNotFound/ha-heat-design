@@ -2,6 +2,8 @@
 
 A custom **Lovelace dashboard card** for Home Assistant inspired by the orange thermostat design in your reference image.
 
+![Heating control card design](images/design.png)
+
 ## What this card does
 
 - Shows **current temperature** from your `climate` entity.
@@ -9,6 +11,7 @@ A custom **Lovelace dashboard card** for Home Assistant inspired by the orange t
 - Lets you toggle heating **on/off** directly from the card.
 - Shows optional **humidity** from a separate sensor.
 - Shows current HVAC state (`heat`, `idle`, etc.).
+- Shows a preview state in the dashboard card picker.
 - Calls Home Assistant service `climate.set_temperature`.
 - Calls Home Assistant service `climate.set_hvac_mode` when heating is toggled.
 
@@ -41,11 +44,11 @@ Go to **Settings → Dashboards → Resources** and add:
 
 > If your repository slug differs, adjust the path accordingly.
 
----
+> Legacy path support: if you already use `/hacsfiles/ha-heat-design/ha-heat-design.js`, it now acts as a compatibility loader and still works.
 
 ## Manual installation (alternative)
 
-1. Copy `heating-control-card.js` to `/config/www/`.
+1. Copy `heating-control-card.js` to `/config/www/` (or both files if you want backward compatibility with old resource paths).
 2. Add this resource:
    - URL: `/local/heating-control-card.js`
    - Type: `JavaScript Module`
@@ -65,6 +68,9 @@ step: 0.5
 background_start: "#ffa20f"
 background_end: "#ff9800"
 slider_orientation: vertical
+slider_orientation_mobile: vertical
+slider_orientation_desktop: horizontal
+desktop_layout: compact
 heating_on_mode: heat
 ```
 
@@ -82,6 +88,9 @@ heating_on_mode: heat
 | `background_start` | no | `#ffa20f` | Top gradient color (also used as solid background color fallback) |
 | `background_end` | no | `#ff9800` | Bottom gradient color |
 | `slider_orientation` | no | `vertical` | Slider direction: `vertical` or `horizontal` |
+| `slider_orientation_mobile` | no | - | Mobile-only slider orientation override (`vertical` or `horizontal`) |
+| `slider_orientation_desktop` | no | - | Desktop-only slider orientation override (`vertical` or `horizontal`) |
+| `desktop_layout` | no | `standard` | Desktop layout density: `standard` or `compact` |
 | `heating_on_mode` | no | `heat` | HVAC mode used when toggling from OFF to ON (must be supported by your climate entity) |
 
 ---
@@ -91,3 +100,17 @@ heating_on_mode: heat
 - This is a Lovelace **frontend card** (Dashboard category in HACS).
 - `entity` must point to a valid `climate` entity.
 - If `humidity_entity` is missing or unavailable, humidity is shown as `--`.
+- `slider_orientation_mobile` and `slider_orientation_desktop` override `slider_orientation` depending on the current viewport width.
+- `desktop_layout: compact` only affects desktop view and keeps the mobile layout unchanged.
+
+---
+
+## More projects
+
+- Looking for the matching dashboard design for climate/heating controls? Check out my other project:  
+  **ha-button-design** → https://github.com/404GamerNotFound/ha-button-design
+
+## Support me
+
+- If you like this project and want to support my work, you can donate here:  
+  **PayPal** → https://www.paypal.com/paypalme/TonyBrueser
