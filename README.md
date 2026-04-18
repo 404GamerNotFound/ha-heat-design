@@ -2,7 +2,7 @@
 
 A custom **Lovelace dashboard card** for Home Assistant inspired by the orange thermostat design in your reference image.
 
-![Heating control card design](images/design.png)
+![Heating control card design](images/designv2.png)
 
 ## Languages
 
@@ -90,6 +90,16 @@ heating_on_mode: heat
 You can now configure the card directly in the Home Assistant **UI editor** (no manual YAML required for most options).
 
 ![Configuration via Home Assistant UI editor](images/configurations.png)
+
+![UI editor settings view](images/settings.png)
+
+## History graphs
+
+The card can also show history graphs for humidity and temperature trends.
+
+![Humidity trend graph](images/graph.png)
+
+![Temperature trend graph](images/graph.png)
 
 ### Card options
 
