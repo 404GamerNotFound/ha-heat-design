@@ -751,7 +751,6 @@ class HeatingControlCard extends HTMLElement {
           temperature: value
         });
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error("[heating-control-card] Failed to set temperature", error);
       } finally {
         this._isSliding = false;
@@ -893,7 +892,6 @@ class HeatingControlCard extends HTMLElement {
         hvac_mode: onMode
       });
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error("[heating-control-card] Failed to toggle heating", error);
     }
   }
@@ -1068,7 +1066,6 @@ class HeatingControlCard extends HTMLElement {
 
       this._setChartHeader(chartType, 0);
       this._drawChartMessage(this._t("historyUnavailable"));
-      // eslint-disable-next-line no-console
       console.error("[heating-control-card] Failed to load chart history", error);
     }
   }
@@ -1115,9 +1112,10 @@ class HeatingControlCard extends HTMLElement {
     const mappedPoints = rawStates
       .map((entry) => {
         const timestamp = new Date(entry.last_changed || entry.last_updated).getTime();
-        const value = chartType === "temperature"
-          ? Number(entry.attributes?.current_temperature)
-          : Number(entry.state);
+        const value =
+          chartType === "temperature"
+            ? Number(entry.attributes?.current_temperature)
+            : Number(entry.state);
 
         if (!Number.isFinite(timestamp) || !Number.isFinite(value)) {
           return null;
@@ -1140,9 +1138,10 @@ class HeatingControlCard extends HTMLElement {
   }
 
   _appendCurrentPoint(chartType, points, timestamp) {
-    const liveValue = chartType === "temperature"
-      ? Number(this._hass?.states?.[this._config.entity]?.attributes?.current_temperature)
-      : Number(this._hass?.states?.[this._config.humidity_entity]?.state);
+    const liveValue =
+      chartType === "temperature"
+        ? Number(this._hass?.states?.[this._config.entity]?.attributes?.current_temperature)
+        : Number(this._hass?.states?.[this._config.humidity_entity]?.state);
 
     if (!Number.isFinite(liveValue)) {
       return points;
@@ -1559,10 +1558,31 @@ class HeatingControlCardEditor extends HTMLElement {
     };
   }
 
+  constructor() {
+    super();
+    this._hass = null;
+    this._config = null;
+    this._language = "en";
+    this._rendered = false;
+    this._updatingForm = false;
+  }
+
   set hass(hass) {
     this._hass = hass;
-    this._language = this._resolveLanguageCode(hass);
-    this._render();
+    const newLanguage = this._resolveLanguageCode(hass);
+    const languageChanged = newLanguage !== this._language;
+    this._language = newLanguage;
+
+    if (!this._config) {
+      return;
+    }
+
+    if (!this._rendered || languageChanged) {
+      this._render();
+      return;
+    }
+
+    this._updateFormValues();
   }
 
   setConfig(config) {
@@ -1570,8 +1590,13 @@ class HeatingControlCardEditor extends HTMLElement {
       ...HeatingControlCard.getStubConfig(),
       ...config
     };
-    this._language = this._resolveLanguageCode(this._hass);
-    this._render();
+
+    if (!this._rendered) {
+      this._render();
+      return;
+    }
+
+    this._updateFormValues();
   }
 
   _render() {
@@ -1621,6 +1646,7 @@ class HeatingControlCardEditor extends HTMLElement {
           width: auto;
         }
       </style>
+
       <div class="editor">
         ${this._textField("entity", this._te("climateEntity"), true)}
         ${this._textField("humidity_entity", this._te("humidityEntity"))}
@@ -1636,54 +1662,96 @@ class HeatingControlCardEditor extends HTMLElement {
         ${this._selectField("desktop_layout", this._te("desktopLayout"), ["standard", "compact"])}
         ${this._textField("heating_on_mode", this._te("heatingOnMode"))}
         <label class="full checkbox-row">
-          <input type="checkbox" data-key="preview" ${this._config.preview ? "checked" : ""} />
+          <input type="checkbox" data-key="preview" />
           <span>${this._te("previewMode")}</span>
         </label>
       </div>
     `;
 
+    this._bindEvents();
+    this._rendered = true;
+    this._updateFormValues(true);
+  }
+
+  _bindEvents() {
     this.querySelectorAll("[data-key]").forEach((input) => {
-      input.addEventListener("change", (event) => this._handleValueChange(event));
       input.addEventListener("input", (event) => this._handleValueChange(event));
+      input.addEventListener("change", (event) => this._handleValueChange(event));
     });
   }
 
+  _updateFormValues(force = false) {
+    if (!this._config || this._updatingForm) {
+      return;
+    }
+
+    this._updatingForm = true;
+
+    const activeElement = this.querySelector(":focus");
+    const activeKey = activeElement?.dataset?.key || null;
+
+    this.querySelectorAll("[data-key]").forEach((field) => {
+      const key = field.dataset.key;
+      if (!key) {
+        return;
+      }
+
+      if (!force && activeKey === key) {
+        return;
+      }
+
+      const configValue = this._config[key];
+
+      if (field.type === "checkbox") {
+        const nextValue = Boolean(configValue);
+        if (field.checked !== nextValue) {
+          field.checked = nextValue;
+        }
+        return;
+      }
+
+      const nextValue = configValue ?? "";
+
+      if (field.value !== String(nextValue)) {
+        field.value = String(nextValue);
+      }
+    });
+
+    this._updatingForm = false;
+  }
+
   _textField(key, label, required = false) {
-    const value = this._config[key] ?? "";
     return `
       <label>
         <span>${label}</span>
-        <input type="text" data-key="${key}" value="${value}" ${required ? "required" : ""} />
+        <input type="text" data-key="${key}" ${required ? "required" : ""} />
       </label>
     `;
   }
 
   _numberField(key, label, step = "0.5") {
-    const value = this._config[key] ?? "";
     return `
       <label>
         <span>${label}</span>
-        <input type="number" data-key="${key}" value="${value}" step="${step}" />
+        <input type="number" data-key="${key}" step="${step}" />
       </label>
     `;
   }
 
   _colorField(key, label) {
-    const value = this._config[key] ?? "";
     return `
       <label>
         <span>${label}</span>
-        <input type="text" data-key="${key}" value="${value}" placeholder="#ffa20f" />
+        <input type="text" data-key="${key}" placeholder="#ffa20f" />
       </label>
     `;
   }
 
   _selectField(key, label, options) {
-    const value = this._config[key] ?? "";
     const optionsMarkup = options
       .map((option) => {
         const optionLabel = option === "" ? this._te("useDefault") : option;
-        return `<option value="${option}" ${value === option ? "selected" : ""}>${optionLabel}</option>`;
+        return `<option value="${option}">${optionLabel}</option>`;
       })
       .join("");
 
@@ -1698,6 +1766,10 @@ class HeatingControlCardEditor extends HTMLElement {
   }
 
   _handleValueChange(event) {
+    if (this._updatingForm) {
+      return;
+    }
+
     const target = event.target;
     const key = target.dataset.key;
     if (!key) {
@@ -1705,6 +1777,7 @@ class HeatingControlCardEditor extends HTMLElement {
     }
 
     let value;
+
     if (target.type === "checkbox") {
       value = target.checked;
     } else if (target.type === "number") {
@@ -1714,11 +1787,13 @@ class HeatingControlCardEditor extends HTMLElement {
     }
 
     const updatedConfig = { ...this._config };
+
     if (value === "" || value === undefined) {
       delete updatedConfig[key];
     } else {
       updatedConfig[key] = value;
     }
+
     this._config = updatedConfig;
 
     this.dispatchEvent(
@@ -1736,6 +1811,7 @@ class HeatingControlCardEditor extends HTMLElement {
       hass?.locale?.language ||
       hass?.selectedLanguage ||
       (typeof navigator !== "undefined" ? navigator.language : "en");
+
     const shortCode = String(language || "en").toLowerCase().split("-")[0];
     return HeatingControlCardEditor.EDITOR_TRANSLATIONS[shortCode] ? shortCode : "en";
   }
