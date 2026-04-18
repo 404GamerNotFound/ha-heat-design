@@ -2,7 +2,7 @@
 
 Eine benutzerdefinierte **Lovelace-Dashboard-Karte** für Home Assistant, inspiriert vom orangefarbenen Thermostat-Design aus dem Referenzbild.
 
-![Heating control card design](images/design.png)
+![Heating control card design](images/designv2.png)
 
 ## Sprachen
 
@@ -90,6 +90,16 @@ heating_on_mode: heat
 Du kannst die Karte direkt im Home-Assistant-**UI-Editor** konfigurieren (für die meisten Optionen ist kein manuelles YAML nötig).
 
 ![Configuration via Home Assistant UI editor](images/configurations.png)
+
+![UI editor settings view](images/settings.png)
+
+## Verlaufsgraphen
+
+Die Karte kann zusätzlich Verlaufsgraphen für Luftfeuchtigkeit und Temperatur anzeigen.
+
+![Humidity trend graph](images/graph.png)
+
+![Temperature trend graph](images/graph.png)
 
 ### Kartenoptionen
 
