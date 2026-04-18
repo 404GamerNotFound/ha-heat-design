@@ -18,36 +18,45 @@ import "./heating-control-card.js";
     return matchingScript?.src || null;
   };
 
-  const scriptSource = findScriptSource();
-  const candidateUrls = [];
+  const candidateUrls = new Set();
+  const addRelativeCandidate = (baseUrl) => {
+    if (!baseUrl) {
+      return;
+    }
 
-  if (scriptSource) {
-    candidateUrls.push(new URL("./heating-control-card.js", scriptSource).toString());
-  }
+    try {
+      candidateUrls.add(new URL("./heating-control-card.js", baseUrl).toString());
+    } catch (_error) {
+      // Ignore invalid base URLs and continue with fallbacks.
+    }
+  };
 
-  // Backward-compatible fallbacks for uncommon Home Assistant resource setups.
-  candidateUrls.push("/hacsfiles/ha-heat-design/heating-control-card.js");
-  candidateUrls.push("/local/community/ha-heat-design/heating-control-card.js");
-  candidateUrls.push("/local/heating-control-card.js");
+  addRelativeCandidate(typeof import.meta !== "undefined" ? import.meta.url : null);
+  addRelativeCandidate(findScriptSource());
 
-  const uniqueUrls = [...new Set(candidateUrls)];
+  candidateUrls.add("/hacsfiles/ha-heat-design/heating-control-card.js");
+  candidateUrls.add("/local/community/ha-heat-design/heating-control-card.js");
+  candidateUrls.add("/local/heating-control-card.js");
 
   const loadCardModule = async () => {
-    for (const moduleUrl of uniqueUrls) {
+    let lastError = null;
+
+    for (const moduleUrl of candidateUrls) {
       try {
         await import(moduleUrl);
+
         if (customElements.get("heating-control-card")) {
           return;
         }
       } catch (error) {
-        // Keep trying fallback paths before reporting a final error.
+        lastError = error;
       }
     }
 
-    // Keep a clear error in the browser console when the card file cannot be loaded.
     // eslint-disable-next-line no-console
     console.error("[ha-heat-design] Failed to load heating-control-card.js from known paths", {
-      attemptedUrls: uniqueUrls
+      attemptedUrls: [...candidateUrls],
+      lastError
     });
   };
 

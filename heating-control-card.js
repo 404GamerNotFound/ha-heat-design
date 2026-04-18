@@ -4,27 +4,28 @@ class HeatingControlCard extends HTMLElement {
       en: {
         current: "CURRENT",
         humidity: "HUMIDITY",
-        showTemperatureChart: "Show temperature chart",
-        showHumidityChart: "Show humidity chart",
+        showTemperatureChart: "Show temperature history",
+        showHumidityChart: "Show humidity history",
         temperature: "Temperature",
-        chartSessionSubtitle: "Last values from this session",
         closeChart: "Close chart",
         entityNotFound: "Entity not found",
         heatingOn: "HEATING ON",
         heatingOff: "HEATING OFF",
         preview: "PREVIEW",
-        temperatureTrend: "Temperature trend",
-        humidityTrend: "Humidity trend",
-        chartSubtitleWithCount: (count) => `Last ${count} values from this session`,
-        nowValue: (value, unit) => `Now: ${value}${unit}`
+        temperatureTrend: "Temperature history",
+        humidityTrend: "Humidity history",
+        chartSubtitle24hWithCount: (count) => `24h history · ${count} points`,
+        nowValue: (value, unit) => `Now: ${value}${unit}`,
+        loadingHistory: "Loading 24h history…",
+        noHistoryData: "No history data available for the last 24 hours.",
+        historyUnavailable: "History could not be loaded. Check Recorder / History settings."
       },
       de: {
         current: "AKTUELL",
         humidity: "LUFTFEUCHTIGKEIT",
-        showTemperatureChart: "Temperaturverlauf anzeigen",
-        showHumidityChart: "Luftfeuchtigkeitsverlauf anzeigen",
+        showTemperatureChart: "24h-Temperaturverlauf anzeigen",
+        showHumidityChart: "24h-Luftfeuchtigkeitsverlauf anzeigen",
         temperature: "Temperatur",
-        chartSessionSubtitle: "Letzte Werte aus dieser Sitzung",
         closeChart: "Diagramm schließen",
         entityNotFound: "Entität nicht gefunden",
         heatingOn: "HEIZUNG AN",
@@ -32,110 +33,125 @@ class HeatingControlCard extends HTMLElement {
         preview: "VORSCHAU",
         temperatureTrend: "Temperaturverlauf",
         humidityTrend: "Luftfeuchtigkeitsverlauf",
-        chartSubtitleWithCount: (count) => `Letzte ${count} Werte aus dieser Sitzung`,
-        nowValue: (value, unit) => `Jetzt: ${value}${unit}`
+        chartSubtitle24hWithCount: (count) => `24h-Verlauf · ${count} Punkte`,
+        nowValue: (value, unit) => `Jetzt: ${value}${unit}`,
+        loadingHistory: "24h-Historie wird geladen…",
+        noHistoryData: "Für die letzten 24 Stunden sind keine Verlaufsdaten vorhanden.",
+        historyUnavailable: "Historie konnte nicht geladen werden. Recorder-/Historie-Einstellungen prüfen."
       },
       fr: {
         current: "ACTUELLE",
         humidity: "HUMIDITÉ",
-        showTemperatureChart: "Afficher le graphique de température",
-        showHumidityChart: "Afficher le graphique d'humidité",
+        showTemperatureChart: "Afficher l'historique de température sur 24 h",
+        showHumidityChart: "Afficher l'historique d'humidité sur 24 h",
         temperature: "Température",
-        chartSessionSubtitle: "Dernières valeurs de cette session",
         closeChart: "Fermer le graphique",
         entityNotFound: "Entité introuvable",
         heatingOn: "CHAUFFAGE ACTIVÉ",
         heatingOff: "CHAUFFAGE DÉSACTIVÉ",
         preview: "APERÇU",
-        temperatureTrend: "Tendance de température",
-        humidityTrend: "Tendance d'humidité",
-        chartSubtitleWithCount: (count) => `${count} dernières valeurs de cette session`,
-        nowValue: (value, unit) => `Maintenant : ${value}${unit}`
+        temperatureTrend: "Historique de température",
+        humidityTrend: "Historique d'humidité",
+        chartSubtitle24hWithCount: (count) => `Historique 24 h · ${count} points`,
+        nowValue: (value, unit) => `Maintenant : ${value}${unit}`,
+        loadingHistory: "Chargement de l'historique 24 h…",
+        noHistoryData: "Aucune donnée d'historique disponible pour les dernières 24 heures.",
+        historyUnavailable: "Impossible de charger l'historique. Vérifiez Recorder / Historique."
       },
       es: {
         current: "ACTUAL",
         humidity: "HUMEDAD",
-        showTemperatureChart: "Mostrar gráfico de temperatura",
-        showHumidityChart: "Mostrar gráfico de humedad",
+        showTemperatureChart: "Mostrar historial de temperatura de 24 h",
+        showHumidityChart: "Mostrar historial de humedad de 24 h",
         temperature: "Temperatura",
-        chartSessionSubtitle: "Últimos valores de esta sesión",
         closeChart: "Cerrar gráfico",
         entityNotFound: "Entidad no encontrada",
         heatingOn: "CALEFACCIÓN ENCENDIDA",
         heatingOff: "CALEFACCIÓN APAGADA",
         preview: "VISTA PREVIA",
-        temperatureTrend: "Tendencia de temperatura",
-        humidityTrend: "Tendencia de humedad",
-        chartSubtitleWithCount: (count) => `Últimos ${count} valores de esta sesión`,
-        nowValue: (value, unit) => `Ahora: ${value}${unit}`
+        temperatureTrend: "Historial de temperatura",
+        humidityTrend: "Historial de humedad",
+        chartSubtitle24hWithCount: (count) => `Historial de 24 h · ${count} puntos`,
+        nowValue: (value, unit) => `Ahora: ${value}${unit}`,
+        loadingHistory: "Cargando historial de 24 h…",
+        noHistoryData: "No hay datos de historial para las últimas 24 horas.",
+        historyUnavailable: "No se pudo cargar el historial. Revisa Recorder / Historial."
       },
       it: {
         current: "ATTUALE",
         humidity: "UMIDITÀ",
-        showTemperatureChart: "Mostra grafico temperatura",
-        showHumidityChart: "Mostra grafico umidità",
+        showTemperatureChart: "Mostra storico temperatura 24 h",
+        showHumidityChart: "Mostra storico umidità 24 h",
         temperature: "Temperatura",
-        chartSessionSubtitle: "Ultimi valori di questa sessione",
         closeChart: "Chiudi grafico",
         entityNotFound: "Entità non trovata",
         heatingOn: "RISCALDAMENTO ATTIVO",
         heatingOff: "RISCALDAMENTO DISATTIVO",
         preview: "ANTEPRIMA",
-        temperatureTrend: "Andamento temperatura",
-        humidityTrend: "Andamento umidità",
-        chartSubtitleWithCount: (count) => `Ultimi ${count} valori di questa sessione`,
-        nowValue: (value, unit) => `Ora: ${value}${unit}`
+        temperatureTrend: "Storico temperatura",
+        humidityTrend: "Storico umidità",
+        chartSubtitle24hWithCount: (count) => `Storico 24 h · ${count} punti`,
+        nowValue: (value, unit) => `Ora: ${value}${unit}`,
+        loadingHistory: "Caricamento storico 24 h…",
+        noHistoryData: "Nessun dato storico disponibile per le ultime 24 ore.",
+        historyUnavailable: "Impossibile caricare lo storico. Controlla Recorder / History."
       },
       pl: {
         current: "AKTUALNA",
         humidity: "WILGOTNOŚĆ",
-        showTemperatureChart: "Pokaż wykres temperatury",
-        showHumidityChart: "Pokaż wykres wilgotności",
+        showTemperatureChart: "Pokaż historię temperatury z 24 h",
+        showHumidityChart: "Pokaż historię wilgotności z 24 h",
         temperature: "Temperatura",
-        chartSessionSubtitle: "Ostatnie wartości z tej sesji",
         closeChart: "Zamknij wykres",
         entityNotFound: "Nie znaleziono encji",
         heatingOn: "OGRZEWANIE WŁĄCZONE",
         heatingOff: "OGRZEWANIE WYŁĄCZONE",
         preview: "PODGLĄD",
-        temperatureTrend: "Trend temperatury",
-        humidityTrend: "Trend wilgotności",
-        chartSubtitleWithCount: (count) => `Ostatnie ${count} wartości z tej sesji`,
-        nowValue: (value, unit) => `Teraz: ${value}${unit}`
+        temperatureTrend: "Historia temperatury",
+        humidityTrend: "Historia wilgotności",
+        chartSubtitle24hWithCount: (count) => `Historia 24 h · ${count} punktów`,
+        nowValue: (value, unit) => `Teraz: ${value}${unit}`,
+        loadingHistory: "Ładowanie historii 24 h…",
+        noHistoryData: "Brak danych historycznych z ostatnich 24 godzin.",
+        historyUnavailable: "Nie udało się wczytać historii. Sprawdź Recorder / History."
       },
       nl: {
         current: "HUIDIG",
         humidity: "VOCHTIGHEID",
-        showTemperatureChart: "Temperatuurgrafiek tonen",
-        showHumidityChart: "Vochtigheidsgrafiek tonen",
+        showTemperatureChart: "24u-temperatuurgeschiedenis tonen",
+        showHumidityChart: "24u-vochtigheidsgeschiedenis tonen",
         temperature: "Temperatuur",
-        chartSessionSubtitle: "Laatste waarden uit deze sessie",
         closeChart: "Grafiek sluiten",
         entityNotFound: "Entiteit niet gevonden",
         heatingOn: "VERWARMING AAN",
         heatingOff: "VERWARMING UIT",
         preview: "VOORBEELD",
-        temperatureTrend: "Temperatuurtrend",
-        humidityTrend: "Vochtigheidstrend",
-        chartSubtitleWithCount: (count) => `Laatste ${count} waarden uit deze sessie`,
-        nowValue: (value, unit) => `Nu: ${value}${unit}`
+        temperatureTrend: "Temperatuurgeschiedenis",
+        humidityTrend: "Vochtigheidsgeschiedenis",
+        chartSubtitle24hWithCount: (count) => `24u-geschiedenis · ${count} punten`,
+        nowValue: (value, unit) => `Nu: ${value}${unit}`,
+        loadingHistory: "24u-geschiedenis laden…",
+        noHistoryData: "Geen historische gegevens beschikbaar voor de afgelopen 24 uur.",
+        historyUnavailable: "Geschiedenis kon niet worden geladen. Controleer Recorder / Geschiedenis."
       },
       cs: {
         current: "AKTUÁLNÍ",
         humidity: "VLHKOST",
-        showTemperatureChart: "Zobrazit graf teploty",
-        showHumidityChart: "Zobrazit graf vlhkosti",
+        showTemperatureChart: "Zobrazit 24h historii teploty",
+        showHumidityChart: "Zobrazit 24h historii vlhkosti",
         temperature: "Teplota",
-        chartSessionSubtitle: "Poslední hodnoty z této relace",
         closeChart: "Zavřít graf",
         entityNotFound: "Entita nebyla nalezena",
         heatingOn: "TOPENÍ ZAPNUTO",
         heatingOff: "TOPENÍ VYPNUTO",
         preview: "NÁHLED",
-        temperatureTrend: "Trend teploty",
-        humidityTrend: "Trend vlhkosti",
-        chartSubtitleWithCount: (count) => `Posledních ${count} hodnot z této relace`,
-        nowValue: (value, unit) => `Nyní: ${value}${unit}`
+        temperatureTrend: "Historie teploty",
+        humidityTrend: "Historie vlhkosti",
+        chartSubtitle24hWithCount: (count) => `Historie 24 h · ${count} bodů`,
+        nowValue: (value, unit) => `Nyní: ${value}${unit}`,
+        loadingHistory: "Načítá se 24h historie…",
+        noHistoryData: "Za posledních 24 hodin nejsou k dispozici žádná historická data.",
+        historyUnavailable: "Historii se nepodařilo načíst. Zkontrolujte Recorder / Historii."
       }
     };
   }
@@ -164,10 +180,27 @@ class HeatingControlCard extends HTMLElement {
     };
   }
 
+  constructor() {
+    super();
+    this._config = null;
+    this._hass = null;
+    this._language = "en";
+    this._isSliding = false;
+    this._activeChart = "temperature";
+    this._historyCache = {
+      temperature: null,
+      humidity: null
+    };
+    this._chartRequestToken = 0;
+    this._resizeObserver = null;
+  }
+
   setConfig(config) {
-    if (!config.entity) {
+    if (!config?.entity) {
       throw new Error("You need to define a climate entity");
     }
+
+    const previousConfig = this._config;
 
     this._config = {
       min_temp: 16,
@@ -185,6 +218,21 @@ class HeatingControlCard extends HTMLElement {
 
     if (!this.content) {
       this._buildCard();
+    }
+
+    const entityChanged =
+      previousConfig?.entity !== this._config.entity ||
+      previousConfig?.humidity_entity !== this._config.humidity_entity ||
+      previousConfig?.preview !== this._config.preview;
+
+    if (entityChanged) {
+      this._invalidateHistoryCache();
+    }
+
+    this._applyConfig();
+
+    if (this._hass) {
+      this.hass = this._hass;
     }
   }
 
@@ -218,22 +266,16 @@ class HeatingControlCard extends HTMLElement {
     const currentTemp = climateState.attributes.current_temperature;
     const targetTemp = climateState.attributes.temperature;
     const humidity = humidityState?.state;
-    this._recordMetricValue(this._tempHistory, currentTemp);
-    this._recordMetricValue(this._humidityHistory, humidity);
 
     this._currentTemperatureEl.textContent = this._formatTemperature(currentTemp);
     this._targetTemperatureEl.textContent = this._formatTemperature(targetTemp);
-    this._humidityEl.textContent = humidity ? `${humidity}%` : "--";
-    this._statusEl.textContent = climateState.state.toUpperCase();
+    this._humidityEl.textContent = this._formatHumidity(humidity);
+    this._statusEl.textContent = String(climateState.state || "--").toUpperCase();
     this._updateHeatingToggle(climateState);
 
     if (!this._isSliding) {
-      this._slider.value = targetTemp ?? this._config.min_temp;
+      this._slider.value = Number.isFinite(Number(targetTemp)) ? Number(targetTemp) : this._config.min_temp;
       this._updateSliderFill();
-    }
-
-    if (this._chartDrawerEl?.classList.contains("visible")) {
-      this._drawActiveChart();
     }
   }
 
@@ -269,7 +311,7 @@ class HeatingControlCard extends HTMLElement {
           <div class="bottom-row">
             <div id="status" class="status">--</div>
             <button id="heating-toggle" class="heating-toggle" type="button">--</button>
-            <div class="name">${this._config.name || "Heater"}</div>
+            <div id="card-name" class="name">Heater</div>
           </div>
         </div>
         <div id="chart-drawer-overlay" class="chart-drawer-overlay hidden"></div>
@@ -277,11 +319,11 @@ class HeatingControlCard extends HTMLElement {
           <div class="chart-drawer-header">
             <div>
               <div id="chart-title" class="chart-title">Temperature</div>
-              <div id="chart-subtitle" class="chart-subtitle">Last values from this session</div>
+              <div id="chart-subtitle" class="chart-subtitle">24h history</div>
             </div>
             <button id="chart-close" class="chart-close" type="button">✕</button>
           </div>
-          <canvas id="chart-canvas" class="chart-canvas" width="420" height="220"></canvas>
+          <canvas id="chart-canvas" class="chart-canvas"></canvas>
         </aside>
       </ha-card>
     `;
@@ -344,6 +386,17 @@ class HeatingControlCard extends HTMLElement {
         background: rgba(255, 255, 255, 0.15);
         transform: translateY(-1px);
         outline: none;
+      }
+
+      .metric-trigger.disabled {
+        cursor: default;
+        opacity: 0.7;
+      }
+
+      .metric-trigger.disabled:hover,
+      .metric-trigger.disabled:focus-visible {
+        background: transparent;
+        transform: none;
       }
 
       .main-temperature {
@@ -639,6 +692,7 @@ class HeatingControlCard extends HTMLElement {
       .chart-canvas {
         width: 100%;
         height: 220px;
+        display: block;
         border-radius: 16px;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(238, 243, 251, 0.95));
       }
@@ -654,6 +708,7 @@ class HeatingControlCard extends HTMLElement {
     this._humidityLabelEl = this.querySelector("#humidity-label");
     this._humidityEl = this.querySelector("#humidity");
     this._statusEl = this.querySelector("#status");
+    this._nameEl = this.querySelector("#card-name");
     this._sliderWrapEl = this.querySelector(".hud-slider-wrap");
     this._heatingToggleEl = this.querySelector("#heating-toggle");
     this._tempTriggerEl = this.querySelector("#current-temp-trigger");
@@ -664,17 +719,10 @@ class HeatingControlCard extends HTMLElement {
     this._chartSubtitleEl = this.querySelector("#chart-subtitle");
     this._chartCanvasEl = this.querySelector("#chart-canvas");
     this._chartCloseEl = this.querySelector("#chart-close");
-    this._tempHistory = [];
-    this._humidityHistory = [];
-    this._activeChart = "temperature";
     this._language = this._resolveLanguageCode(this._hass);
 
     this._setupViewportListener();
-    this._applyAppearance();
-
-    this._slider.min = this._config.min_temp;
-    this._slider.max = this._config.max_temp;
-    this._slider.step = this._config.step;
+    this._setupResizeObserver();
 
     this._slider.addEventListener("input", () => {
       this._isSliding = true;
@@ -684,16 +732,30 @@ class HeatingControlCard extends HTMLElement {
     });
 
     this._slider.addEventListener("change", async () => {
-      if (!this._hass) {
+      if (!this._hass || this._isInPreviewMode()) {
+        this._isSliding = false;
         return;
       }
 
       const value = Number(this._slider.value);
-      await this._hass.callService("climate", "set_temperature", {
-        entity_id: this._config.entity,
-        temperature: value
-      });
-      this._isSliding = false;
+      const currentTarget = Number(this._hass.states?.[this._config.entity]?.attributes?.temperature);
+
+      if (Number.isFinite(currentTarget) && Math.abs(currentTarget - value) < 0.001) {
+        this._isSliding = false;
+        return;
+      }
+
+      try {
+        await this._hass.callService("climate", "set_temperature", {
+          entity_id: this._config.entity,
+          temperature: value
+        });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error("[heating-control-card] Failed to set temperature", error);
+      } finally {
+        this._isSliding = false;
+      }
     });
 
     this._heatingToggleEl.addEventListener("click", async () => {
@@ -707,6 +769,20 @@ class HeatingControlCard extends HTMLElement {
     this._chartCloseEl.addEventListener("click", () => this._closeChartDrawer());
     this._chartDrawerOverlayEl.addEventListener("click", () => this._closeChartDrawer());
     this._updateStaticTexts();
+  }
+
+  _applyConfig() {
+    if (!this.content) {
+      return;
+    }
+
+    this._nameEl.textContent = this._config.name || "Heater";
+    this._slider.min = this._config.min_temp;
+    this._slider.max = this._config.max_temp;
+    this._slider.step = this._config.step;
+    this._applyAppearance();
+    this._updateSliderFill();
+    this._updateHumidityTriggerState();
   }
 
   _resolveLanguageCode(hass) {
@@ -733,26 +809,46 @@ class HeatingControlCard extends HTMLElement {
     this._tempTriggerEl?.setAttribute("aria-label", this._t("showTemperatureChart"));
     this._humidityTriggerEl?.setAttribute("aria-label", this._t("showHumidityChart"));
     this._chartCloseEl?.setAttribute("aria-label", this._t("closeChart"));
-    if (!this._chartDrawerEl?.classList.contains("visible")) {
-      this._chartTitleEl.textContent = this._t("temperature");
-      this._chartSubtitleEl.textContent = this._t("chartSessionSubtitle");
+    this._updateHumidityTriggerState();
+  }
+
+  _updateHumidityTriggerState() {
+    if (!this._humidityTriggerEl) {
+      return;
     }
+
+    const hasHumidityEntity = Boolean(this._config?.humidity_entity);
+    this._humidityTriggerEl.classList.toggle("disabled", !hasHumidityEntity);
+    this._humidityTriggerEl.setAttribute("aria-disabled", String(!hasHumidityEntity));
   }
 
   _formatTemperature(value) {
-    if (value === undefined || value === null || Number.isNaN(value)) {
+    if (!Number.isFinite(Number(value))) {
       return "--";
     }
 
     return Number(value).toFixed(1);
   }
 
+  _formatHumidity(value) {
+    if (!Number.isFinite(Number(value))) {
+      return "--";
+    }
+
+    return `${Number(value).toFixed(0)}%`;
+  }
+
   _updateSliderFill() {
+    if (!this._slider) {
+      return;
+    }
+
     const min = Number(this._slider.min);
     const max = Number(this._slider.max);
     const current = Number(this._slider.value);
-    const percentage = ((current - min) * 100) / (max - min);
-    this._slider.style.setProperty("--fill", `${percentage}%`);
+    const range = max - min;
+    const percentage = range <= 0 ? 0 : ((current - min) * 100) / range;
+    this._slider.style.setProperty("--fill", `${Math.min(Math.max(percentage, 0), 100)}%`);
   }
 
   _updateHeatingToggle(climateState) {
@@ -782,19 +878,24 @@ class HeatingControlCard extends HTMLElement {
 
     const isHeatingEnabled = climateState.state !== "off";
 
-    if (isHeatingEnabled) {
+    try {
+      if (isHeatingEnabled) {
+        await this._hass.callService("climate", "set_hvac_mode", {
+          entity_id: this._config.entity,
+          hvac_mode: "off"
+        });
+        return;
+      }
+
+      const onMode = this._resolveHeatingOnMode(climateState);
       await this._hass.callService("climate", "set_hvac_mode", {
         entity_id: this._config.entity,
-        hvac_mode: "off"
+        hvac_mode: onMode
       });
-      return;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error("[heating-control-card] Failed to toggle heating", error);
     }
-
-    const onMode = this._resolveHeatingOnMode(climateState);
-    await this._hass.callService("climate", "set_hvac_mode", {
-      entity_id: this._config.entity,
-      hvac_mode: onMode
-    });
   }
 
   _resolveHeatingOnMode(climateState) {
@@ -824,6 +925,10 @@ class HeatingControlCard extends HTMLElement {
 
     this.style.setProperty("--card-bg-start", backgroundStart);
     this.style.setProperty("--card-bg-end", backgroundEnd);
+
+    if (this._chartDrawerEl?.classList.contains("visible")) {
+      this._renderActiveChartFromCache();
+    }
   }
 
   _resolveSliderOrientation() {
@@ -857,7 +962,26 @@ class HeatingControlCard extends HTMLElement {
         this._applyAppearance();
       }
     };
-    this._mediaQuery.addEventListener("change", this._onViewportChange);
+
+    if (typeof this._mediaQuery.addEventListener === "function") {
+      this._mediaQuery.addEventListener("change", this._onViewportChange);
+    } else if (typeof this._mediaQuery.addListener === "function") {
+      this._mediaQuery.addListener(this._onViewportChange);
+    }
+  }
+
+  _setupResizeObserver() {
+    if (this._resizeObserver || typeof ResizeObserver === "undefined" || !this._chartCanvasEl) {
+      return;
+    }
+
+    this._resizeObserver = new ResizeObserver(() => {
+      if (this._chartDrawerEl?.classList.contains("visible")) {
+        this._renderActiveChartFromCache();
+      }
+    });
+
+    this._resizeObserver.observe(this._chartCanvasEl);
   }
 
   _setPreviewState() {
@@ -874,8 +998,6 @@ class HeatingControlCard extends HTMLElement {
     this._heatingToggleEl.textContent = this._t("heatingOn");
     this._heatingToggleEl.disabled = true;
     this._heatingToggleEl.classList.remove("off");
-    this._recordMetricValue(this._tempHistory, previewCurrent);
-    this._recordMetricValue(this._humidityHistory, previewHumidity);
   }
 
   _onMetricTriggerKeydown(event, chartType) {
@@ -886,16 +1008,27 @@ class HeatingControlCard extends HTMLElement {
   }
 
   _openChartDrawer(chartType) {
+    if (chartType === "humidity" && !this._config?.humidity_entity && !this._isInPreviewMode()) {
+      return;
+    }
+
     this._activeChart = chartType;
     this._chartDrawerEl.classList.remove("hidden");
     this._chartDrawerOverlayEl.classList.remove("hidden");
     this._chartDrawerEl.classList.add("visible");
     this._chartDrawerOverlayEl.classList.add("visible");
     this._chartDrawerEl.setAttribute("aria-hidden", "false");
-    this._drawActiveChart();
+
+    this._setChartHeader(chartType, null);
+    this._drawChartMessage(this._t("loadingHistory"));
+
+    requestAnimationFrame(() => {
+      this._loadAndRenderChart(chartType);
+    });
   }
 
   _closeChartDrawer() {
+    this._chartRequestToken += 1;
     this._chartDrawerEl.classList.remove("visible");
     this._chartDrawerOverlayEl.classList.remove("visible");
     this._chartDrawerEl.classList.add("hidden");
@@ -903,88 +1036,348 @@ class HeatingControlCard extends HTMLElement {
     this._chartDrawerEl.setAttribute("aria-hidden", "true");
   }
 
-  _recordMetricValue(history, value) {
-    if (value === undefined || value === null || Number.isNaN(Number(value))) {
-      return;
-    }
+  _setChartHeader(chartType, pointCount) {
+    const isTemperature = chartType === "temperature";
+    this._chartTitleEl.textContent = isTemperature ? this._t("temperatureTrend") : this._t("humidityTrend");
+    this._chartSubtitleEl.textContent =
+      typeof pointCount === "number" ? this._t("chartSubtitle24hWithCount")(pointCount) : this._t("loadingHistory");
+  }
 
-    history.push(Number(value));
-    if (history.length > 30) {
-      history.shift();
+  async _loadAndRenderChart(chartType) {
+    const requestToken = ++this._chartRequestToken;
+
+    try {
+      const points = await this._getChartPoints(chartType);
+
+      if (requestToken !== this._chartRequestToken || this._activeChart !== chartType) {
+        return;
+      }
+
+      if (!points.length) {
+        this._setChartHeader(chartType, 0);
+        this._drawChartMessage(this._t("noHistoryData"));
+        return;
+      }
+
+      this._setChartHeader(chartType, points.length);
+      this._drawSeries(chartType, points);
+    } catch (error) {
+      if (requestToken !== this._chartRequestToken || this._activeChart !== chartType) {
+        return;
+      }
+
+      this._setChartHeader(chartType, 0);
+      this._drawChartMessage(this._t("historyUnavailable"));
+      // eslint-disable-next-line no-console
+      console.error("[heating-control-card] Failed to load chart history", error);
     }
   }
 
-  _drawActiveChart() {
-    const showTemperature = this._activeChart === "temperature";
-    const history = showTemperature ? this._tempHistory : this._humidityHistory;
-    const chartColor = showTemperature ? "#f97921" : "#2f8df5";
-    const unit = showTemperature ? "°C" : "%";
+  async _getChartPoints(chartType) {
+    if (this._isInPreviewMode()) {
+      const points = this._buildPreviewHistory(chartType);
+      this._historyCache[chartType] = {
+        entityId: chartType,
+        fetchedAt: Date.now(),
+        points
+      };
+      return points;
+    }
 
-    this._chartTitleEl.textContent = showTemperature ? this._t("temperatureTrend") : this._t("humidityTrend");
-    this._chartSubtitleEl.textContent = this._t("chartSubtitleWithCount")(Math.max(history.length, 1));
+    const entityId = chartType === "temperature" ? this._config.entity : this._config.humidity_entity;
+    if (!entityId) {
+      return [];
+    }
 
-    const canvas = this._chartCanvasEl;
-    const ctx = canvas?.getContext("2d");
-    if (!ctx || !canvas) {
+    const cachedEntry = this._historyCache[chartType];
+    const cacheIsValid =
+      cachedEntry && cachedEntry.entityId === entityId && Date.now() - cachedEntry.fetchedAt < 5 * 60 * 1000;
+
+    if (cacheIsValid) {
+      return cachedEntry.points;
+    }
+
+    const endTime = new Date();
+    const startTime = new Date(endTime.getTime() - 24 * 60 * 60 * 1000);
+
+    const query = new URLSearchParams({
+      filter_entity_id: entityId,
+      end_time: endTime.toISOString(),
+      significant_changes_only: "0"
+    });
+
+    const historyResponse = await this._hass.callApi(
+      "GET",
+      `history/period/${startTime.toISOString()}?${query.toString()}`
+    );
+
+    const rawStates = Array.isArray(historyResponse?.[0]) ? historyResponse[0] : [];
+    const mappedPoints = rawStates
+      .map((entry) => {
+        const timestamp = new Date(entry.last_changed || entry.last_updated).getTime();
+        const value = chartType === "temperature"
+          ? Number(entry.attributes?.current_temperature)
+          : Number(entry.state);
+
+        if (!Number.isFinite(timestamp) || !Number.isFinite(value)) {
+          return null;
+        }
+
+        return { timestamp, value };
+      })
+      .filter(Boolean);
+
+    const pointsWithCurrent = this._appendCurrentPoint(chartType, mappedPoints, endTime.getTime());
+    const normalizedPoints = this._downsamplePoints(this._dedupePoints(pointsWithCurrent), 240);
+
+    this._historyCache[chartType] = {
+      entityId,
+      fetchedAt: Date.now(),
+      points: normalizedPoints
+    };
+
+    return normalizedPoints;
+  }
+
+  _appendCurrentPoint(chartType, points, timestamp) {
+    const liveValue = chartType === "temperature"
+      ? Number(this._hass?.states?.[this._config.entity]?.attributes?.current_temperature)
+      : Number(this._hass?.states?.[this._config.humidity_entity]?.state);
+
+    if (!Number.isFinite(liveValue)) {
+      return points;
+    }
+
+    const updated = [...points];
+    const lastPoint = updated[updated.length - 1];
+    if (!lastPoint || Math.abs(lastPoint.timestamp - timestamp) > 60 * 1000 || Math.abs(lastPoint.value - liveValue) > 0.01) {
+      updated.push({ timestamp, value: liveValue });
+    }
+
+    return updated;
+  }
+
+  _dedupePoints(points) {
+    const map = new Map();
+    points.forEach((point) => {
+      map.set(point.timestamp, point);
+    });
+    return [...map.values()].sort((a, b) => a.timestamp - b.timestamp);
+  }
+
+  _downsamplePoints(points, maxPoints) {
+    if (points.length <= maxPoints) {
+      return points;
+    }
+
+    const result = [];
+    const step = (points.length - 1) / (maxPoints - 1);
+
+    for (let index = 0; index < maxPoints; index += 1) {
+      const sourceIndex = Math.round(index * step);
+      result.push(points[sourceIndex]);
+    }
+
+    return this._dedupePoints(result);
+  }
+
+  _buildPreviewHistory(chartType) {
+    const endTime = Date.now();
+    const startTime = endTime - 24 * 60 * 60 * 1000;
+    const points = [];
+
+    for (let index = 0; index <= 24; index += 1) {
+      const ratio = index / 24;
+      const timestamp = startTime + ratio * (endTime - startTime);
+      const baseValue = chartType === "temperature" ? 21.5 : 46;
+      const amplitude = chartType === "temperature" ? 1.6 : 8;
+      const wave = Math.sin(ratio * Math.PI * 2.1) * amplitude;
+      const detail = Math.cos(ratio * Math.PI * 5.3) * amplitude * 0.18;
+      points.push({
+        timestamp,
+        value: Number((baseValue + wave + detail).toFixed(1))
+      });
+    }
+
+    return points;
+  }
+
+  _renderActiveChartFromCache() {
+    const cachedEntry = this._historyCache[this._activeChart];
+
+    if (!cachedEntry?.points?.length) {
+      this._drawChartMessage(this._t("loadingHistory"));
       return;
     }
 
-    const width = canvas.width;
-    const height = canvas.height;
-    const padding = { top: 24, right: 16, bottom: 32, left: 28 };
-    const plotWidth = width - padding.left - padding.right;
-    const plotHeight = height - padding.top - padding.bottom;
-    const values = history.length ? history : [0];
-    const rawMinValue = Math.min(...values);
-    const rawMaxValue = Math.max(...values);
-    const paddingForFlatLine = rawMaxValue === rawMinValue ? Math.max(Math.abs(rawMaxValue) * 0.08, 1) : 0;
-    const minValue = rawMinValue - paddingForFlatLine;
-    const maxValue = rawMaxValue + paddingForFlatLine;
-    const range = Math.max(maxValue - minValue, 0.01);
+    this._setChartHeader(this._activeChart, cachedEntry.points.length);
+    this._drawSeries(this._activeChart, cachedEntry.points);
+  }
 
-    ctx.clearRect(0, 0, width, height);
+  _getCanvasContext() {
+    const canvas = this._chartCanvasEl;
+    const ctx = canvas?.getContext("2d");
+
+    if (!canvas || !ctx) {
+      return null;
+    }
+
+    const rect = canvas.getBoundingClientRect();
+    const cssWidth = Math.round(rect.width) || 320;
+    const cssHeight = Math.round(rect.height) || 220;
+    const dpr = window.devicePixelRatio || 1;
+    const pixelWidth = Math.round(cssWidth * dpr);
+    const pixelHeight = Math.round(cssHeight * dpr);
+
+    if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+      canvas.width = pixelWidth;
+      canvas.height = pixelHeight;
+    }
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cssWidth, cssHeight);
+
+    return { canvas, ctx, width: cssWidth, height: cssHeight };
+  }
+
+  _drawChartMessage(message) {
+    const canvasContext = this._getCanvasContext();
+    if (!canvasContext) {
+      return;
+    }
+
+    const { ctx, width, height } = canvasContext;
+
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, width, height);
 
-    ctx.strokeStyle = "rgba(23, 33, 47, 0.12)";
+    ctx.fillStyle = "rgba(23, 33, 47, 0.7)";
+    ctx.font = "600 14px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    const lines = String(message).split("\n");
+    lines.forEach((line, index) => {
+      const offset = (index - (lines.length - 1) / 2) * 20;
+      ctx.fillText(line, width / 2, height / 2 + offset);
+    });
+
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+  }
+
+  _drawSeries(chartType, points) {
+    const canvasContext = this._getCanvasContext();
+    if (!canvasContext) {
+      return;
+    }
+
+    const { ctx, width, height } = canvasContext;
+    const padding = { top: 18, right: 16, bottom: 34, left: 16 };
+    const plotWidth = width - padding.left - padding.right;
+    const plotHeight = height - padding.top - padding.bottom;
+    const chartColor = chartType === "temperature" ? "#f97921" : "#2f8df5";
+    const unit = chartType === "temperature" ? "°C" : "%";
+    const now = Date.now();
+    const startTime = now - 24 * 60 * 60 * 1000;
+    const endTime = now;
+    const values = points.map((point) => point.value);
+    const rawMinValue = Math.min(...values);
+    const rawMaxValue = Math.max(...values);
+    const flatPadding = rawMaxValue === rawMinValue ? Math.max(Math.abs(rawMaxValue) * 0.08, 1) : 0;
+    const minValue = rawMinValue - flatPadding;
+    const maxValue = rawMaxValue + flatPadding;
+    const range = Math.max(maxValue - minValue, 0.01);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.strokeStyle = "rgba(23, 33, 47, 0.1)";
     ctx.lineWidth = 1;
-    for (let i = 0; i < 4; i += 1) {
-      const y = padding.top + (plotHeight * i) / 3;
+    for (let index = 0; index < 4; index += 1) {
+      const y = padding.top + (plotHeight * index) / 3;
       ctx.beginPath();
       ctx.moveTo(padding.left, y);
       ctx.lineTo(width - padding.right, y);
       ctx.stroke();
     }
 
-    ctx.strokeStyle = chartColor;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    values.forEach((value, index) => {
-      const x =
-        values.length === 1
-          ? padding.left + plotWidth / 2
-          : padding.left + (plotWidth * index) / (values.length - 1);
-      const y = padding.top + ((maxValue - value) * plotHeight) / range;
+    const projectX = (timestamp) => padding.left + ((timestamp - startTime) * plotWidth) / (endTime - startTime);
+    const projectY = (value) => padding.top + ((maxValue - value) * plotHeight) / range;
 
+    ctx.beginPath();
+    points.forEach((point, index) => {
+      const x = projectX(point.timestamp);
+      const y = projectY(point.value);
       if (index === 0) {
         ctx.moveTo(x, y);
       } else {
         ctx.lineTo(x, y);
       }
     });
+
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = chartColor;
     ctx.stroke();
 
-    const lastValue = values[values.length - 1];
-    const lastX = values.length === 1 ? padding.left + plotWidth / 2 : width - padding.right;
-    const lastY = padding.top + ((maxValue - lastValue) * plotHeight) / range;
+    ctx.save();
+    ctx.globalAlpha = 0.12;
+    ctx.lineTo(projectX(points[points.length - 1].timestamp), height - padding.bottom);
+    ctx.lineTo(projectX(points[0].timestamp), height - padding.bottom);
+    ctx.closePath();
+    ctx.fillStyle = chartColor;
+    ctx.fill();
+    ctx.restore();
+
+    const lastPoint = points[points.length - 1];
+    const lastX = projectX(lastPoint.timestamp);
+    const lastY = projectY(lastPoint.value);
     ctx.fillStyle = chartColor;
     ctx.beginPath();
     ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = "rgba(23, 33, 47, 0.8)";
+    const timeFormatter = new Intl.DateTimeFormat(this._language, {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    ctx.fillStyle = "rgba(23, 33, 47, 0.74)";
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText(timeFormatter.format(new Date(startTime)), padding.left, height - 10);
+    ctx.textAlign = "right";
+    ctx.fillText(timeFormatter.format(new Date(endTime)), width - padding.right, height - 10);
+
+    ctx.textAlign = "right";
+    ctx.font = "600 11px sans-serif";
+    ctx.fillStyle = "rgba(23, 33, 47, 0.68)";
+    ctx.fillText(this._formatChartValue(maxValue, unit), width - padding.right, padding.top - 4);
+    ctx.fillText(this._formatChartValue(minValue, unit), width - padding.right, height - padding.bottom + 14);
+
+    ctx.textAlign = "left";
     ctx.font = "600 13px sans-serif";
-    ctx.fillText(this._t("nowValue")(Number(lastValue).toFixed(1), unit), padding.left, height - 10);
+    ctx.fillStyle = "rgba(23, 33, 47, 0.82)";
+    ctx.fillText(this._t("nowValue")(this._formatCompactNumber(lastPoint.value), unit), padding.left, 14);
+  }
+
+  _formatChartValue(value, unit) {
+    return `${this._formatCompactNumber(value)}${unit}`;
+  }
+
+  _formatCompactNumber(value) {
+    if (!Number.isFinite(Number(value))) {
+      return "--";
+    }
+
+    return Math.abs(Number(value)) >= 100 ? Number(value).toFixed(0) : Number(value).toFixed(1);
+  }
+
+  _invalidateHistoryCache() {
+    this._historyCache = {
+      temperature: null,
+      humidity: null
+    };
   }
 
   _isInPreviewMode() {
@@ -1006,12 +1399,23 @@ class HeatingControlCard extends HTMLElement {
 
   disconnectedCallback() {
     if (this._mediaQuery && this._onViewportChange) {
-      this._mediaQuery.removeEventListener("change", this._onViewportChange);
+      if (typeof this._mediaQuery.removeEventListener === "function") {
+        this._mediaQuery.removeEventListener("change", this._onViewportChange);
+      } else if (typeof this._mediaQuery.removeListener === "function") {
+        this._mediaQuery.removeListener(this._onViewportChange);
+      }
+    }
+
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+      this._resizeObserver = null;
     }
   }
 }
 
-customElements.define("heating-control-card", HeatingControlCard);
+if (!customElements.get("heating-control-card")) {
+  customElements.define("heating-control-card", HeatingControlCard);
+}
 
 class HeatingControlCardEditor extends HTMLElement {
   static get EDITOR_TRANSLATIONS() {
@@ -1198,6 +1602,8 @@ class HeatingControlCardEditor extends HTMLElement {
           font-size: 14px;
           background: var(--card-background-color, #fff);
           color: var(--primary-text-color, #111);
+          box-sizing: border-box;
+          width: 100%;
         }
 
         .full {
@@ -1209,6 +1615,10 @@ class HeatingControlCardEditor extends HTMLElement {
           align-items: center;
           gap: 8px;
           font-size: 14px;
+        }
+
+        .checkbox-row input {
+          width: auto;
         }
       </style>
       <div class="editor">
@@ -1339,12 +1749,16 @@ class HeatingControlCardEditor extends HTMLElement {
   }
 }
 
-customElements.define("heating-control-card-editor", HeatingControlCardEditor);
+if (!customElements.get("heating-control-card-editor")) {
+  customElements.define("heating-control-card-editor", HeatingControlCardEditor);
+}
 
 window.customCards = window.customCards || [];
-window.customCards.push({
-  type: "heating-control-card",
-  name: "Heating Control Card",
-  description: "A custom orange heating dashboard card with a thermostat slider.",
-  preview: true
-});
+if (!window.customCards.some((card) => card.type === "heating-control-card")) {
+  window.customCards.push({
+    type: "heating-control-card",
+    name: "Heating Control Card",
+    description: "A custom orange heating dashboard card with a thermostat slider and 24h history drawer.",
+    preview: true
+  });
+}
