@@ -21,6 +21,7 @@ A custom **Lovelace dashboard card** for Home Assistant inspired by the orange t
 - Shows **target temperature** and lets you change it using a slider.
 - Lets you toggle heating **on/off** directly from the card.
 - Shows optional **humidity** from a separate sensor.
+- Supports optional modular info rows for **outdoor temperature**, **window contact**, **CO₂**, **heating active for X min**, and **battery**.
 - Shows current HVAC state (`heat`, `idle`, etc.).
 - Shows a preview state in the dashboard card picker.
 - Calls Home Assistant service `climate.set_temperature`.
@@ -84,6 +85,11 @@ slider_orientation_desktop: horizontal
 desktop_layout: compact
 heating_on_mode: heat
 history_range: 24h
+outdoor_temp_entity: sensor.outdoor_temperature
+window_contact_entity: binary_sensor.living_room_window
+co2_entity: sensor.living_room_co2
+heating_active_since_entity: sensor.living_room_heating_active_minutes
+battery_entity: sensor.living_room_thermostat_battery
 ```
 
 ## Configure with the UI editor
@@ -119,6 +125,11 @@ The card can also show history graphs for humidity and temperature trends.
 | `desktop_layout` | no | `standard` | Desktop layout density: `standard` or `compact` |
 | `heating_on_mode` | no | `heat` | HVAC mode used when toggling from OFF to ON (must be supported by your climate entity) |
 | `history_range` | no | `24h` | History window for chart drawer: `24h`, `7d`, or `30d` |
+| `outdoor_temp_entity` | no | - | Optional entity shown as outdoor temperature info row |
+| `window_contact_entity` | no | - | Optional entity shown as window contact info row |
+| `co2_entity` | no | - | Optional entity shown as CO₂ info row |
+| `heating_active_since_entity` | no | - | Optional entity for “heating active” duration (minutes or timestamp) |
+| `battery_entity` | no | - | Optional entity shown as battery info row |
 
 ---
 
