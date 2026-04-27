@@ -14,10 +14,10 @@ class HeatingControlCard extends HTMLElement {
         preview: "PREVIEW",
         temperatureTrend: "Temperature history",
         humidityTrend: "Humidity history",
-        chartSubtitle24hWithCount: (count) => `24h history · ${count} points`,
+        chartSubtitleWithCount: (rangeLabel, count) => `${rangeLabel} history · ${count} points`,
         nowValue: (value, unit) => `Now: ${value}${unit}`,
-        loadingHistory: "Loading 24h history…",
-        noHistoryData: "No history data available for the last 24 hours.",
+        loadingHistory: "Loading history…",
+        noHistoryData: "No history data available for the selected period.",
         historyUnavailable: "History could not be loaded. Check Recorder / History settings."
       },
       de: {
@@ -33,10 +33,10 @@ class HeatingControlCard extends HTMLElement {
         preview: "VORSCHAU",
         temperatureTrend: "Temperaturverlauf",
         humidityTrend: "Luftfeuchtigkeitsverlauf",
-        chartSubtitle24hWithCount: (count) => `24h-Verlauf · ${count} Punkte`,
+        chartSubtitleWithCount: (rangeLabel, count) => `${rangeLabel}-Verlauf · ${count} Punkte`,
         nowValue: (value, unit) => `Jetzt: ${value}${unit}`,
-        loadingHistory: "24h-Historie wird geladen…",
-        noHistoryData: "Für die letzten 24 Stunden sind keine Verlaufsdaten vorhanden.",
+        loadingHistory: "Historie wird geladen…",
+        noHistoryData: "Für den ausgewählten Zeitraum sind keine Verlaufsdaten vorhanden.",
         historyUnavailable: "Historie konnte nicht geladen werden. Recorder-/Historie-Einstellungen prüfen."
       },
       fr: {
@@ -52,10 +52,10 @@ class HeatingControlCard extends HTMLElement {
         preview: "APERÇU",
         temperatureTrend: "Historique de température",
         humidityTrend: "Historique d'humidité",
-        chartSubtitle24hWithCount: (count) => `Historique 24 h · ${count} points`,
+        chartSubtitleWithCount: (rangeLabel, count) => `Historique ${rangeLabel} · ${count} points`,
         nowValue: (value, unit) => `Maintenant : ${value}${unit}`,
-        loadingHistory: "Chargement de l'historique 24 h…",
-        noHistoryData: "Aucune donnée d'historique disponible pour les dernières 24 heures.",
+        loadingHistory: "Chargement de l'historique…",
+        noHistoryData: "Aucune donnée d'historique disponible pour la période sélectionnée.",
         historyUnavailable: "Impossible de charger l'historique. Vérifiez Recorder / Historique."
       },
       es: {
@@ -71,10 +71,10 @@ class HeatingControlCard extends HTMLElement {
         preview: "VISTA PREVIA",
         temperatureTrend: "Historial de temperatura",
         humidityTrend: "Historial de humedad",
-        chartSubtitle24hWithCount: (count) => `Historial de 24 h · ${count} puntos`,
+        chartSubtitleWithCount: (rangeLabel, count) => `Historial de ${rangeLabel} · ${count} puntos`,
         nowValue: (value, unit) => `Ahora: ${value}${unit}`,
-        loadingHistory: "Cargando historial de 24 h…",
-        noHistoryData: "No hay datos de historial para las últimas 24 horas.",
+        loadingHistory: "Cargando historial…",
+        noHistoryData: "No hay datos de historial para el período seleccionado.",
         historyUnavailable: "No se pudo cargar el historial. Revisa Recorder / Historial."
       },
       it: {
@@ -90,10 +90,10 @@ class HeatingControlCard extends HTMLElement {
         preview: "ANTEPRIMA",
         temperatureTrend: "Storico temperatura",
         humidityTrend: "Storico umidità",
-        chartSubtitle24hWithCount: (count) => `Storico 24 h · ${count} punti`,
+        chartSubtitleWithCount: (rangeLabel, count) => `Storico ${rangeLabel} · ${count} punti`,
         nowValue: (value, unit) => `Ora: ${value}${unit}`,
-        loadingHistory: "Caricamento storico 24 h…",
-        noHistoryData: "Nessun dato storico disponibile per le ultime 24 ore.",
+        loadingHistory: "Caricamento storico…",
+        noHistoryData: "Nessun dato storico disponibile per il periodo selezionato.",
         historyUnavailable: "Impossibile caricare lo storico. Controlla Recorder / History."
       },
       pl: {
@@ -109,10 +109,10 @@ class HeatingControlCard extends HTMLElement {
         preview: "PODGLĄD",
         temperatureTrend: "Historia temperatury",
         humidityTrend: "Historia wilgotności",
-        chartSubtitle24hWithCount: (count) => `Historia 24 h · ${count} punktów`,
+        chartSubtitleWithCount: (rangeLabel, count) => `Historia ${rangeLabel} · ${count} punktów`,
         nowValue: (value, unit) => `Teraz: ${value}${unit}`,
-        loadingHistory: "Ładowanie historii 24 h…",
-        noHistoryData: "Brak danych historycznych z ostatnich 24 godzin.",
+        loadingHistory: "Ładowanie historii…",
+        noHistoryData: "Brak danych historycznych dla wybranego okresu.",
         historyUnavailable: "Nie udało się wczytać historii. Sprawdź Recorder / History."
       },
       nl: {
@@ -128,10 +128,10 @@ class HeatingControlCard extends HTMLElement {
         preview: "VOORBEELD",
         temperatureTrend: "Temperatuurgeschiedenis",
         humidityTrend: "Vochtigheidsgeschiedenis",
-        chartSubtitle24hWithCount: (count) => `24u-geschiedenis · ${count} punten`,
+        chartSubtitleWithCount: (rangeLabel, count) => `${rangeLabel}-geschiedenis · ${count} punten`,
         nowValue: (value, unit) => `Nu: ${value}${unit}`,
-        loadingHistory: "24u-geschiedenis laden…",
-        noHistoryData: "Geen historische gegevens beschikbaar voor de afgelopen 24 uur.",
+        loadingHistory: "Geschiedenis laden…",
+        noHistoryData: "Geen historische gegevens beschikbaar voor de geselecteerde periode.",
         historyUnavailable: "Geschiedenis kon niet worden geladen. Controleer Recorder / Geschiedenis."
       },
       cs: {
@@ -147,10 +147,10 @@ class HeatingControlCard extends HTMLElement {
         preview: "NÁHLED",
         temperatureTrend: "Historie teploty",
         humidityTrend: "Historie vlhkosti",
-        chartSubtitle24hWithCount: (count) => `Historie 24 h · ${count} bodů`,
+        chartSubtitleWithCount: (rangeLabel, count) => `Historie ${rangeLabel} · ${count} bodů`,
         nowValue: (value, unit) => `Nyní: ${value}${unit}`,
-        loadingHistory: "Načítá se 24h historie…",
-        noHistoryData: "Za posledních 24 hodin nejsou k dispozici žádná historická data.",
+        loadingHistory: "Načítá se historie…",
+        noHistoryData: "Pro vybrané období nejsou k dispozici žádná historická data.",
         historyUnavailable: "Historii se nepodařilo načíst. Zkontrolujte Recorder / Historii."
       }
     };
@@ -176,6 +176,7 @@ class HeatingControlCard extends HTMLElement {
       slider_orientation_desktop: "vertical",
       desktop_layout: "standard",
       heating_on_mode: "heat",
+      history_range: "24h",
       preview: false
     };
   }
@@ -213,6 +214,7 @@ class HeatingControlCard extends HTMLElement {
       slider_orientation_desktop: null,
       desktop_layout: "standard",
       heating_on_mode: "heat",
+      history_range: "24h",
       ...config
     };
 
@@ -223,6 +225,7 @@ class HeatingControlCard extends HTMLElement {
     const entityChanged =
       previousConfig?.entity !== this._config.entity ||
       previousConfig?.humidity_entity !== this._config.humidity_entity ||
+      previousConfig?.history_range !== this._config.history_range ||
       previousConfig?.preview !== this._config.preview;
 
     if (entityChanged) {
@@ -319,7 +322,7 @@ class HeatingControlCard extends HTMLElement {
           <div class="chart-drawer-header">
             <div>
               <div id="chart-title" class="chart-title">Temperature</div>
-              <div id="chart-subtitle" class="chart-subtitle">24h history</div>
+              <div id="chart-subtitle" class="chart-subtitle">History</div>
             </div>
             <button id="chart-close" class="chart-close" type="button">✕</button>
           </div>
@@ -1036,9 +1039,10 @@ class HeatingControlCard extends HTMLElement {
 
   _setChartHeader(chartType, pointCount) {
     const isTemperature = chartType === "temperature";
+    const rangeLabel = this._getHistoryRangeLabel();
     this._chartTitleEl.textContent = isTemperature ? this._t("temperatureTrend") : this._t("humidityTrend");
     this._chartSubtitleEl.textContent =
-      typeof pointCount === "number" ? this._t("chartSubtitle24hWithCount")(pointCount) : this._t("loadingHistory");
+      typeof pointCount === "number" ? this._t("chartSubtitleWithCount")(rangeLabel, pointCount) : this._t("loadingHistory");
   }
 
   async _loadAndRenderChart(chartType) {
@@ -1075,6 +1079,7 @@ class HeatingControlCard extends HTMLElement {
       const points = this._buildPreviewHistory(chartType);
       this._historyCache[chartType] = {
         entityId: chartType,
+        historyRange: this._getHistoryRangeSetting(),
         fetchedAt: Date.now(),
         points
       };
@@ -1087,15 +1092,19 @@ class HeatingControlCard extends HTMLElement {
     }
 
     const cachedEntry = this._historyCache[chartType];
+    const historyRange = this._getHistoryRangeSetting();
     const cacheIsValid =
-      cachedEntry && cachedEntry.entityId === entityId && Date.now() - cachedEntry.fetchedAt < 5 * 60 * 1000;
+      cachedEntry &&
+      cachedEntry.entityId === entityId &&
+      cachedEntry.historyRange === historyRange &&
+      Date.now() - cachedEntry.fetchedAt < 5 * 60 * 1000;
 
     if (cacheIsValid) {
       return cachedEntry.points;
     }
 
     const endTime = new Date();
-    const startTime = new Date(endTime.getTime() - 24 * 60 * 60 * 1000);
+    const startTime = new Date(endTime.getTime() - this._getHistoryRangeDurationMs());
 
     const query = new URLSearchParams({
       filter_entity_id: entityId,
@@ -1126,10 +1135,11 @@ class HeatingControlCard extends HTMLElement {
       .filter(Boolean);
 
     const pointsWithCurrent = this._appendCurrentPoint(chartType, mappedPoints, endTime.getTime());
-    const normalizedPoints = this._downsamplePoints(this._dedupePoints(pointsWithCurrent), 240);
+    const normalizedPoints = this._downsamplePoints(this._dedupePoints(pointsWithCurrent), this._getHistoryMaxPoints());
 
     this._historyCache[chartType] = {
       entityId,
+      historyRange,
       fetchedAt: Date.now(),
       points: normalizedPoints
     };
@@ -1182,11 +1192,13 @@ class HeatingControlCard extends HTMLElement {
 
   _buildPreviewHistory(chartType) {
     const endTime = Date.now();
-    const startTime = endTime - 24 * 60 * 60 * 1000;
+    const durationMs = this._getHistoryRangeDurationMs();
+    const startTime = endTime - durationMs;
+    const targetPoints = this._getHistoryPreviewPointCount();
     const points = [];
 
-    for (let index = 0; index <= 24; index += 1) {
-      const ratio = index / 24;
+    for (let index = 0; index <= targetPoints; index += 1) {
+      const ratio = index / targetPoints;
       const timestamp = startTime + ratio * (endTime - startTime);
       const baseValue = chartType === "temperature" ? 21.5 : 46;
       const amplitude = chartType === "temperature" ? 1.6 : 8;
@@ -1277,9 +1289,8 @@ class HeatingControlCard extends HTMLElement {
     const plotHeight = height - padding.top - padding.bottom;
     const chartColor = chartType === "temperature" ? "#f97921" : "#2f8df5";
     const unit = chartType === "temperature" ? "°C" : "%";
-    const now = Date.now();
-    const startTime = now - 24 * 60 * 60 * 1000;
-    const endTime = now;
+    const endTime = Date.now();
+    const startTime = endTime - this._getHistoryRangeDurationMs();
     const values = points.map((point) => point.value);
     const rawMinValue = Math.min(...values);
     const rawMaxValue = Math.max(...values);
@@ -1372,6 +1383,52 @@ class HeatingControlCard extends HTMLElement {
     return Math.abs(Number(value)) >= 100 ? Number(value).toFixed(0) : Number(value).toFixed(1);
   }
 
+  _getHistoryRangeSetting() {
+    const configuredRange = String(this._config?.history_range || "24h").toLowerCase();
+    return ["24h", "7d", "30d"].includes(configuredRange) ? configuredRange : "24h";
+  }
+
+  _getHistoryRangeDurationMs() {
+    const historyRange = this._getHistoryRangeSetting();
+    if (historyRange === "7d") {
+      return 7 * 24 * 60 * 60 * 1000;
+    }
+    if (historyRange === "30d") {
+      return 30 * 24 * 60 * 60 * 1000;
+    }
+    return 24 * 60 * 60 * 1000;
+  }
+
+  _getHistoryRangeLabel() {
+    const historyRange = this._getHistoryRangeSetting();
+    if (historyRange === "24h") {
+      return "24h";
+    }
+    return historyRange;
+  }
+
+  _getHistoryMaxPoints() {
+    const historyRange = this._getHistoryRangeSetting();
+    if (historyRange === "7d") {
+      return 336;
+    }
+    if (historyRange === "30d") {
+      return 360;
+    }
+    return 240;
+  }
+
+  _getHistoryPreviewPointCount() {
+    const historyRange = this._getHistoryRangeSetting();
+    if (historyRange === "7d") {
+      return 42;
+    }
+    if (historyRange === "30d") {
+      return 60;
+    }
+    return 24;
+  }
+
   _invalidateHistoryCache() {
     this._historyCache = {
       temperature: null,
@@ -1433,6 +1490,7 @@ class HeatingControlCardEditor extends HTMLElement {
         desktopOrientation: "Desktop orientation",
         desktopLayout: "Desktop layout",
         heatingOnMode: "Heating on mode",
+        historyRange: "History range",
         previewMode: "Preview mode",
         useDefault: "Use default"
       },
@@ -1450,6 +1508,7 @@ class HeatingControlCardEditor extends HTMLElement {
         desktopOrientation: "Desktop-Ausrichtung",
         desktopLayout: "Desktop-Layout",
         heatingOnMode: "Heizmodus beim Einschalten",
+        historyRange: "Historien-Zeitraum",
         previewMode: "Vorschaumodus",
         useDefault: "Standard verwenden"
       },
@@ -1467,6 +1526,7 @@ class HeatingControlCardEditor extends HTMLElement {
         desktopOrientation: "Orientation bureau",
         desktopLayout: "Disposition bureau",
         heatingOnMode: "Mode chauffage activé",
+        historyRange: "Plage d'historique",
         previewMode: "Mode aperçu",
         useDefault: "Utiliser la valeur par défaut"
       },
@@ -1484,6 +1544,7 @@ class HeatingControlCardEditor extends HTMLElement {
         desktopOrientation: "Orientación de escritorio",
         desktopLayout: "Diseño de escritorio",
         heatingOnMode: "Modo al encender calefacción",
+        historyRange: "Rango del historial",
         previewMode: "Modo vista previa",
         useDefault: "Usar valor predeterminado"
       },
@@ -1501,6 +1562,7 @@ class HeatingControlCardEditor extends HTMLElement {
         desktopOrientation: "Orientamento desktop",
         desktopLayout: "Layout desktop",
         heatingOnMode: "Modalità accensione riscaldamento",
+        historyRange: "Intervallo storico",
         previewMode: "Modalità anteprima",
         useDefault: "Usa predefinito"
       },
@@ -1518,6 +1580,7 @@ class HeatingControlCardEditor extends HTMLElement {
         desktopOrientation: "Orientacja desktopowa",
         desktopLayout: "Układ desktopowy",
         heatingOnMode: "Tryb przy włączaniu ogrzewania",
+        historyRange: "Zakres historii",
         previewMode: "Tryb podglądu",
         useDefault: "Użyj domyślnej"
       },
@@ -1535,6 +1598,7 @@ class HeatingControlCardEditor extends HTMLElement {
         desktopOrientation: "Desktoporiëntatie",
         desktopLayout: "Desktopindeling",
         heatingOnMode: "Verwarmingsmodus bij inschakelen",
+        historyRange: "Geschiedenisbereik",
         previewMode: "Voorbeeldmodus",
         useDefault: "Standaard gebruiken"
       },
@@ -1552,6 +1616,7 @@ class HeatingControlCardEditor extends HTMLElement {
         desktopOrientation: "Desktopová orientace",
         desktopLayout: "Rozložení desktopu",
         heatingOnMode: "Režim při zapnutí topení",
+        historyRange: "Rozsah historie",
         previewMode: "Režim náhledu",
         useDefault: "Použít výchozí"
       }
@@ -1661,6 +1726,7 @@ class HeatingControlCardEditor extends HTMLElement {
         ${this._selectField("slider_orientation_desktop", this._te("desktopOrientation"), ["", "vertical", "horizontal"])}
         ${this._selectField("desktop_layout", this._te("desktopLayout"), ["standard", "compact"])}
         ${this._textField("heating_on_mode", this._te("heatingOnMode"))}
+        ${this._selectField("history_range", this._te("historyRange"), ["24h", "7d", "30d"])}
         <label class="full checkbox-row">
           <input type="checkbox" data-key="preview" />
           <span>${this._te("previewMode")}</span>

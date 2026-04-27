@@ -83,6 +83,7 @@ slider_orientation_mobile: vertical
 slider_orientation_desktop: horizontal
 desktop_layout: compact
 heating_on_mode: heat
+history_range: 24h
 ```
 
 ## Configure with the UI editor
@@ -117,6 +118,7 @@ The card can also show history graphs for humidity and temperature trends.
 | `slider_orientation_desktop` | no | - | Desktop-only slider orientation override (`vertical` or `horizontal`) |
 | `desktop_layout` | no | `standard` | Desktop layout density: `standard` or `compact` |
 | `heating_on_mode` | no | `heat` | HVAC mode used when toggling from OFF to ON (must be supported by your climate entity) |
+| `history_range` | no | `24h` | History window for chart drawer: `24h`, `7d`, or `30d` |
 
 ---
 

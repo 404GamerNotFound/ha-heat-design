@@ -83,6 +83,7 @@ slider_orientation_mobile: vertical
 slider_orientation_desktop: horizontal
 desktop_layout: compact
 heating_on_mode: heat
+history_range: 24h
 ```
 
 ## Konfiguration mit dem UI-Editor
@@ -119,6 +120,7 @@ Die Karte kann zusätzlich Verlaufsgraphen für Luftfeuchtigkeit und Temperatur 
 | `slider_orientation_desktop` | nein | - | Desktop Override für Slider-Ausrichtung (`vertical` oder `horizontal`) |
 | `desktop_layout` | nein | `standard` | Desktop-Layoutdichte: `standard` oder `compact` |
 | `heating_on_mode` | nein | `heat` | HVAC-Modus beim Umschalten von AUS auf AN (muss von der Climate-Entität unterstützt werden) |
+| `history_range` | nein | `24h` | Zeitfenster für Verlaufsdiagramme: `24h`, `7d` oder `30d` |
 
 ---
 
