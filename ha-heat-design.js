@@ -1,10 +1,7 @@
 import "./heating-control-card.js";
+import "./button-switch-card.js";
 
 (() => {
-  if (customElements.get("heating-control-card")) {
-    return;
-  }
-
   const findScriptSource = () => {
     const currentScriptSource = document.currentScript?.src;
     if (currentScriptSource) {
@@ -13,39 +10,54 @@ import "./heating-control-card.js";
 
     const matchingScript = Array.from(document.querySelectorAll("script[src]"))
       .reverse()
-      .find((script) => script.src.includes("ha-heat-design.js") || script.src.includes("heating-control-card.js"));
+      .find(
+        (script) =>
+          script.src.includes("ha-heat-design.js") ||
+          script.src.includes("heating-control-card.js") ||
+          script.src.includes("button-switch-card.js")
+      );
 
     return matchingScript?.src || null;
   };
 
   const candidateUrls = new Set();
-  const addRelativeCandidate = (baseUrl) => {
+  const addRelativeCandidate = (baseUrl, moduleName) => {
     if (!baseUrl) {
       return;
     }
 
     try {
-      candidateUrls.add(new URL("./heating-control-card.js", baseUrl).toString());
+      candidateUrls.add(new URL(`./${moduleName}`, baseUrl).toString());
     } catch (_error) {
       // Ignore invalid base URLs and continue with fallbacks.
     }
   };
 
-  addRelativeCandidate(typeof import.meta !== "undefined" ? import.meta.url : null);
-  addRelativeCandidate(findScriptSource());
+  const moduleNames = ["heating-control-card.js", "button-switch-card.js"];
 
-  candidateUrls.add("/hacsfiles/ha-heat-design/heating-control-card.js");
-  candidateUrls.add("/local/community/ha-heat-design/heating-control-card.js");
-  candidateUrls.add("/local/heating-control-card.js");
+  for (const moduleName of moduleNames) {
+    addRelativeCandidate(typeof import.meta !== "undefined" ? import.meta.url : null, moduleName);
+    addRelativeCandidate(findScriptSource(), moduleName);
+    candidateUrls.add(`/hacsfiles/ha-heat-design/${moduleName}`);
+    candidateUrls.add(`/local/community/ha-heat-design/${moduleName}`);
+    candidateUrls.add(`/local/${moduleName}`);
+  }
 
-  const loadCardModule = async () => {
+  const hasRequiredElements = () =>
+    customElements.get("heating-control-card") && customElements.get("button-switch-card");
+
+  const loadCardModules = async () => {
+    if (hasRequiredElements()) {
+      return;
+    }
+
     let lastError = null;
 
     for (const moduleUrl of candidateUrls) {
       try {
         await import(moduleUrl);
 
-        if (customElements.get("heating-control-card")) {
+        if (hasRequiredElements()) {
           return;
         }
       } catch (error) {
@@ -54,11 +66,11 @@ import "./heating-control-card.js";
     }
 
     // eslint-disable-next-line no-console
-    console.error("[ha-heat-design] Failed to load heating-control-card.js from known paths", {
+    console.error("[ha-heat-design] Failed to load card modules from known paths", {
       attemptedUrls: [...candidateUrls],
       lastError
     });
   };
 
-  loadCardModule();
+  loadCardModules();
 })();

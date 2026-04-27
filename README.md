@@ -1,6 +1,10 @@
 # Home Assistant Heating Control Card
 
-A custom **Lovelace dashboard card** for Home Assistant inspired by the orange thermostat design in your reference image.
+A custom **Lovelace dashboard card bundle** for Home Assistant inspired by the orange thermostat design in your reference image.
+
+This repository now contains:
+- `custom:heating-control-card` (climate dashboard card)
+- `custom:button-switch-card` (switch/button dashboard card)
 
 ![Heating control card design](images/designv2.png)
 
@@ -51,7 +55,7 @@ A custom **Lovelace dashboard card** for Home Assistant inspired by the orange t
 
 Go to **Settings → Dashboards → Resources** and add:
 
-- **URL**: `/hacsfiles/ha-heat-design/heating-control-card.js`
+- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
 - **Type**: `JavaScript Module`
 
 > If your repository slug differs, adjust the path accordingly.
@@ -60,9 +64,9 @@ Go to **Settings → Dashboards → Resources** and add:
 
 ## Manual installation (alternative)
 
-1. Copy `heating-control-card.js` to `/config/www/` (or both files if you want backward compatibility with old resource paths).
+1. Copy `ha-heat-design.js`, `heating-control-card.js`, and `button-switch-card.js` to `/config/www/`.
 2. Add this resource:
-   - URL: `/local/heating-control-card.js`
+   - URL: `/local/ha-heat-design.js`
    - Type: `JavaScript Module`
 
 ---
@@ -90,6 +94,17 @@ window_contact_entity: binary_sensor.living_room_window
 co2_entity: sensor.living_room_co2
 heating_active_since_entity: sensor.living_room_heating_active_minutes
 battery_entity: sensor.living_room_thermostat_battery
+```
+
+
+### Button switch card YAML
+
+```yaml
+type: custom:button-switch-card
+entity: switch.tv
+name: TV
+icon: mdi:radiator
+layout_variant: compact
 ```
 
 ## Configure with the UI editor
@@ -150,7 +165,7 @@ The card can also show history graphs for humidity and temperature trends.
 ## Quick start
 
 1. Install with HACS (Dashboard category).
-2. Add resource (if needed): `/hacsfiles/ha-heat-design/heating-control-card.js`
+2. Add resource (if needed): `/hacsfiles/ha-heat-design/ha-heat-design.js`
 3. Add card:
 
 ```yaml
