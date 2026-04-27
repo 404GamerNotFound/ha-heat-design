@@ -4,6 +4,14 @@ class HeatingControlCard extends HTMLElement {
       en: {
         current: "CURRENT",
         humidity: "HUMIDITY",
+        outdoorTemperature: "OUTDOOR",
+        windowContact: "WINDOW",
+        co2: "CO₂",
+        heatingActiveFor: "HEATING ACTIVE",
+        battery: "BATTERY",
+        stateOpen: "OPEN",
+        stateClosed: "CLOSED",
+        minutesShort: "min",
         showTemperatureChart: "Show temperature history",
         showHumidityChart: "Show humidity history",
         temperature: "Temperature",
@@ -23,6 +31,14 @@ class HeatingControlCard extends HTMLElement {
       de: {
         current: "AKTUELL",
         humidity: "LUFTFEUCHTIGKEIT",
+        outdoorTemperature: "AUSSEN",
+        windowContact: "FENSTER",
+        co2: "CO₂",
+        heatingActiveFor: "HEIZUNG AKTIV",
+        battery: "BATTERIE",
+        stateOpen: "OFFEN",
+        stateClosed: "GESCHLOSSEN",
+        minutesShort: "Min",
         showTemperatureChart: "24h-Temperaturverlauf anzeigen",
         showHumidityChart: "24h-Luftfeuchtigkeitsverlauf anzeigen",
         temperature: "Temperatur",
@@ -165,6 +181,11 @@ class HeatingControlCard extends HTMLElement {
       type: "custom:heating-control-card",
       entity: "climate.living_room",
       humidity_entity: "sensor.living_room_humidity",
+      outdoor_temp_entity: "sensor.outdoor_temperature",
+      window_contact_entity: "binary_sensor.living_room_window",
+      co2_entity: "sensor.living_room_co2",
+      heating_active_since_entity: "sensor.living_room_heating_active_minutes",
+      battery_entity: "sensor.living_room_thermostat_battery",
       name: "Heating",
       min_temp: 16,
       max_temp: 28,
@@ -263,6 +284,7 @@ class HeatingControlCard extends HTMLElement {
       this._targetTemperatureEl.textContent = "--";
       this._statusEl.textContent = this._t("entityNotFound");
       this._updateHeatingToggle(null);
+      this._updateOptionalInfoRows(null);
       return;
     }
 
@@ -275,6 +297,7 @@ class HeatingControlCard extends HTMLElement {
     this._humidityEl.textContent = this._formatHumidity(humidity);
     this._statusEl.textContent = String(climateState.state || "--").toUpperCase();
     this._updateHeatingToggle(climateState);
+    this._updateOptionalInfoRows(hass.states);
 
     if (!this._isSliding) {
       this._slider.value = Number.isFinite(Number(targetTemp)) ? Number(targetTemp) : this._config.min_temp;
@@ -316,6 +339,7 @@ class HeatingControlCard extends HTMLElement {
             <button id="heating-toggle" class="heating-toggle" type="button">--</button>
             <div id="card-name" class="name">Heater</div>
           </div>
+          <div id="optional-info" class="optional-info"></div>
         </div>
         <div id="chart-drawer-overlay" class="chart-drawer-overlay hidden"></div>
         <aside id="chart-drawer" class="chart-drawer hidden" aria-hidden="true">
@@ -621,6 +645,37 @@ class HeatingControlCard extends HTMLElement {
         margin-left: auto;
       }
 
+      .optional-info {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .optional-info:empty {
+        display: none;
+      }
+
+      .optional-info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.12);
+        padding: 6px 10px;
+      }
+
+      .optional-info-label {
+        opacity: 0.85;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+
+      .optional-info-value {
+        font-weight: 600;
+      }
+
       .chart-drawer-overlay {
         position: absolute;
         inset: 0;
@@ -712,6 +767,7 @@ class HeatingControlCard extends HTMLElement {
     this._humidityEl = this.querySelector("#humidity");
     this._statusEl = this.querySelector("#status");
     this._nameEl = this.querySelector("#card-name");
+    this._optionalInfoEl = this.querySelector("#optional-info");
     this._sliderWrapEl = this.querySelector(".hud-slider-wrap");
     this._heatingToggleEl = this.querySelector("#heating-toggle");
     this._tempTriggerEl = this.querySelector("#current-temp-trigger");
@@ -999,6 +1055,126 @@ class HeatingControlCard extends HTMLElement {
     this._heatingToggleEl.textContent = this._t("heatingOn");
     this._heatingToggleEl.disabled = true;
     this._heatingToggleEl.classList.remove("off");
+    this._updateOptionalInfoRows(null, true);
+  }
+
+  _updateOptionalInfoRows(states, preview = false) {
+    if (!this._optionalInfoEl) {
+      return;
+    }
+
+    const rows = this._buildOptionalInfoRows(states, preview);
+    this._optionalInfoEl.innerHTML = rows
+      .map(
+        (row) => `
+          <div class="optional-info-row">
+            <span class="optional-info-label">${row.label}</span>
+            <span class="optional-info-value">${row.value}</span>
+          </div>
+        `
+      )
+      .join("");
+  }
+
+  _buildOptionalInfoRows(states, preview = false) {
+    if (preview) {
+      return [
+        { label: this._t("outdoorTemperature"), value: "9.6°C" },
+        { label: this._t("windowContact"), value: this._t("stateClosed") },
+        { label: this._t("co2"), value: "740 ppm" },
+        { label: this._t("heatingActiveFor"), value: `32 ${this._t("minutesShort")}` },
+        { label: this._t("battery"), value: "84%" }
+      ];
+    }
+
+    const metrics = [
+      {
+        configKey: "outdoor_temp_entity",
+        label: this._t("outdoorTemperature"),
+        formatter: (entityState) => this._formatTemperatureWithUnit(entityState?.state, entityState?.attributes?.unit_of_measurement)
+      },
+      {
+        configKey: "window_contact_entity",
+        label: this._t("windowContact"),
+        formatter: (entityState) => this._formatContactState(entityState?.state)
+      },
+      {
+        configKey: "co2_entity",
+        label: this._t("co2"),
+        formatter: (entityState) => this._formatCo2(entityState?.state, entityState?.attributes?.unit_of_measurement)
+      },
+      {
+        configKey: "heating_active_since_entity",
+        label: this._t("heatingActiveFor"),
+        formatter: (entityState) => this._formatHeatingActiveSince(entityState?.state)
+      },
+      {
+        configKey: "battery_entity",
+        label: this._t("battery"),
+        formatter: (entityState) => this._formatBattery(entityState?.state, entityState?.attributes?.unit_of_measurement)
+      }
+    ];
+
+    return metrics
+      .map((metric) => {
+        const entityId = this._config?.[metric.configKey];
+        if (!entityId) {
+          return null;
+        }
+
+        const entityState = states?.[entityId];
+        return {
+          label: metric.label,
+          value: metric.formatter(entityState)
+        };
+      })
+      .filter(Boolean);
+  }
+
+  _formatTemperatureWithUnit(value, unit = "°C") {
+    if (!Number.isFinite(Number(value))) {
+      return "--";
+    }
+    return `${Number(value).toFixed(1)}${unit || "°C"}`;
+  }
+
+  _formatContactState(value) {
+    const normalized = String(value || "").toLowerCase();
+    if (["on", "open", "opened", "true"].includes(normalized)) {
+      return this._t("stateOpen");
+    }
+    if (["off", "closed", "false"].includes(normalized)) {
+      return this._t("stateClosed");
+    }
+    return normalized ? normalized.toUpperCase() : "--";
+  }
+
+  _formatCo2(value, unit = "ppm") {
+    if (!Number.isFinite(Number(value))) {
+      return "--";
+    }
+    return `${Number(value).toFixed(0)} ${unit || "ppm"}`;
+  }
+
+  _formatHeatingActiveSince(value) {
+    if (Number.isFinite(Number(value))) {
+      return `${Number(value).toFixed(0)} ${this._t("minutesShort")}`;
+    }
+
+    const timestamp = new Date(value).getTime();
+    if (!Number.isFinite(timestamp)) {
+      return "--";
+    }
+
+    const minutes = Math.max(Math.round((Date.now() - timestamp) / 60000), 0);
+    return `${minutes} ${this._t("minutesShort")}`;
+  }
+
+  _formatBattery(value, unit = "%") {
+    if (!Number.isFinite(Number(value))) {
+      return "--";
+    }
+    return `${Number(value).toFixed(0)}${unit || "%"}`;
   }
 
   _onMetricTriggerKeydown(event, chartType) {
@@ -1479,6 +1655,11 @@ class HeatingControlCardEditor extends HTMLElement {
       en: {
         climateEntity: "Climate entity",
         humidityEntity: "Humidity entity",
+        outdoorTemperatureEntity: "Outdoor temperature entity",
+        windowContactEntity: "Window contact entity",
+        co2Entity: "CO₂ entity",
+        heatingActiveEntity: "Heating active entity",
+        batteryEntity: "Battery entity",
         cardName: "Card name",
         minimumTemperature: "Minimum temperature",
         maximumTemperature: "Maximum temperature",
@@ -1497,6 +1678,11 @@ class HeatingControlCardEditor extends HTMLElement {
       de: {
         climateEntity: "Klima-Entität",
         humidityEntity: "Luftfeuchtigkeits-Entität",
+        outdoorTemperatureEntity: "Außentemperatur-Entität",
+        windowContactEntity: "Fensterkontakt-Entität",
+        co2Entity: "CO₂-Entität",
+        heatingActiveEntity: "Heizung-aktiv-Entität",
+        batteryEntity: "Batterie-Entität",
         cardName: "Kartenname",
         minimumTemperature: "Mindesttemperatur",
         maximumTemperature: "Maximaltemperatur",
@@ -1715,6 +1901,11 @@ class HeatingControlCardEditor extends HTMLElement {
       <div class="editor">
         ${this._textField("entity", this._te("climateEntity"), true)}
         ${this._textField("humidity_entity", this._te("humidityEntity"))}
+        ${this._textField("outdoor_temp_entity", this._te("outdoorTemperatureEntity"))}
+        ${this._textField("window_contact_entity", this._te("windowContactEntity"))}
+        ${this._textField("co2_entity", this._te("co2Entity"))}
+        ${this._textField("heating_active_since_entity", this._te("heatingActiveEntity"))}
+        ${this._textField("battery_entity", this._te("batteryEntity"))}
         ${this._textField("name", this._te("cardName"))}
         ${this._numberField("min_temp", this._te("minimumTemperature"))}
         ${this._numberField("max_temp", this._te("maximumTemperature"))}

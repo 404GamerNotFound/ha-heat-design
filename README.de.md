@@ -21,6 +21,7 @@ Eine benutzerdefinierte **Lovelace-Dashboard-Karte** für Home Assistant, inspir
 - Zeigt die **Zieltemperatur** und ermöglicht die Änderung per Slider.
 - Ermöglicht das direkte Ein-/Ausschalten der Heizung über die Karte.
 - Zeigt optional die **Luftfeuchtigkeit** aus einem separaten Sensor.
+- Unterstützt optionale modulare Infozeilen für **Außentemperatur**, **Fensterkontakt**, **CO₂**, **Heizung aktiv seit X Min** und **Batterie**.
 - Zeigt den aktuellen HVAC-Status (`heat`, `idle`, usw.).
 - Zeigt einen Vorschaustatus im Dashboard-Kartenpicker.
 - Ruft den Home-Assistant-Service `climate.set_temperature` auf.
@@ -84,6 +85,11 @@ slider_orientation_desktop: horizontal
 desktop_layout: compact
 heating_on_mode: heat
 history_range: 24h
+outdoor_temp_entity: sensor.outdoor_temperature
+window_contact_entity: binary_sensor.living_room_window
+co2_entity: sensor.living_room_co2
+heating_active_since_entity: sensor.living_room_heating_active_minutes
+battery_entity: sensor.living_room_thermostat_battery
 ```
 
 ## Konfiguration mit dem UI-Editor
@@ -121,6 +127,11 @@ Die Karte kann zusätzlich Verlaufsgraphen für Luftfeuchtigkeit und Temperatur 
 | `desktop_layout` | nein | `standard` | Desktop-Layoutdichte: `standard` oder `compact` |
 | `heating_on_mode` | nein | `heat` | HVAC-Modus beim Umschalten von AUS auf AN (muss von der Climate-Entität unterstützt werden) |
 | `history_range` | nein | `24h` | Zeitfenster für Verlaufsdiagramme: `24h`, `7d` oder `30d` |
+| `outdoor_temp_entity` | nein | - | Optionale Entität als Infozeile für Außentemperatur |
+| `window_contact_entity` | nein | - | Optionale Entität als Infozeile für Fensterkontakt |
+| `co2_entity` | nein | - | Optionale Entität als Infozeile für CO₂ |
+| `heating_active_since_entity` | nein | - | Optionale Entität für „Heizung aktiv“ (Minutenwert oder Zeitstempel) |
+| `battery_entity` | nein | - | Optionale Entität als Infozeile für Batteriestand |
 
 ---
 
