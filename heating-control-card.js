@@ -1123,12 +1123,31 @@ class HeatingControlCard extends HTMLElement {
         }
 
         const entityState = states?.[entityId];
+        if (!entityState || this._isUnavailableEntityState(entityState.state)) {
+          return null;
+        }
+
+        const value = metric.formatter(entityState);
+        if (this._isEmptyOptionalMetricValue(value)) {
+          return null;
+        }
+
         return {
           label: metric.label,
-          value: metric.formatter(entityState)
+          value
         };
       })
       .filter(Boolean);
+  }
+
+  _isUnavailableEntityState(value) {
+    const normalized = String(value ?? "").trim().toLowerCase();
+    return !normalized || ["unknown", "unavailable", "none", "null"].includes(normalized);
+  }
+
+  _isEmptyOptionalMetricValue(value) {
+    const normalized = String(value ?? "").trim();
+    return !normalized || normalized === "--";
   }
 
   _formatTemperatureWithUnit(value, unit = "°C") {
