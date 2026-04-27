@@ -5,6 +5,7 @@ A custom **Lovelace dashboard card bundle** for Home Assistant inspired by the o
 This repository now contains:
 - `custom:heating-control-card` (climate dashboard card)
 - `custom:button-switch-card` (switch/button dashboard card)
+- `custom:ha-markdown-title-design` (title/markdown-style dashboard card)
 
 ![Heating control card design](images/designv2.png)
 
@@ -64,7 +65,7 @@ Go to **Settings → Dashboards → Resources** and add:
 
 ## Manual installation (alternative)
 
-1. Copy `ha-heat-design.js`, `heating-control-card.js`, and `button-switch-card.js` to `/config/www/`.
+1. Copy `ha-heat-design.js`, `heating-control-card.js`, `button-switch-card.js`, and `markdown-title-card.js` to `/config/www/`.
 2. Add this resource:
    - URL: `/local/ha-heat-design.js`
    - Type: `JavaScript Module`
@@ -105,6 +106,18 @@ entity: switch.tv
 name: TV
 icon: mdi:radiator
 layout_variant: compact
+```
+
+
+### Markdown title card YAML
+
+```yaml
+type: custom:ha-markdown-title-design
+title: Living Room
+subtitle: Heating overview
+text: Optional markdown-style description text
+align: center
+show_divider: true
 ```
 
 ## Configure with the UI editor

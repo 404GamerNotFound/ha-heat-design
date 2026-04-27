@@ -1,5 +1,6 @@
 import "./heating-control-card.js";
 import "./button-switch-card.js";
+import "./markdown-title-card.js";
 
 (() => {
   const findScriptSource = () => {
@@ -14,7 +15,8 @@ import "./button-switch-card.js";
         (script) =>
           script.src.includes("ha-heat-design.js") ||
           script.src.includes("heating-control-card.js") ||
-          script.src.includes("button-switch-card.js")
+          script.src.includes("button-switch-card.js") ||
+          script.src.includes("markdown-title-card.js")
       );
 
     return matchingScript?.src || null;
@@ -33,7 +35,7 @@ import "./button-switch-card.js";
     }
   };
 
-  const moduleNames = ["heating-control-card.js", "button-switch-card.js"];
+  const moduleNames = ["heating-control-card.js", "button-switch-card.js", "markdown-title-card.js"];
 
   for (const moduleName of moduleNames) {
     addRelativeCandidate(typeof import.meta !== "undefined" ? import.meta.url : null, moduleName);
@@ -44,7 +46,7 @@ import "./button-switch-card.js";
   }
 
   const hasRequiredElements = () =>
-    customElements.get("heating-control-card") && customElements.get("button-switch-card");
+    customElements.get("heating-control-card") && customElements.get("button-switch-card") && customElements.get("ha-markdown-title-design");
 
   const loadCardModules = async () => {
     if (hasRequiredElements()) {
