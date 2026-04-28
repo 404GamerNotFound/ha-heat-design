@@ -1715,14 +1715,15 @@ window.customCards = window.customCards || [];
 
 const buttonSwitchPickerCards = [
   {
-    type: "custom:button-switch-card",
+    type: "button-switch-card",
     name: "Button Switch Card",
     description: "Switch on/off controller card with a visual editor and preview support."
   }
 ];
 
 buttonSwitchPickerCards.forEach((cardDefinition) => {
-  const alreadyRegistered = window.customCards.some((entry) => entry.type === cardDefinition.type);
+  const compatibleTypes = [cardDefinition.type, `custom:${cardDefinition.type}`];
+  const alreadyRegistered = window.customCards.some((entry) => compatibleTypes.includes(entry.type));
   if (alreadyRegistered) return;
 
   window.customCards.push({

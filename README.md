@@ -19,6 +19,7 @@ This repository now contains:
 - 🇵🇱 Polski: [`README.pl.md`](README.pl.md)
 - 🇳🇱 Nederlands: [`README.nl.md`](README.nl.md)
 - 🇨🇿 Čeština: [`README.cs.md`](README.cs.md)
+- 🇵🇹 Português: built-in UI translation support
 
 ## What this card does
 
@@ -190,7 +191,30 @@ name: Living Room
 ## Localization
 
 The card UI and the visual editor now automatically support:
-English, German, French, Spanish, Italian, Polish, Dutch, and Czech.
+English, German, French, Spanish, Italian, Polish, Dutch, Czech, and Portuguese.
+
+### Community translation workflow (external overrides)
+
+You can provide translation overrides without editing this repository by adding a small JS resource
+that sets `window.haHeatDesignTranslations` before the card is loaded.
+
+```js
+window.haHeatDesignTranslations = {
+  heatingControlCard: {
+    pt: {
+      current: "ATUAL",
+      humidity: "HUMIDADE"
+    }
+  },
+  heatingControlCardEditor: {
+    pt: {
+      cardName: "Nome do cartão"
+    }
+  }
+};
+```
+
+This allows community-driven translation updates while keeping defaults in the card.
 
 ---
 

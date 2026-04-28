@@ -1,6 +1,40 @@
+function getTranslationOverrides(sectionKey) {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const overrides = window.haHeatDesignTranslations?.[sectionKey];
+  if (!overrides || typeof overrides !== "object") {
+    return null;
+  }
+
+  return overrides;
+}
+
+function mergeTranslationMaps(baseTranslations, overrideTranslations) {
+  if (!overrideTranslations) {
+    return baseTranslations;
+  }
+
+  const mergedTranslations = { ...baseTranslations };
+
+  Object.entries(overrideTranslations).forEach(([languageCode, overrideValues]) => {
+    if (!overrideValues || typeof overrideValues !== "object") {
+      return;
+    }
+
+    mergedTranslations[languageCode] = {
+      ...(baseTranslations[languageCode] || {}),
+      ...overrideValues
+    };
+  });
+
+  return mergedTranslations;
+}
+
 class HeatingControlCard extends HTMLElement {
   static get TRANSLATIONS() {
-    return {
+    const baseTranslations = {
       en: {
         current: "CURRENT",
         humidity: "HUMIDITY",
@@ -168,8 +202,37 @@ class HeatingControlCard extends HTMLElement {
         loadingHistory: "Načítá se historie…",
         noHistoryData: "Pro vybrané období nejsou k dispozici žádná historická data.",
         historyUnavailable: "Historii se nepodařilo načíst. Zkontrolujte Recorder / Historii."
+      },
+      pt: {
+        current: "ATUAL",
+        humidity: "HUMIDADE",
+        outdoorTemperature: "EXTERIOR",
+        windowContact: "JANELA",
+        co2: "CO₂",
+        heatingActiveFor: "AQUECIMENTO ATIVO",
+        battery: "BATERIA",
+        stateOpen: "ABERTO",
+        stateClosed: "FECHADO",
+        minutesShort: "min",
+        showTemperatureChart: "Mostrar histórico de temperatura",
+        showHumidityChart: "Mostrar histórico de humidade",
+        temperature: "Temperatura",
+        closeChart: "Fechar gráfico",
+        entityNotFound: "Entidade não encontrada",
+        heatingOn: "AQUECIMENTO LIGADO",
+        heatingOff: "AQUECIMENTO DESLIGADO",
+        preview: "PRÉ-VISUALIZAÇÃO",
+        temperatureTrend: "Histórico de temperatura",
+        humidityTrend: "Histórico de humidade",
+        chartSubtitleWithCount: (rangeLabel, count) => `Histórico de ${rangeLabel} · ${count} pontos`,
+        nowValue: (value, unit) => `Agora: ${value}${unit}`,
+        loadingHistory: "A carregar histórico…",
+        noHistoryData: "Não existem dados históricos para o período selecionado.",
+        historyUnavailable: "Não foi possível carregar o histórico. Verifique as definições do Recorder / History."
       }
     };
+
+    return mergeTranslationMaps(baseTranslations, getTranslationOverrides("heatingControlCard"));
   }
 
   static async getConfigElement() {
@@ -1670,7 +1733,7 @@ if (!customElements.get("heating-control-card")) {
 
 class HeatingControlCardEditor extends HTMLElement {
   static get EDITOR_TRANSLATIONS() {
-    return {
+    const baseTranslations = {
       en: {
         climateEntity: "Climate entity",
         humidityEntity: "Humidity entity",
@@ -1824,8 +1887,33 @@ class HeatingControlCardEditor extends HTMLElement {
         historyRange: "Rozsah historie",
         previewMode: "Režim náhledu",
         useDefault: "Použít výchozí"
+      },
+      pt: {
+        climateEntity: "Entidade climate",
+        humidityEntity: "Entidade de humidade",
+        outdoorTemperatureEntity: "Entidade da temperatura exterior",
+        windowContactEntity: "Entidade de contacto de janela",
+        co2Entity: "Entidade CO₂",
+        heatingActiveEntity: "Entidade de aquecimento ativo",
+        batteryEntity: "Entidade da bateria",
+        cardName: "Nome do cartão",
+        minimumTemperature: "Temperatura mínima",
+        maximumTemperature: "Temperatura máxima",
+        temperatureStep: "Passo da temperatura",
+        backgroundStart: "Início do fundo",
+        backgroundEnd: "Fim do fundo",
+        sliderOrientation: "Orientação do slider",
+        mobileOrientation: "Orientação móvel",
+        desktopOrientation: "Orientação desktop",
+        desktopLayout: "Layout desktop",
+        heatingOnMode: "Modo ao ligar aquecimento",
+        historyRange: "Intervalo do histórico",
+        previewMode: "Modo de pré-visualização",
+        useDefault: "Usar predefinição"
       }
     };
+
+    return mergeTranslationMaps(baseTranslations, getTranslationOverrides("heatingControlCardEditor"));
   }
 
   constructor() {

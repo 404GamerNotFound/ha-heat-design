@@ -51,7 +51,7 @@ Eine benutzerdefinierte **Lovelace-Dashboard-Karte** für Home Assistant, inspir
 
 Gehe zu **Settings → Dashboards → Resources** und füge hinzu:
 
-- **URL**: `/hacsfiles/ha-heat-design/heating-control-card.js`
+- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
 - **Type**: `JavaScript Module`
 
 > Wenn dein Repository-Slug abweicht, passe den Pfad entsprechend an.
@@ -60,9 +60,9 @@ Gehe zu **Settings → Dashboards → Resources** und füge hinzu:
 
 ## Manuelle Installation (Alternative)
 
-1. Kopiere `heating-control-card.js` nach `/config/www/` (oder beide Dateien, falls du alte Resource-Pfade weiter unterstützen möchtest).
+1. Kopiere `ha-heat-design.js`, `heating-control-card.js`, `button-switch-card.js` und `markdown-title-card.js` nach `/config/www/`.
 2. Füge diese Resource hinzu:
-   - URL: `/local/heating-control-card.js`
+   - URL: `/local/ha-heat-design.js`
    - Type: `JavaScript Module`
 
 ---
@@ -91,6 +91,28 @@ co2_entity: sensor.living_room_co2
 heating_active_since_entity: sensor.living_room_heating_active_minutes
 battery_entity: sensor.living_room_thermostat_battery
 ```
+
+### Button switch card YAML
+
+```yaml
+type: custom:button-switch-card
+entity: switch.tv
+name: TV
+icon: mdi:radiator
+layout_variant: compact
+```
+
+### Markdown title card YAML
+
+```yaml
+type: custom:ha-markdown-title-design
+title: Living Room
+subtitle: Heating overview
+text: Optional markdown-style description text
+align: center
+show_divider: true
+```
+
 
 ## Konfiguration mit dem UI-Editor
 
@@ -152,7 +174,7 @@ Die Karte kann zusätzlich Verlaufsgraphen für Luftfeuchtigkeit und Temperatur 
 ## Schnellstart
 
 1. Über HACS installieren (Dashboard-Kategorie).
-2. Resource hinzufügen (falls nötig): `/hacsfiles/ha-heat-design/heating-control-card.js`
+2. Resource hinzufügen (falls nötig): `/hacsfiles/ha-heat-design/ha-heat-design.js`
 3. Karte hinzufügen:
 
 ```yaml
