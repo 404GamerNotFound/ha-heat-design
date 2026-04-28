@@ -60,7 +60,9 @@ class HeatingControlCard extends HTMLElement {
         nowValue: (value, unit) => `Now: ${value}${unit}`,
         loadingHistory: "Loading history…",
         noHistoryData: "No history data available for the selected period.",
-        historyUnavailable: "History could not be loaded. Check Recorder / History settings."
+        historyUnavailable: "History could not be loaded. Check Recorder / History settings.",
+        entityFixHint: "Fix: check entity-id and if the entity exists in Developer Tools → States.",
+        historyFixHint: "Fix: enable Recorder/History and make sure the selected entity is recorded."
       },
       de: {
         current: "AKTUELL",
@@ -87,7 +89,9 @@ class HeatingControlCard extends HTMLElement {
         nowValue: (value, unit) => `Jetzt: ${value}${unit}`,
         loadingHistory: "Historie wird geladen…",
         noHistoryData: "Für den ausgewählten Zeitraum sind keine Verlaufsdaten vorhanden.",
-        historyUnavailable: "Historie konnte nicht geladen werden. Recorder-/Historie-Einstellungen prüfen."
+        historyUnavailable: "Historie konnte nicht geladen werden. Recorder-/Historie-Einstellungen prüfen.",
+        entityFixHint: "Fix: Entity-ID prüfen und in Entwicklerwerkzeuge → Zustände auf Existenz prüfen.",
+        historyFixHint: "Fix: Recorder/Verlauf aktivieren und sicherstellen, dass die Entität aufgezeichnet wird."
       },
       fr: {
         current: "ACTUELLE",
@@ -347,7 +351,7 @@ class HeatingControlCard extends HTMLElement {
       this._targetTemperatureEl.textContent = "--";
       this._statusEl.textContent = this._t("entityNotFound");
       this._updateHeatingToggle(null);
-      this._updateOptionalInfoRows(null);
+      this._updateOptionalInfoRows(null, false, [this._t("entityFixHint")]);
       return;
     }
 
@@ -739,6 +743,19 @@ class HeatingControlCard extends HTMLElement {
         font-weight: 600;
       }
 
+      .optional-info-hints {
+        border: 1px dashed rgba(255, 255, 255, 0.45);
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: rgba(0, 0, 0, 0.12);
+      }
+
+      .optional-info-hint {
+        font-size: 12px;
+        line-height: 1.35;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
       .chart-drawer-overlay {
         position: absolute;
         inset: 0;
@@ -1019,18 +1036,36 @@ class HeatingControlCard extends HTMLElement {
   }
 
   _resolveHeatingOnMode(climateState) {
-    const configuredMode = String(this._config.heating_on_mode || "heat").toLowerCase();
     const hvacModes = climateState.attributes?.hvac_modes || [];
+    const configuredModes = this._getConfiguredHeatingModes();
 
-    if (hvacModes.includes(configuredMode)) {
-      return configuredMode;
+    for (const configuredMode of configuredModes) {
+      if (hvacModes.includes(configuredMode)) {
+        return configuredMode;
+      }
     }
 
-    if (hvacModes.includes("heat")) {
-      return "heat";
+    const preferredModes = ["heat", "auto", "heat_cool", "cool", "dry", "fan_only"];
+    for (const preferredMode of preferredModes) {
+      if (hvacModes.includes(preferredMode)) {
+        return preferredMode;
+      }
     }
 
     return hvacModes.find((mode) => mode !== "off") || "heat";
+  }
+
+  _getConfiguredHeatingModes() {
+    const configuredValue = this._config?.heating_on_mode;
+
+    if (Array.isArray(configuredValue)) {
+      return configuredValue.map((mode) => String(mode).toLowerCase()).filter(Boolean);
+    }
+
+    return String(configuredValue || "heat")
+      .split(/[,\s;|]+/)
+      .map((mode) => mode.trim().toLowerCase())
+      .filter(Boolean);
   }
 
   _applyAppearance() {
@@ -1121,22 +1156,33 @@ class HeatingControlCard extends HTMLElement {
     this._updateOptionalInfoRows(null, true);
   }
 
-  _updateOptionalInfoRows(states, preview = false) {
+  _updateOptionalInfoRows(states, preview = false, hints = []) {
     if (!this._optionalInfoEl) {
       return;
     }
 
     const rows = this._buildOptionalInfoRows(states, preview);
-    this._optionalInfoEl.innerHTML = rows
-      .map(
-        (row) => `
-          <div class="optional-info-row">
-            <span class="optional-info-label">${row.label}</span>
-            <span class="optional-info-value">${row.value}</span>
-          </div>
-        `
-      )
-      .join("");
+    const hintMarkup = hints.length
+      ? `
+        <div class="optional-info-hints">
+          ${hints.map((hint) => `<div class="optional-info-hint">${hint}</div>`).join("")}
+        </div>
+      `
+      : "";
+
+    this._optionalInfoEl.innerHTML = `
+      ${hintMarkup}
+      ${rows
+        .map(
+          (row) => `
+            <div class="optional-info-row">
+              <span class="optional-info-label">${row.label}</span>
+              <span class="optional-info-value">${row.value}</span>
+            </div>
+          `
+        )
+        .join("")}
+    `;
   }
 
   _buildOptionalInfoRows(states, preview = false) {
@@ -1315,7 +1361,7 @@ class HeatingControlCard extends HTMLElement {
 
       if (!points.length) {
         this._setChartHeader(chartType, 0);
-        this._drawChartMessage(this._t("noHistoryData"));
+        this._drawChartMessage(`${this._t("noHistoryData")}\n${this._t("historyFixHint")}`);
         return;
       }
 
@@ -1327,7 +1373,7 @@ class HeatingControlCard extends HTMLElement {
       }
 
       this._setChartHeader(chartType, 0);
-      this._drawChartMessage(this._t("historyUnavailable"));
+      this._drawChartMessage(`${this._t("historyUnavailable")}\n${this._t("historyFixHint")}`);
       console.error("[heating-control-card] Failed to load chart history", error);
     }
   }
@@ -2023,7 +2069,17 @@ class HeatingControlCardEditor extends HTMLElement {
         ${this._selectField("slider_orientation_mobile", this._te("mobileOrientation"), ["", "vertical", "horizontal"])}
         ${this._selectField("slider_orientation_desktop", this._te("desktopOrientation"), ["", "vertical", "horizontal"])}
         ${this._selectField("desktop_layout", this._te("desktopLayout"), ["standard", "compact"])}
-        ${this._textField("heating_on_mode", this._te("heatingOnMode"))}
+        ${this._datalistTextField("heating_on_mode", this._te("heatingOnMode"), "heating-mode-presets")}
+        <datalist id="heating-mode-presets">
+          <option value="heat"></option>
+          <option value="auto"></option>
+          <option value="heat_cool"></option>
+          <option value="cool"></option>
+          <option value="dry"></option>
+          <option value="fan_only"></option>
+          <option value="heat,auto"></option>
+          <option value="heat,auto,heat_cool"></option>
+        </datalist>
         ${this._selectField("history_range", this._te("historyRange"), ["24h", "7d", "30d"])}
         <label class="full checkbox-row">
           <input type="checkbox" data-key="preview" />
@@ -2089,6 +2145,15 @@ class HeatingControlCardEditor extends HTMLElement {
       <label>
         <span>${label}</span>
         <input type="text" data-key="${key}" ${required ? "required" : ""} />
+      </label>
+    `;
+  }
+
+  _datalistTextField(key, label, listId) {
+    return `
+      <label>
+        <span>${label}</span>
+        <input type="text" data-key="${key}" list="${listId}" />
       </label>
     `;
   }
