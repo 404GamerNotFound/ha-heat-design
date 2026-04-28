@@ -50,7 +50,7 @@ Een aangepaste **Lovelace-dashboardkaart** voor Home Assistant, geïnspireerd op
 
 Ga naar **Settings → Dashboards → Resources** en voeg toe:
 
-- **URL**: `/hacsfiles/ha-heat-design/heating-control-card.js`
+- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
 - **Type**: `JavaScript Module`
 
 > Als je repository-slug afwijkt, pas het pad aan.
@@ -61,7 +61,7 @@ Ga naar **Settings → Dashboards → Resources** en voeg toe:
 
 1. Kopieer `heating-control-card.js` naar `/config/www/` (of beide bestanden als je achterwaartse compatibiliteit wilt).
 2. Voeg deze resource toe:
-   - URL: `/local/heating-control-card.js`
+   - URL: `/local/ha-heat-design.js`
    - Type: `JavaScript Module`
 
 ---
@@ -84,6 +84,28 @@ slider_orientation_desktop: horizontal
 desktop_layout: compact
 heating_on_mode: heat
 ```
+
+### Button switch card YAML
+
+```yaml
+type: custom:button-switch-card
+entity: switch.tv
+name: TV
+icon: mdi:radiator
+layout_variant: compact
+```
+
+### Markdown title card YAML
+
+```yaml
+type: custom:ha-markdown-title-design
+title: Living Room
+subtitle: Heating overview
+text: Optional markdown-style description text
+align: center
+show_divider: true
+```
+
 
 ## Configureren met de UI-editor
 
@@ -125,7 +147,7 @@ Je kunt de kaart nu direct in de Home Assistant-**UI-editor** configureren (voor
 ## Snelstart
 
 1. Installeer via HACS (Dashboard-categorie).
-2. Voeg de resource toe (indien nodig): `/hacsfiles/ha-heat-design/heating-control-card.js`
+2. Voeg de resource toe (indien nodig): `/hacsfiles/ha-heat-design/ha-heat-design.js`
 3. Voeg de kaart toe:
 
 ```yaml

@@ -50,7 +50,7 @@ Niestandardowa **karta dashboardu Lovelace** dla Home Assistant, inspirowana pom
 
 Przejdź do **Settings → Dashboards → Resources** i dodaj:
 
-- **URL**: `/hacsfiles/ha-heat-design/heating-control-card.js`
+- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
 - **Type**: `JavaScript Module`
 
 > Jeśli slug repozytorium jest inny, dostosuj ścieżkę.
@@ -61,7 +61,7 @@ Przejdź do **Settings → Dashboards → Resources** i dodaj:
 
 1. Skopiuj `heating-control-card.js` do `/config/www/` (lub oba pliki, jeśli chcesz zachować kompatybilność ze starymi ścieżkami).
 2. Dodaj ten zasób:
-   - URL: `/local/heating-control-card.js`
+   - URL: `/local/ha-heat-design.js`
    - Type: `JavaScript Module`
 
 ---
@@ -84,6 +84,28 @@ slider_orientation_desktop: horizontal
 desktop_layout: compact
 heating_on_mode: heat
 ```
+
+### Button switch card YAML
+
+```yaml
+type: custom:button-switch-card
+entity: switch.tv
+name: TV
+icon: mdi:radiator
+layout_variant: compact
+```
+
+### Markdown title card YAML
+
+```yaml
+type: custom:ha-markdown-title-design
+title: Living Room
+subtitle: Heating overview
+text: Optional markdown-style description text
+align: center
+show_divider: true
+```
+
 
 ## Konfiguracja przez edytor UI
 
@@ -125,7 +147,7 @@ Teraz możesz skonfigurować kartę bezpośrednio w **edytorze UI** Home Assista
 ## Szybki start
 
 1. Zainstaluj przez HACS (kategoria Dashboard).
-2. Dodaj zasób (jeśli potrzeba): `/hacsfiles/ha-heat-design/heating-control-card.js`
+2. Dodaj zasób (jeśli potrzeba): `/hacsfiles/ha-heat-design/ha-heat-design.js`
 3. Dodaj kartę:
 
 ```yaml
