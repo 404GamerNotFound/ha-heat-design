@@ -1,0 +1,8 @@
+{
+  "name": "ha-heat-design",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint:i18n": "node scripts/lint-i18n.mjs"
+  }
+}

@@ -1,0 +1,60 @@
+import en from "./en.js";
+
+const de = {
+  heatingControlCard: {
+    ...en.heatingControlCard,
+    current: "AKTUELL",
+    humidity: "LUFTFEUCHTIGKEIT",
+    outdoorTemperature: "AUSSEN",
+    windowContact: "FENSTER",
+    co2: "CO₂",
+    heatingActiveFor: "HEIZUNG AKTIV",
+    battery: "BATTERIE",
+    stateOpen: "OFFEN",
+    stateClosed: "GESCHLOSSEN",
+    minutesShort: "Min",
+    showTemperatureChart: "24h-Temperaturverlauf anzeigen",
+    showHumidityChart: "24h-Luftfeuchtigkeitsverlauf anzeigen",
+    temperature: "Temperatur",
+    closeChart: "Diagramm schließen",
+    entityNotFound: "Entität nicht gefunden",
+    heatingOn: "HEIZUNG AN",
+    heatingOff: "HEIZUNG AUS",
+    preview: "VORSCHAU",
+    temperatureTrend: "Temperaturverlauf",
+    humidityTrend: "Luftfeuchtigkeitsverlauf",
+    chartSubtitleWithCount: (rangeLabel, count) => `${rangeLabel}-Verlauf · ${count} Punkte`,
+    nowValue: (value, unit) => `Jetzt: ${value}${unit}`,
+    loadingHistory: "Historie wird geladen…",
+    noHistoryData: "Für den ausgewählten Zeitraum sind keine Verlaufsdaten vorhanden.",
+    historyUnavailable: "Historie konnte nicht geladen werden. Recorder-/Historie-Einstellungen prüfen.",
+    entityFixHint: "Fix: Entity-ID prüfen und in Entwicklerwerkzeuge → Zustände auf Existenz prüfen.",
+    historyFixHint: "Fix: Recorder/Verlauf aktivieren und sicherstellen, dass die Entität aufgezeichnet wird."
+  },
+  heatingControlCardEditor: {
+    ...en.heatingControlCardEditor,
+    climateEntity: "Klima-Entität",
+    humidityEntity: "Luftfeuchtigkeits-Entität",
+    outdoorTemperatureEntity: "Außentemperatur-Entität",
+    windowContactEntity: "Fensterkontakt-Entität",
+    co2Entity: "CO₂-Entität",
+    heatingActiveEntity: "Heizung-aktiv-Entität",
+    batteryEntity: "Batterie-Entität",
+    cardName: "Kartenname",
+    minimumTemperature: "Mindesttemperatur",
+    maximumTemperature: "Maximaltemperatur",
+    temperatureStep: "Temperaturschritt",
+    backgroundStart: "Hintergrund Start",
+    backgroundEnd: "Hintergrund Ende",
+    sliderOrientation: "Ausrichtung des Reglers",
+    mobileOrientation: "Mobile Ausrichtung",
+    desktopOrientation: "Desktop-Ausrichtung",
+    desktopLayout: "Desktop-Layout",
+    heatingOnMode: "Heizmodus beim Einschalten",
+    historyRange: "Historien-Zeitraum",
+    previewMode: "Vorschaumodus",
+    useDefault: "Standard verwenden"
+  }
+};
+
+export default de;
