@@ -66,9 +66,9 @@ Go to **Settings → Dashboards → Resources** and add:
 
 ## Manual installation (alternative)
 
-1. Copy `ha-heat-design.js`, `heating-control-card.js`, `button-switch-card.js`, and `markdown-title-card.js` to `/config/www/`.
+1. Copy the full repository contents to `/config/www/ha-heat-design/` (or at minimum these files/folders: `ha-heat-design.js`, `heating-control-card.js`, `button-switch-card.js`, `markdown-title-card.js`, `cards/`, and `i18n/`).
 2. Add this resource:
-   - URL: `/local/ha-heat-design.js`
+   - URL: `/local/ha-heat-design/ha-heat-design.js`
    - Type: `JavaScript Module`
 
 ---
