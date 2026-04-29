@@ -62,7 +62,19 @@ Go to **Settings → Dashboards → Resources** and add:
 
 > If your repository slug differs, adjust the path accordingly.
 
-> Legacy path support: if you already use `/hacsfiles/ha-heat-design/ha-heat-design.js`, it now acts as a compatibility loader and still works.
+
+### Registered custom element names
+
+After loading `/hacsfiles/ha-heat-design/ha-heat-design.js` as a **JavaScript Module**, these Lovelace card types are available:
+
+- `type: custom:heating-control-card`
+- `type: custom:button-switch-card`
+- `type: custom:ha-markdown-title-design`
+
+The bundle logs a one-time debug message in the browser console:
+
+- `HA Heat Design bundle loaded`
+- includes the list of card tags and their registration state.
 
 ## Manual installation (alternative)
 
