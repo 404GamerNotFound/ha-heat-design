@@ -1,3 +1,5 @@
+import { getSectionTranslations } from "../../i18n/index.js";
+
 export function getTranslationOverrides(sectionKey) {
   if (typeof window === "undefined") {
     return null;
@@ -30,4 +32,8 @@ export function mergeTranslationMaps(baseTranslations, overrideTranslations) {
   });
 
   return mergedTranslations;
+}
+
+export function getCardSectionTranslations(sectionKey) {
+  return mergeTranslationMaps(getSectionTranslations(sectionKey), getTranslationOverrides(sectionKey));
 }
