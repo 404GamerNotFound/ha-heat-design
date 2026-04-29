@@ -174,6 +174,24 @@ The card can also show history graphs for humidity and temperature trends.
 
 ---
 
+
+## Troubleshooting
+
+### Error: `Custom element doesn't exist: heating-control-card`
+
+This means Home Assistant could not load the JavaScript module that registers the card.
+
+1. Verify the resource exists under **Settings → Dashboards → Resources**.
+2. Use exactly one of these URLs:
+   - HACS: `/hacsfiles/ha-heat-design/ha-heat-design.js`
+   - Manual: `/local/ha-heat-design/ha-heat-design.js`
+3. Ensure resource **Type** is `JavaScript Module` (not `JavaScript`).
+4. Hard refresh the browser (`Ctrl+F5`) and clear the Home Assistant frontend cache.
+5. Open browser dev tools and confirm you see the log `HA Heat Design bundle loaded`.
+6. Confirm your card YAML uses `type: custom:heating-control-card`.
+
+If the error persists, open the browser console and check for 404 or MIME type errors on the resource URL.
+
 ## Notes
 
 - This is a Lovelace **frontend card** (Dashboard category in HACS).

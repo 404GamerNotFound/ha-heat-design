@@ -1,12 +1,7 @@
 import { HeatingControlCard } from "./cards/heating-control-card/component.js";
-import { HeatingControlCardEditor } from "./cards/heating-control-card/editor.js";
 
 if (!customElements.get("heating-control-card")) {
   customElements.define("heating-control-card", HeatingControlCard);
-}
-
-if (!customElements.get("heating-control-card-editor")) {
-  customElements.define("heating-control-card-editor", HeatingControlCardEditor);
 }
 
 window.customCards = window.customCards || [];
@@ -19,4 +14,4 @@ if (!window.customCards.some((card) => card.type === "heating-control-card")) {
   });
 }
 
-export { HeatingControlCard, HeatingControlCardEditor };
+export { HeatingControlCard };

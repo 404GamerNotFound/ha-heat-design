@@ -9,6 +9,11 @@ export class HeatingControlCard extends HTMLElement {
   }
 
   static async getConfigElement() {
+    if (!customElements.get("heating-control-card-editor")) {
+      const { HeatingControlCardEditor } = await import("./editor.js");
+      customElements.define("heating-control-card-editor", HeatingControlCardEditor);
+    }
+
     return document.createElement("heating-control-card-editor");
   }
 
