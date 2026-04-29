@@ -169,6 +169,24 @@ Die Karte kann zusätzlich Verlaufsgraphen für Luftfeuchtigkeit und Temperatur 
 
 ---
 
+
+## Fehlerbehebung
+
+### Fehler: `Custom element doesn't exist: heating-control-card`
+
+Dieser Fehler bedeutet, dass Home Assistant das JavaScript-Modul der Karte nicht laden konnte.
+
+1. Prüfe unter **Einstellungen → Dashboards → Ressourcen**, ob die Ressource eingetragen ist.
+2. Nutze exakt eine dieser URLs:
+   - HACS: `/hacsfiles/ha-heat-design/ha-heat-design.js`
+   - Manuell: `/local/ha-heat-design/ha-heat-design.js`
+3. Der Ressourcentyp muss `JavaScript Module` sein (nicht `JavaScript`).
+4. Browser hart neu laden (`Strg+F5`) und Frontend-Cache leeren.
+5. In den Browser-Devtools prüfen, ob der Log `HA Heat Design bundle loaded` erscheint.
+6. In YAML muss `type: custom:heating-control-card` gesetzt sein.
+
+Wenn der Fehler bleibt, prüfe in der Browser-Konsole auf 404- oder MIME-Type-Fehler für die Ressourcen-URL.
+
 ## Hinweise
 
 - Dies ist eine Lovelace-**Frontend-Karte** (Dashboard-Kategorie in HACS).
