@@ -571,13 +571,13 @@ export class ButtonSwitchCardEditor extends HTMLElement {
                     type="number"
                     data-threshold-index="${index}"
                     data-threshold-key="above"
-                    value="${this._escapeAttribute(entry.above ?? "")}" 
+                    value="${this._escapeAttribute(entry.above ?? "")}"
                   ></ha-textfield>
                   <ha-textfield
                     label="Color"
                     data-threshold-index="${index}"
                     data-threshold-key="color"
-                    value="${this._escapeAttribute(entry.color || "")}" 
+                    value="${this._escapeAttribute(entry.color || "")}"
                   ></ha-textfield>
                   <button type="button" data-remove-threshold="${index}">Remove</button>
                 </div>
@@ -708,4 +708,3 @@ export class ButtonSwitchCardEditor extends HTMLElement {
     this._restoreFocusState();
   }
 }
-

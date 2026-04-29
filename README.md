@@ -78,7 +78,7 @@ The bundle logs a one-time debug message in the browser console:
 
 ## Manual installation (alternative)
 
-1. Copy the full repository contents to `/config/www/ha-heat-design/` (or at minimum these files/folders: `ha-heat-design.js`, `heating-control-card.js`, `button-switch-card.js`, `markdown-title-card.js`, `cards/`, and `i18n/`).
+1. Copy `ha-heat-design.js` to `/config/www/ha-heat-design/`. Optional legacy entrypoints (`heating-control-card.js`, `button-switch-card.js`, and `markdown-title-card.js`) can be copied too if you still reference them directly.
 2. Add this resource:
    - URL: `/local/ha-heat-design/ha-heat-design.js`
    - Type: `JavaScript Module`
