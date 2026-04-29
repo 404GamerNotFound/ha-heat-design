@@ -1,6 +1,6 @@
 # Home Assistant Heating Control Card
 
-A custom **Lovelace dashboard card bundle** for Home Assistant inspired by the orange thermostat design in your reference image.
+A custom **Lovelace dashboard card bundle** for Home Assistant.
 
 This repository now contains:
 - `custom:heating-control-card` (climate dashboard card)
