@@ -50,18 +50,18 @@ Une **carte de tableau de bord Lovelace** personnalisée pour Home Assistant, in
 
 Allez dans **Settings → Dashboards → Resources** et ajoutez :
 
-- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
+- **URL**: `/hacsfiles/ha-great-design/ha-great-design.js`
 - **Type**: `JavaScript Module`
 
 > Si le slug de votre dépôt est différent, adaptez le chemin.
 
-> Compatibilité ancien chemin : si vous utilisez déjà `/hacsfiles/ha-heat-design/ha-heat-design.js`, il fonctionne toujours comme loader de compatibilité.
+> Compatibilité ancien chemin : si vous utilisez déjà `/hacsfiles/ha-great-design/ha-great-design.js`, il fonctionne toujours comme loader de compatibilité.
 
 ## Installation manuelle (alternative)
 
 1. Copiez `ha-heat-design.js`, `heating-control-card.js`, `button-switch-card.js` et `markdown-title-card.js` dans `/config/www/`.
 2. Ajoutez cette ressource :
-   - URL: `/local/ha-heat-design.js`
+   - URL: `/local/ha-great-design.js`
    - Type: `JavaScript Module`
 
 ---
@@ -147,7 +147,7 @@ Vous pouvez maintenant configurer la carte directement dans l'**éditeur UI** de
 ## Démarrage rapide
 
 1. Installer via HACS (catégorie Dashboard).
-2. Ajouter la ressource (si nécessaire) : `/hacsfiles/ha-heat-design/ha-heat-design.js`
+2. Ajouter la ressource (si nécessaire) : `/hacsfiles/ha-great-design/ha-great-design.js`
 3. Ajouter la carte :
 
 ```yaml

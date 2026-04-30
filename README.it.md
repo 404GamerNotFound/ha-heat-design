@@ -50,18 +50,18 @@ Una **card dashboard Lovelace** personalizzata per Home Assistant, ispirata al d
 
 Vai su **Settings → Dashboards → Resources** e aggiungi:
 
-- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
+- **URL**: `/hacsfiles/ha-great-design/ha-great-design.js`
 - **Type**: `JavaScript Module`
 
 > Se lo slug del repository è diverso, adatta il percorso.
 
-> Supporto percorso legacy: se usi già `/hacsfiles/ha-heat-design/ha-heat-design.js`, continua a funzionare come loader di compatibilità.
+> Supporto percorso legacy: se usi già `/hacsfiles/ha-great-design/ha-great-design.js`, continua a funzionare come loader di compatibilità.
 
 ## Installazione manuale (alternativa)
 
 1. Copia `heating-control-card.js` in `/config/www/` (o entrambi i file se vuoi compatibilità con vecchi percorsi resource).
 2. Aggiungi questa resource:
-   - URL: `/local/ha-heat-design.js`
+   - URL: `/local/ha-great-design.js`
    - Type: `JavaScript Module`
 
 ---
@@ -147,7 +147,7 @@ Ora puoi configurare la card direttamente nell'**editor UI** di Home Assistant (
 ## Avvio rapido
 
 1. Installa con HACS (categoria Dashboard).
-2. Aggiungi la resource (se necessario): `/hacsfiles/ha-heat-design/ha-heat-design.js`
+2. Aggiungi la resource (se necessario): `/hacsfiles/ha-great-design/ha-great-design.js`
 3. Aggiungi la card:
 
 ```yaml
