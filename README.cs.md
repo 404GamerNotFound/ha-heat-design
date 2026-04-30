@@ -50,18 +50,18 @@ Vlastní **Lovelace dashboard karta** pro Home Assistant inspirovaná oranžový
 
 Jděte do **Settings → Dashboards → Resources** a přidejte:
 
-- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
+- **URL**: `/hacsfiles/ha-great-design/ha-great-design.js`
 - **Type**: `JavaScript Module`
 
 > Pokud máte jiný slug repozitáře, upravte cestu.
 
-> Podpora legacy cesty: pokud už používáte `/hacsfiles/ha-heat-design/ha-heat-design.js`, bude dál fungovat jako kompatibilní loader.
+> Podpora legacy cesty: pokud už používáte `/hacsfiles/ha-great-design/ha-great-design.js`, bude dál fungovat jako kompatibilní loader.
 
 ## Ruční instalace (alternativa)
 
 1. Zkopírujte `heating-control-card.js` do `/config/www/` (nebo oba soubory, pokud chcete kompatibilitu se starými cestami).
 2. Přidejte tuto resource:
-   - URL: `/local/ha-heat-design.js`
+   - URL: `/local/ha-great-design.js`
    - Type: `JavaScript Module`
 
 ---
@@ -147,7 +147,7 @@ Kartu nyní můžete konfigurovat přímo v Home Assistant **UI editoru** (pro v
 ## Rychlý start
 
 1. Nainstalujte přes HACS (kategorie Dashboard).
-2. Přidejte resource (pokud je potřeba): `/hacsfiles/ha-heat-design/ha-heat-design.js`
+2. Přidejte resource (pokud je potřeba): `/hacsfiles/ha-great-design/ha-great-design.js`
 3. Přidejte kartu:
 
 ```yaml

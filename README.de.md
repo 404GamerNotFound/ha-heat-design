@@ -51,7 +51,7 @@ Eine benutzerdefinierte **Lovelace-Dashboard-Karte** für Home Assistant, inspir
 
 Gehe zu **Settings → Dashboards → Resources** und füge hinzu:
 
-- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
+- **URL**: `/hacsfiles/ha-great-design/ha-great-design.js`
 - **Type**: `JavaScript Module`
 
 > Wenn dein Repository-Slug abweicht, passe den Pfad entsprechend an.
@@ -59,7 +59,7 @@ Gehe zu **Settings → Dashboards → Resources** und füge hinzu:
 
 ### Registrierte Custom-Element-Namen
 
-Nach dem Laden von `/hacsfiles/ha-heat-design/ha-heat-design.js` als **JavaScript Module** stehen diese Lovelace-Typen zur Verfügung:
+Nach dem Laden von `/hacsfiles/ha-great-design/ha-great-design.js` als **JavaScript Module** stehen diese Lovelace-Typen zur Verfügung:
 
 - `type: custom:heating-control-card`
 - `type: custom:button-switch-card`
@@ -67,14 +67,14 @@ Nach dem Laden von `/hacsfiles/ha-heat-design/ha-heat-design.js` als **JavaScrip
 
 Das Bundle schreibt einmalig eine Debug-Ausgabe in die Browser-Konsole:
 
-- `HA Heat Design bundle loaded`
+- `HA Great Design bundle loaded`
 - inkl. Liste der Card-Tags und deren Registrierungsstatus.
 
 ## Manuelle Installation (Alternative)
 
-1. Kopiere `ha-heat-design.js` nach `/config/www/ha-heat-design/`. Optionale Legacy-Einstiegspunkte (`heating-control-card.js`, `button-switch-card.js` und `markdown-title-card.js`) kannst du ebenfalls kopieren, falls du sie noch direkt als Resource nutzt.
+1. Kopiere `ha-great-design.js` nach `/config/www/ha-great-design/`. Optionale Legacy-Einstiegspunkte (`heating-control-card.js`, `button-switch-card.js` und `markdown-title-card.js`) kannst du ebenfalls kopieren, falls du sie noch direkt als Resource nutzt.
 2. Füge diese Resource hinzu:
-   - URL: `/local/ha-heat-design/ha-heat-design.js`
+   - URL: `/local/ha-great-design/ha-great-design.js`
    - Type: `JavaScript Module`
 
 ---
@@ -178,11 +178,11 @@ Dieser Fehler bedeutet, dass Home Assistant das JavaScript-Modul der Karte nicht
 
 1. Prüfe unter **Einstellungen → Dashboards → Ressourcen**, ob die Ressource eingetragen ist.
 2. Nutze exakt eine dieser URLs:
-   - HACS: `/hacsfiles/ha-heat-design/ha-heat-design.js`
-   - Manuell: `/local/ha-heat-design/ha-heat-design.js`
+   - HACS: `/hacsfiles/ha-great-design/ha-great-design.js`
+   - Manuell: `/local/ha-great-design/ha-great-design.js`
 3. Der Ressourcentyp muss `JavaScript Module` sein (nicht `JavaScript`).
 4. Browser hart neu laden (`Strg+F5`) und Frontend-Cache leeren.
-5. In den Browser-Devtools prüfen, ob der Log `HA Heat Design bundle loaded` erscheint.
+5. In den Browser-Devtools prüfen, ob der Log `HA Great Design bundle loaded` erscheint.
 6. In YAML muss `type: custom:heating-control-card` gesetzt sein.
 
 Wenn der Fehler bleibt, prüfe in der Browser-Konsole auf 404- oder MIME-Type-Fehler für die Ressourcen-URL.
@@ -204,7 +204,7 @@ Wenn der Fehler bleibt, prüfe in der Browser-Konsole auf 404- oder MIME-Type-Fe
 ## Schnellstart
 
 1. Über HACS installieren (Dashboard-Kategorie).
-2. Resource hinzufügen (falls nötig): `/hacsfiles/ha-heat-design/ha-heat-design.js`
+2. Resource hinzufügen (falls nötig): `/hacsfiles/ha-great-design/ha-great-design.js`
 3. Karte hinzufügen:
 
 ```yaml

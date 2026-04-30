@@ -50,18 +50,18 @@ Een aangepaste **Lovelace-dashboardkaart** voor Home Assistant, geïnspireerd op
 
 Ga naar **Settings → Dashboards → Resources** en voeg toe:
 
-- **URL**: `/hacsfiles/ha-heat-design/ha-heat-design.js`
+- **URL**: `/hacsfiles/ha-great-design/ha-great-design.js`
 - **Type**: `JavaScript Module`
 
 > Als je repository-slug afwijkt, pas het pad aan.
 
-> Ondersteuning voor legacy-pad: als je al `/hacsfiles/ha-heat-design/ha-heat-design.js` gebruikt, blijft dit werken als compatibiliteits-loader.
+> Ondersteuning voor legacy-pad: als je al `/hacsfiles/ha-great-design/ha-great-design.js` gebruikt, blijft dit werken als compatibiliteits-loader.
 
 ## Handmatige installatie (alternatief)
 
 1. Kopieer `heating-control-card.js` naar `/config/www/` (of beide bestanden als je achterwaartse compatibiliteit wilt).
 2. Voeg deze resource toe:
-   - URL: `/local/ha-heat-design.js`
+   - URL: `/local/ha-great-design.js`
    - Type: `JavaScript Module`
 
 ---
@@ -147,7 +147,7 @@ Je kunt de kaart nu direct in de Home Assistant-**UI-editor** configureren (voor
 ## Snelstart
 
 1. Installeer via HACS (Dashboard-categorie).
-2. Voeg de resource toe (indien nodig): `/hacsfiles/ha-heat-design/ha-heat-design.js`
+2. Voeg de resource toe (indien nodig): `/hacsfiles/ha-great-design/ha-great-design.js`
 3. Voeg de kaart toe:
 
 ```yaml
