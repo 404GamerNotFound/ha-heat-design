@@ -6,6 +6,7 @@ This repository now contains:
 - `custom:heating-control-card` (climate dashboard card)
 - `custom:button-switch-card` (switch/button dashboard card)
 - `custom:ha-markdown-title-design` (title/markdown-style dashboard card)
+- `custom:ha-slider-design` (compact light slider card with optional power/state/color controls)
 
 ![Heating control card design](images/designv2.png)
 
@@ -70,6 +71,7 @@ After loading `/hacsfiles/ha-heat-design/ha-heat-design.js` as a **JavaScript Mo
 - `type: custom:heating-control-card`
 - `type: custom:button-switch-card`
 - `type: custom:ha-markdown-title-design`
+- `type: custom:ha-slider-design`
 
 The bundle logs a one-time debug message in the browser console:
 
@@ -78,7 +80,7 @@ The bundle logs a one-time debug message in the browser console:
 
 ## Manual installation (alternative)
 
-1. Copy `ha-heat-design.js` to `/config/www/ha-heat-design/`. Optional legacy entrypoints (`heating-control-card.js`, `button-switch-card.js`, and `markdown-title-card.js`) can be copied too if you still reference them directly.
+1. Copy `ha-heat-design.js` to `/config/www/ha-heat-design/`. Optional legacy entrypoints (`heating-control-card.js`, `button-switch-card.js`, `markdown-title-card.js`, and `ha-slider-design.js`) can be copied too if you still reference them directly.
 2. Add this resource:
    - URL: `/local/ha-heat-design/ha-heat-design.js`
    - Type: `JavaScript Module`

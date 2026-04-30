@@ -47,7 +47,8 @@ const sourceFiles = [
   "cards/button-switch-card/editor.js",
   "cards/markdown-title-card/config.js",
   "cards/markdown-title-card/component.js",
-  "cards/markdown-title-card/editor.js"
+  "cards/markdown-title-card/editor.js",
+  "cards/ha-slider-design-card/index.js"
 ];
 
 const importLinePattern = /^import\s+[\s\S]*?from\s+["'][^"']+["'];\n?/gm;
@@ -153,6 +154,14 @@ registerCustomCard({
   documentationURL: "https://github.com/404GamerNotFound/ha-markdown-title-design"
 });
 
+registerCustomCard({
+  type: "ha-slider-design",
+  name: "HA Slider Design",
+  preview: true,
+  description: "Compact slider-style Home Assistant card for dimmable lights with color and power chips.",
+  documentationURL: "https://github.com/404GamerNotFound/ha-slider-design"
+});
+
 const HA_HEAT_DESIGN_DEBUG_FLAG = "__HA_HEAT_DESIGN_LOADED__";
 
 if (!window[HA_HEAT_DESIGN_DEBUG_FLAG]) {
@@ -161,7 +170,8 @@ if (!window[HA_HEAT_DESIGN_DEBUG_FLAG]) {
   const registeredCards = [
     "heating-control-card",
     "button-switch-card",
-    "ha-markdown-title-design"
+    "ha-markdown-title-design",
+    "ha-slider-design"
   ];
 
   const registrationState = registeredCards.reduce((state, cardTag) => {
